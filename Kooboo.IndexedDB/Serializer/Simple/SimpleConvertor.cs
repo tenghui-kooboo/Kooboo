@@ -5,7 +5,7 @@ using Kooboo.IndexedDB.Helper;
 using System;
 using System.Collections.Generic;
 using System.Collections;
-
+using System.IO;
 
 namespace Kooboo.IndexedDB.Serializer.Simple
 {
@@ -192,7 +192,7 @@ namespace Kooboo.IndexedDB.Serializer.Simple
                     break; 
                 }
 
-                var item = Fields.Find(o => o.FieldNameHash == FieldNameHash);
+                var item = Fields.FindNameHash(FieldNameHash);
                 if (item != null)
                 {
                     byte[] FieldValueBytes = new byte[len];
@@ -271,15 +271,15 @@ namespace Kooboo.IndexedDB.Serializer.Simple
             return value;
         }
 
-        private List<IFieldConverter<T>> _Fields; 
+        private IFieldConverterCollect<T> _Fields; 
 
-        public List<IFieldConverter<T>> Fields
+        public IFieldConverterCollect<T> Fields
         {
             get
             {
                 if (_Fields == null)
                 {
-                    _Fields = new List<IFieldConverter<T>>(); 
+                    _Fields = new IFieldConverterCollect<T>(); 
                 }
                 return _Fields; 
             }
@@ -322,7 +322,7 @@ namespace Kooboo.IndexedDB.Serializer.Simple
             {
                 throw new Exception("Abstract and Interface can not be initialized.");
             }
-            this.Items = new List<IFieldConverter>();
+            this.Items = new IFieldConverterCollect();
 
             var allfields = TypeHelper.GetPublicPropertyOrFields(type);
 
@@ -345,43 +345,27 @@ namespace Kooboo.IndexedDB.Serializer.Simple
 
         public byte[] ToBytes(Object value)
         {
-            List<byte[]> Results = new List<byte[]>();
-            int TotalLength = 0;
+            MemoryStream ms = new MemoryStream();
 
             foreach (var item in this.Items)
             {
                 byte[] result = item.ToBytes(value);
                 if (result == null || result.Length == 0)
-                {
                     continue;
-                }
 
-                Results.Add(BitConverter.GetBytes(item.FieldNameHash));
-                TotalLength += 4;
+                ms.Write(BitConverter.GetBytes(item.FieldNameHash), 0, 4);
 
                 int bytelen = item.ByteLength;
                 if (bytelen == 0)
-                {
                     bytelen = result.Length;
-                }
 
-                Results.Add(BitConverter.GetBytes(bytelen));
-                TotalLength += 4;
+                ms.Write(BitConverter.GetBytes(bytelen), 0, 4);
 
-                Results.Add(result);
-                TotalLength += result.Length;
+                ms.Write(result, 0, result.Length);
             }
 
-            byte[] BackValue = new byte[TotalLength];
-            int currentposition = 0;
-
-            foreach (var item in Results)
-            {
-                int len = item.Length;
-                System.Buffer.BlockCopy(item, 0, BackValue, currentposition, len);
-                currentposition += len;
-            }
-
+            byte[] BackValue = ms.ToArray();
+            ms.Close();
             return BackValue;
         }
 
@@ -399,7 +383,7 @@ namespace Kooboo.IndexedDB.Serializer.Simple
                 int len = BitConverter.ToInt32(bytes, startposition);
                 startposition += 4;
 
-                var item = Items.Find(o => o.FieldNameHash == FieldNameHash);
+                var item = Items.FindNameHash(FieldNameHash);
 
                 if (item != null)
                 {
@@ -422,7 +406,7 @@ namespace Kooboo.IndexedDB.Serializer.Simple
             return value;
         }
 
-        private List<IFieldConverter> Items
+        private IFieldConverterCollect Items
         {
             get; set;
         }

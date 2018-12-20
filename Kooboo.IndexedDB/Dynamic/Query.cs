@@ -38,7 +38,7 @@ namespace Kooboo.IndexedDB.Dynamic
         {
             FilterItem item = new FilterItem();
 
-            var field = this.table.ObjectConverter.Fields.Find(o => o.FieldName == FieldOrPropertyName);
+            var field = this.table.ObjectConverter.Fields.FindName(FieldOrPropertyName);
 
             if (field != null)
             {
@@ -112,7 +112,7 @@ namespace Kooboo.IndexedDB.Dynamic
 
         public Query WhereIn(string FieldOrPropertyName, List<object> Values)
         {
-            var field = this.table.ObjectConverter.Fields.Find(o => o.FieldName == FieldOrPropertyName);
+            var field = this.table.ObjectConverter.Fields.FindName(FieldOrPropertyName);
 
             if (field == null)
             {
@@ -140,7 +140,7 @@ namespace Kooboo.IndexedDB.Dynamic
 
         public Query WhereIn<Type>(string FieldOrPropertyName, List<Type> Values)
         {
-            var field = this.table.ObjectConverter.Fields.Find(o => o.FieldName == FieldOrPropertyName);
+            var field = this.table.ObjectConverter.Fields.FindName(FieldOrPropertyName);
 
             if (field == null)
             {
@@ -358,7 +358,7 @@ namespace Kooboo.IndexedDB.Dynamic
             List<FilterItem> result = new List<FilterItem>();
             foreach (var item in conditions)
             {
-                var col = this.table.ObjectConverter.Fields.Find(o => o.FieldName == item.Field);
+                var col = this.table.ObjectConverter.Fields.FindName(item.Field);
                 if (col != null)
                 {
                     FilterItem filter = new FilterItem() { FieldOrProperty = col.FieldName };

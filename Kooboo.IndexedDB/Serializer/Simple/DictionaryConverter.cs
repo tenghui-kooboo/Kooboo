@@ -3,13 +3,14 @@
 using Kooboo.IndexedDB.Helper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Kooboo.IndexedDB.Serializer.Simple
 {
-  public  class DictionaryConverter
+    public class DictionaryConverter
     {
 
         private Type KeyType;
@@ -26,18 +27,18 @@ namespace Kooboo.IndexedDB.Serializer.Simple
         private Func<byte[], object> GetValueObjectValue;
 
         private bool IsIgnoreCase { get; set; }
-   
+
         public DictionaryConverter(Type DictionaryType, bool KeyIgnoreCase = false)
         {
-            this.IsIgnoreCase = KeyIgnoreCase; 
+            this.IsIgnoreCase = KeyIgnoreCase;
 
             this.DictionaryType = DictionaryType;
             KeyType = ObjectHelper.GetDictionaryKeyType(DictionaryType);
             ValueType = ObjectHelper.GetDictionaryValueType(DictionaryType);
- 
+
             KeyLength = ConverterHelper.GetTypeLength(KeyType);
             Valuelength = ConverterHelper.GetTypeLength(ValueType);
- 
+
             GetKeyObjectBytes = ConverterHelper.GetValueToBytes(KeyType);
             GetKeyObjectValue = ConverterHelper.GetBytesToValue(KeyType);
 
@@ -55,7 +56,7 @@ namespace Kooboo.IndexedDB.Serializer.Simple
             }
         }
 
-   
+
         public object FromBytes(byte[] bytes)
         {
             List<byte[]> keybytes = new List<byte[]>();
@@ -136,7 +137,7 @@ namespace Kooboo.IndexedDB.Serializer.Simple
                 if (valuestartposition >= ValueByteLen)
                 { break; }
             }
-             
+
             System.Collections.IDictionary dict = null;
             if (this.IsIgnoreCase)
             {
@@ -185,105 +186,65 @@ namespace Kooboo.IndexedDB.Serializer.Simple
 
             }
 
-            return dict; 
+            return dict;
         }
 
         public byte[] ToBytes(object value)
-        {  
+        {
+            //keyLength:4 + valueLengh:4 + keybytes +valuebytes
+
             if (value == null)
-            { return null; }
+                return null;
+
             var dict = value as System.Collections.IDictionary;
             if (dict == null)
-            {
                 return null;
-            }
 
-            List<byte[]> keyresults = new List<byte[]>();
-            int keytotallen = 0;
+            MemoryStream ms = new MemoryStream();
 
+            //ËãKey
             foreach (var item in dict.Keys)
             {
                 var keyresult = this.GetKeyObjectBytes(item);
 
                 if (this.KeyLength > 0)
-                {
-                    keyresults.Add(keyresult);
-                    keytotallen += this.KeyLength;
-                }
+                    ms.Write(keyresult, 0, keyresult.Length);
                 else
                 {
-                    keyresults.Add(BitConverter.GetBytes(keyresult.Length));
-                    keyresults.Add(keyresult);
-                    keytotallen += 4 + keyresult.Length;
+                    var length = BitConverter.GetBytes(keyresult.Length);
+                    ms.Write(length, 0, length.Length);
+                    ms.Write(keyresult, 0, keyresult.Length);
                 }
             }
-
-            byte[] KeyBytes = new byte[keytotallen];
-            int currentposition = 0;
-
-            foreach (var item in keyresults)
-            {
-                int len = item.Length;
-                System.Buffer.BlockCopy(item, 0, KeyBytes, currentposition, len);
-                currentposition += len;
-            }
-
-            List<byte[]> ValueResults = new List<byte[]>();
-            int ValueTotalLen = 0;
+            var keyLength = ms.Length;
 
             foreach (var item in dict.Values)
             {
                 var ValueResult = this.GetValueObjectBytes(item);
 
                 if (this.Valuelength > 0)
-                {
-                    ValueResults.Add(ValueResult);
-                    ValueTotalLen += this.Valuelength;
-                }
+                    ms.Write(ValueResult, 0, ValueResult.Length);
                 else
                 {
-                    int len = this.Valuelength; 
-                    if (len ==0 && ValueResult !=null)
-                    {
-                        len = ValueResult.Length; 
-                    } 
-                    ValueResults.Add(BitConverter.GetBytes(len));
-                    ValueResults.Add(ValueResult);
-                    ValueTotalLen += 4 + len;
+                    int len = this.Valuelength;
+                    if (len == 0 && ValueResult != null)
+                        len = ValueResult.Length;
+                    ms.Write(BitConverter.GetBytes(len), 0, 4);
+                    ms.Write(ValueResult, 0, ValueResult.Length);
                 }
             }
 
-            byte[] ValueBytes = new byte[ValueTotalLen];
-            int valuecurrentposition = 0;
+            int valueLength = (int)(ms.Length - keyLength);
 
-            foreach (var item in ValueResults)
-            {
-                int len = this.Valuelength;
-                if (len == 0 && item != null)
-                {
-                    len = item.Length;
-                }
-                if (len > 0)
-                {
-                    System.Buffer.BlockCopy(item, 0, ValueBytes, valuecurrentposition, len);
-                    valuecurrentposition += len;
-                }
-            }
-
-            int total = KeyBytes.Length + ValueBytes.Length + 8;
+            int total = (int)ms.Length + 8;
 
             byte[] totalbytes = new byte[total];
 
-            System.Buffer.BlockCopy(BitConverter.GetBytes(KeyBytes.Length), 0, totalbytes, 0, 4);
-            System.Buffer.BlockCopy(BitConverter.GetBytes(ValueBytes.Length), 0, totalbytes, 4, 4);
-            if (KeyBytes.Length > 0)
-            {
-                System.Buffer.BlockCopy(KeyBytes, 0, totalbytes, 8, KeyBytes.Length);
-            }
-            if (ValueBytes.Length > 0)
-            {
-                System.Buffer.BlockCopy(ValueBytes, 0, totalbytes, 8 + KeyBytes.Length, ValueBytes.Length);
-            }
+            System.Buffer.BlockCopy(BitConverter.GetBytes(keyLength), 0, totalbytes, 0, 4);
+            System.Buffer.BlockCopy(BitConverter.GetBytes(valueLength), 0, totalbytes, 4, 4);
+            System.Buffer.BlockCopy(ms.ToArray(), 0, totalbytes, 8, (int)ms.Length);
+            ms.Close();
+
             return totalbytes;
         }
 

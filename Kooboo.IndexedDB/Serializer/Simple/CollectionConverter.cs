@@ -4,6 +4,7 @@ using Kooboo.IndexedDB.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -91,14 +92,9 @@ namespace Kooboo.IndexedDB.Serializer.Simple
         public byte[] ToBytes(object value)
         {
             if (value == null)
-            {
                 return null;
-            }
 
-            List<byte[]> results = new List<byte[]>();
-
-
-            int totallen = 0;
+            MemoryStream ms = new MemoryStream();
 
             foreach (var item in (IEnumerable)value)
             {
@@ -106,37 +102,27 @@ namespace Kooboo.IndexedDB.Serializer.Simple
 
                 if (this.FieldLength > 0)
                 {
-                    results.Add(result);
-                    totallen += this.FieldLength;
+                    ms.Write(result,0,result.Length);
                 }
                 else
                 {
                     if (result != null)
                     {
-                        results.Add(BitConverter.GetBytes(result.Length));
-                        results.Add(result);
-                        totallen += 4 + result.Length;
+                        var b = BitConverter.GetBytes(result.Length);
+                        ms.Write(b,0,b.Length);
+                        ms.Write(result,0,result.Length);
                     }
                     else
                     {
-                        results.Add(BitConverter.GetBytes(0));
-                        totallen += 4 + result.Length;
+                        var b = BitConverter.GetBytes(0);
+                        ms.Write(b, 0, b.Length);
                     }
                 }
             }
 
-            byte[] BackValue = new byte[totallen];
-            int currentposition = 0;
-
-            foreach (var item in results)
-            {
-                int len = item.Length;
-                System.Buffer.BlockCopy(item, 0, BackValue, currentposition, len);
-                currentposition += len;
-            }
-
+            byte[] BackValue = ms.ToArray();
+            ms.Close();
             return BackValue;
-
         }
     }
 }

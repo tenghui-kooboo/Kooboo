@@ -3,7 +3,7 @@
 using Kooboo.IndexedDB.Helper;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 
 namespace Kooboo.IndexedDB.Serializer.Simple.FieldConverter
 {
@@ -213,12 +213,9 @@ namespace Kooboo.IndexedDB.Serializer.Simple.FieldConverter
 
             var dict = dictvale as System.Collections.IDictionary;
             if (dict == null)
-            {
                 return null;
-            }
 
-            List<byte[]> keyresults = new List<byte[]>();
-            int keytotallen = 0;
+            MemoryStream ms = new MemoryStream();
 
             foreach (var item in dict.Keys)
             {
@@ -226,80 +223,46 @@ namespace Kooboo.IndexedDB.Serializer.Simple.FieldConverter
 
                 if (this.KeyLength > 0)
                 {
-                    keyresults.Add(keyresult);
-                    keytotallen += this.KeyLength;
+                    ms.Write(keyresult, 0, keyresult.Length);
                 }
                 else
                 {
-                    keyresults.Add(BitConverter.GetBytes(keyresult.Length));
-                    keyresults.Add(keyresult);
-                    keytotallen += 4 + keyresult.Length;
+                    var length = BitConverter.GetBytes(keyresult.Length);
+                    ms.Write(length, 0, length.Length);
+                    ms.Write(keyresult, 0, keyresult.Length);
                 }
             }
-
-            byte[] KeyBytes = new byte[keytotallen];
-            int currentposition = 0;
-
-            foreach (var item in keyresults)
-            {
-                int len = item.Length;
-                System.Buffer.BlockCopy(item, 0, KeyBytes, currentposition, len);
-                currentposition += len;
-            }
-
-            List<byte[]> ValueResults = new List<byte[]>();
-            int ValueTotalLen = 0;
+            var keyLength = ms.Length;
 
             foreach (var item in dict.Values)
             {
                 var ValueResult = this.GetValueObjectBytes(item);
 
                 if (this.Valuelength > 0)
-                {
-                    ValueResults.Add(ValueResult);
-                    ValueTotalLen += this.Valuelength;
-                }
+                    ms.Write(ValueResult, 0, ValueResult.Length);
                 else
                 {
                     if (ValueResult == null)
-                    {
-                        ValueResults.Add(BitConverter.GetBytes(0));
-                        //ValueResults.Add(ValueResult);
-                        ValueTotalLen += 4;
-                    }
+                        ms.Write(BitConverter.GetBytes(0), 0, 4);
                     else
                     {
-                        ValueResults.Add(BitConverter.GetBytes(ValueResult.Length));
-                        ValueResults.Add(ValueResult);
-                        ValueTotalLen += 4 + ValueResult.Length;
+                        ms.Write(BitConverter.GetBytes(ValueResult.Length), 0, 4);
+                        ms.Write(ValueResult, 0, ValueResult.Length);
                     }
                 }
             }
 
-            byte[] ValueBytes = new byte[ValueTotalLen];
-            int valuecurrentposition = 0;
+            int valueLength = (int)(ms.Length - keyLength);
 
-            foreach (var item in ValueResults)
-            {
-                int len = item.Length;
-                System.Buffer.BlockCopy(item, 0, ValueBytes, valuecurrentposition, len);
-                valuecurrentposition += len;
-            }
-
-            int total = KeyBytes.Length + ValueBytes.Length + 8;
+            int total = (int)ms.Length + 8;
 
             byte[] totalbytes = new byte[total];
 
-            System.Buffer.BlockCopy(BitConverter.GetBytes(KeyBytes.Length), 0, totalbytes, 0, 4);
-            System.Buffer.BlockCopy(BitConverter.GetBytes(ValueBytes.Length), 0, totalbytes, 4, 4);
-            if (KeyBytes.Length > 0)
-            {
-                System.Buffer.BlockCopy(KeyBytes, 0, totalbytes, 8, KeyBytes.Length);
-            }
-            if (ValueBytes.Length > 0)
-            {
-                System.Buffer.BlockCopy(ValueBytes, 0, totalbytes, 8 + KeyBytes.Length, ValueBytes.Length);
-            }
+            System.Buffer.BlockCopy(BitConverter.GetBytes(keyLength), 0, totalbytes, 0, 4);
+            System.Buffer.BlockCopy(BitConverter.GetBytes(valueLength), 0, totalbytes, 4, 4);
+            System.Buffer.BlockCopy(ms.ToArray(), 0, totalbytes, 8, (int)ms.Length);
+            ms.Close();
+
             return totalbytes;
         }
 

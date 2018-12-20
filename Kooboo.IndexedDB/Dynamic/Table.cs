@@ -1024,7 +1024,7 @@ namespace Kooboo.IndexedDB.Dynamic
 
             var coltype = Helper.TypeHelper.GetType(col.DataType);
             var colvalue = Convert.ChangeType(value, coltype);
-            var fieldConverter = this.ObjectConverter.Fields.Find(o => o.FieldName == col.Name);
+            var fieldConverter = this.ObjectConverter.Fields.FindName(col.Name);
 
 
             if (coltype == null || fieldConverter == null)

@@ -100,6 +100,7 @@
     <Compile Include="Dynamic\Accessor.cs" />
     <Compile Include="Dynamic\ConditionHelper.cs" />
     <Compile Include="Dynamic\Constants.cs" />
+    <Compile Include="Dynamic\FieldConverterCollect.cs" />
     <Compile Include="Dynamic\ObjectConverter.cs" />
     <Compile Include="Dynamic\ConverterHelper.cs" />
     <Compile Include="Dynamic\ITableIndex.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Serializer\Simple\CollectionWrapper.cs" />
     <Compile Include="Serializer\Simple\ConverterHelper.cs" />
     <Compile Include="Serializer\Simple\DictionaryConverter.cs" />
+    <Compile Include="Serializer\Simple\IFieldConverterCollect.cs" />
     <Compile Include="Serializer\Simple\FieldConverter\ClassFieldConverter.cs" />
     <Compile Include="Serializer\Simple\FieldConverter\CollectionFieldConverter.cs" />
     <Compile Include="Serializer\Simple\FieldConverter\DictionaryFieldConverter.cs" />

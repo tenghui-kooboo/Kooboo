@@ -67,7 +67,7 @@ namespace Kooboo.IndexedDB.Dynamic
             // now the left columns.. 
             foreach (var item in query.items)
             {
-                var column = query.table.ObjectConverter.Fields.Find(o => o.FieldName == item.FieldOrProperty);
+                var column = query.table.ObjectConverter.Fields.FindName(item.FieldOrProperty);
 
                 if (column != null)
                 {
@@ -89,7 +89,7 @@ namespace Kooboo.IndexedDB.Dynamic
             // the left column query.
             foreach (var item in query.InItems)
             {
-                var column = query.table.ObjectConverter.Fields.Find(o => o.FieldName == item.Key);
+                var column = query.table.ObjectConverter.Fields.FindName(item.Key);
 
                 if (column != null)
                 {
@@ -127,7 +127,7 @@ namespace Kooboo.IndexedDB.Dynamic
                 string fieldname = memberaccess.Member.Name;
 
 
-                var column = query.table.ObjectConverter.Fields.Find(o => o.FieldName == fieldname);
+                var column = query.table.ObjectConverter.Fields.FindName(fieldname);
 
                 if (column != null)
                 {
