@@ -72,7 +72,7 @@ namespace Kooboo.Web.Api.Implementation
              
             // header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("Market", context), Url = "/_api/user/onlineserver", Icon = "fa fa-plug", Count = 0, BadgeIcon = "badge-primary", OpenInNewWindow = true });
 
-            //  header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("E-Commerce", context), Url = AdminUrl("Ecommerce"), Icon = "fa fa-shopping-cart", Count = 0, BadgeIcon = "badge-success" });
+           header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("E-Commerce", context), Url = AdminUrl("Ecommerce"), Icon = "fa fa-shopping-cart", Count = 0, BadgeIcon = "badge-success" });
 
             header.Email.Count = unreadCount;
 
@@ -336,22 +336,22 @@ namespace Kooboo.Web.Api.Implementation
                 }
             });
 
-            //items.Add(new MenuItem
-            //{
-            //    Name = Hardcoded.GetValue("E-Commerce", context),
-            //    Icon = "icon fa fa-shopping-cart",
-            //    Items =
-            //    {
-            //        new MenuItem { Name = Hardcoded.GetValue("Products management", context), Url = AdminUrl("ECommerce/Products", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Product types", context), Url = AdminUrl("ECommerce/Product/Types", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Product categories", context), Url = AdminUrl("ECommerce/Product/Categories", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Customers", context), Url = AdminUrl("ECommerce/Product/Categories1", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Orders", context), Url = AdminUrl("ECommerce/Product/Categories2", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Marketing", context), Url = AdminUrl("ECommerce/Product/Categories3", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Reports", context), Url = AdminUrl("ECommerce/Product/Categories4", siteDb) },
-            //        new MenuItem { Name = Hardcoded.GetValue("Settings", context), Url = AdminUrl("ECommerce/Product/Categories5", siteDb) }                    
-            //    }
-            //});
+            items.Add(new MenuItem
+            {
+                Name = Hardcoded.GetValue("E-Commerce", context),
+                Icon = "icon fa fa-shopping-cart",
+                Items =
+                {
+                    new MenuItem { Name = Hardcoded.GetValue("Products management", context), Url = AdminUrl("ECommerce/Products", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Product types", context), Url = AdminUrl("ECommerce/Product/Types", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Product categories", context), Url = AdminUrl("ECommerce/Product/Categories", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Customers", context), Url = AdminUrl("ECommerce/Product/Categories1", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Orders", context), Url = AdminUrl("ECommerce/Product/Categories2", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Marketing", context), Url = AdminUrl("ECommerce/Product/Categories3", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Reports", context), Url = AdminUrl("ECommerce/Product/Categories4", siteDb) },
+                    new MenuItem { Name = Hardcoded.GetValue("Settings", context), Url = AdminUrl("ECommerce/Product/Categories5", siteDb) }
+                }
+            });
 
             items.Add(new MenuItem
             {

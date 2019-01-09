@@ -55,7 +55,8 @@ namespace Kooboo.Sites.Service
         }
 
         public static ObjectInfo GetObjectInfo(SiteDb SiteDb, ISiteObject siteobject)
-        {
+        { 
+
             if (siteobject == null)
             {
                 return null;

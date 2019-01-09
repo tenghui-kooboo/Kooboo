@@ -8,6 +8,7 @@ using Kooboo.Sites.Routing;
 using Kooboo.Lib;
 using System;
 using Kooboo.Lib.Helper;
+using Kooboo.Sites.Ecommerce.Models;
 
 namespace Kooboo.Sites.Service
 {
@@ -154,15 +155,15 @@ namespace Kooboo.Sites.Service
             {
                 return ConstObjectType.FormSetting;
             }
-     
-      
+
+
             else if (TValueType == typeof(Code))
             {
-                return ConstObjectType.Code; 
+                return ConstObjectType.Code;
             }
-            else if (TValueType ==typeof(SiteUser))
+            else if (TValueType == typeof(SiteUser))
             {
-                return ConstObjectType.SiteUser; 
+                return ConstObjectType.SiteUser;
             }
             else if (TValueType == typeof(BusinessRule))
             {
@@ -170,8 +171,37 @@ namespace Kooboo.Sites.Service
             }
             else if (TValueType == typeof(KConfig))
             {
-                return ConstObjectType.Kconfig; 
+                return ConstObjectType.Kconfig;
             }
+
+
+            else if (TValueType == typeof(Product))
+            {
+                return ConstObjectType.Product;
+            }
+            else if (TValueType == typeof(Category))
+            {
+                return ConstObjectType.Cateogry;
+            }
+
+            else if (TValueType == typeof(ProductCategory))
+            {
+                return ConstObjectType.ProductCategory;
+            }
+            else if (TValueType == typeof(ProductType))
+            {
+                return ConstObjectType.ProductType;
+            }
+            else if (TValueType == typeof(ProductVariants))
+            {
+                return ConstObjectType.ProductVariants;
+            }
+
+            //public const byte Product = 70;
+            //public const byte Cateogry = 71;
+            //public const byte ProductCategory = 72;
+            //public const byte ProductVariants = 73;
+            //public const byte ProductType = 74;
 
             return ConstObjectType.Unknown;
         }
@@ -269,21 +299,21 @@ namespace Kooboo.Sites.Service
                 case ConstObjectType.Script:
                     {
                         return typeof(Script);
-                    } 
- 
-                case ConstObjectType.Code: 
-                    { 
-                        return typeof(Code); 
                     }
 
-                case ConstObjectType.SiteUser: 
+                case ConstObjectType.Code:
                     {
-                        return typeof(SiteUser); 
+                        return typeof(Code);
+                    }
+
+                case ConstObjectType.SiteUser:
+                    {
+                        return typeof(SiteUser);
                     }
 
                 case ConstObjectType.BusinessRule:
                     {
-                        return typeof(BusinessRule); 
+                        return typeof(BusinessRule);
                     }
                 case ConstObjectType.Style:
                     {
@@ -327,7 +357,7 @@ namespace Kooboo.Sites.Service
                     {
                         return typeof(Synchronization);
                     }
-                case ConstObjectType.FormSetting: 
+                case ConstObjectType.FormSetting:
                     {
                         return typeof(FormSetting);
                     }
@@ -337,8 +367,35 @@ namespace Kooboo.Sites.Service
                     }
                 case ConstObjectType.Kconfig:
                     {
-                        return typeof(KConfig); 
+                        return typeof(KConfig);
                     }
+
+                case ConstObjectType.Product:
+                    {
+                        return typeof(Product);
+                    }
+                case ConstObjectType.Cateogry:
+                    {
+                        return typeof(Category); 
+                    }
+                case ConstObjectType.ProductCategory:
+                    {
+                        return typeof(ProductCategory); 
+                    }
+                case ConstObjectType.ProductVariants:
+                    {
+                        return typeof(ProductVariants); 
+                    }
+                case ConstObjectType.ProductType:
+                    {
+                        return typeof(ProductType); 
+                    }
+
+                //public const byte Product = 70;
+                //public const byte Cateogry = 71;
+                //public const byte ProductCategory = 72;
+                //public const byte ProductVariants = 73;
+                //public const byte ProductType = 74; 
 
                 default:
                     break;

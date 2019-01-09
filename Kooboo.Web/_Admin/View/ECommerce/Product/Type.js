@@ -45,7 +45,7 @@ $(function() {
 
         this.removeField = function(m, e) {
             if (confirm(Kooboo.text.confirm.deleteItem)) {
-                this.fields.remove(m);
+                self.fields.remove(m);
             }
         }
 
@@ -90,6 +90,13 @@ $(function() {
             if (this.isValid()) {
                 var props = this.fields().map(function(f) {
                     return ko.mapping.toJS(f);
+                })
+                 
+                props.forEach(function (prop) {
+
+                    if(['fixedspec','dynamicspec'].indexOf(prop.controlType.toLowerCase())>-1){
+                        prop.dataType = 'Array';
+                    }
                 })
 
                 Kooboo.ProductType.post({

@@ -128,6 +128,10 @@
     <Compile Include="Api\Implementation\Disk.cs" />
     <Compile Include="Api\Implementation\Domain.cs" />
     <Compile Include="Api\Implementation\BusinessRule.cs" />
+    <Compile Include="Api\Implementation\Ecommerce\Category.cs" />
+    <Compile Include="Api\Implementation\Ecommerce\Commerce.cs" />
+    <Compile Include="Api\Implementation\Ecommerce\Product.cs" />
+    <Compile Include="Api\Implementation\Ecommerce\ProductType.cs" />
     <Compile Include="Api\Implementation\ExternalResource.cs" />
     <Compile Include="Api\Implementation\File.cs" />
     <Compile Include="Api\Implementation\Form.cs" />
