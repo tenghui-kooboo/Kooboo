@@ -14,27 +14,29 @@
                 <div class="tab-content">
                     <div id="tab_account_login" class="tab-pane fade active in">
 
-                        <form data-bind="submit: onLogin">
-                            <div class="form-group">
+                        <form @submit.prevent='onLogin'>
+                            <div class="form-group" :class="{ 'has-error': !username.isValid }">
                                 <label class="sr-only">Username</label>
-                                <input class="form-control" type="text" data-bind="textInput: username, error: username" placeholder="Username" />
+                                <input class="form-control" type="text" v-validate='username' placeholder="Username" />
+                                <span class="help-block" v-for='error in username.errors' v-text='error'></span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" :class="{ 'has-error': !password.isValid }">
                                 <label class="sr-only">Password</label>
-                                <input class="form-control" type="password" data-bind="textInput: password, error: password" placeholder="Password" />
+                                <input class="form-control" type="password" v-validate='password' placeholder="Password" />
+                                <span class="help-block" v-for='error in password.errors' v-text='error'></span>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" data-bind="checked: remember, value: remember" />Keep me signed in</label>
+                                        <input type="checkbox" v-model='remember' />Keep me signed in</label>
                                 </div>
                             </div>
                             <button class="btn blue" type="submit">Sign in</button>
                             <p>
-                                <a data-bind="attr:{ href: forgotPasswordUrl }">Forgot password?</a>
+                                <a :href='forgotPasswordUrl'>Forgot password?</a>
                             </p>
                             <p>
-                                <span>Do not have an account?</span> <a data-bind="attr:{ href: registerUrl }">Create an account</a>
+                                <span>Do not have an account?</span> <a :href='registerUrl'>Create an account</a>
                             </p>
                         </form>
                     </div>
@@ -43,7 +45,62 @@
         </div>
     </div>
 </div>
+<script src="/_Admin/Scripts/vue/vue.js"></script>
+<script src="/_Admin/Scripts/vue/directives/validate.js"></script>
 <script>
+    var app = new Vue({
+        el: '.container',
+        data: {
+            username: {
+                value: '',
+                validate: {
+                    rules: [{
+                        type: 'required'
+                    }]
+                },
+                isValid: true,
+                errors: []
+            },
+            password: {
+                value: '',
+                validate: {
+                    rules: [{
+                        type: 'required'
+                    }]
+                },
+                isValid: true,
+                errors: []
+            },
+            remember: false,
+
+            forgotPasswordUrl: Kooboo.Route.User.ForgotPassword,
+            registerUrl: Kooboo.Route.User.RegisterPage
+        },
+        methods: {
+            isValid: function() {
+                return this.$data.username.isValid && this.$data.password.isValid;
+            },
+            onLogin: function() {
+                if (this.isValid()) {
+                    console.log({
+                        username: this.$data.username.value,
+                        password: this.$data.password.value,
+                        remember: this.$data.remember
+                    })
+                }
+
+                // Kooboo.User.login({
+                //     username: this.data.username.value,
+                //     password: this.data.password.value,
+                //     remember: this.data.remember
+                // }).then(function(res) {
+                //     if (res.success) {}
+                // })
+            }
+        }
+    })
+</script>
+<!-- <script>
     $(function() {
 
         var loginViewModel = function() {
@@ -104,4 +161,4 @@
         var login = new loginViewModel();
         ko.applyBindings(login, document.getElementsByClassName("container")[0]);
     });
-</script>
+</script> -->
