@@ -20,7 +20,7 @@ namespace Kooboo.Model.ValidateRules
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"maxLength\",message:\"{0}\"}}", Message);
+            return string.Format("{{type:\"maxLength\",maxLength:{1},message:\"{0}\"}}", Message,MaxLength);
         }
     }
 }

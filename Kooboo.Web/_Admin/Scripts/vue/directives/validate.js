@@ -20,6 +20,12 @@
                             errors.push(rule.message || 'This field is required.')
                         }
                         break;
+                    case 'maxLength':
+                        if (el.value &&el.value.length>rule.maxLength) {
+                            passed = false;
+                            errors.push(rule.message)
+                        }
+                        break;
                 }
             })
             if(binding.value.isValid!=passed)
