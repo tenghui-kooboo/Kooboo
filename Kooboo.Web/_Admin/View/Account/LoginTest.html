@@ -15,7 +15,7 @@
                 <div class="tab-content">
                     <div id="tab_account_login" class="tab-pane fade active in">
 
-                        <form @submit.prevent='login' vue-api="Kooboo.User.login">
+                        <form @submit.prevent='login' vue-api="Kooboo.User.login" vue-callback="Kooboo.User.logincallback">
                             <div class="form-group" :class="{ 'has-error': !UserName.isValid }">
                                 <label class="sr-only">Username</label>
                                 <input class="form-control" type="text" v-validate='UserName' placeholder="Username" />
@@ -48,3 +48,10 @@
 </div>
 <script src="/_Admin/Scripts/vue/vue.js"></script>
 <script src="/_Admin/Scripts/vue/directives/validate.js"></script>
+<script>
+    Kooboo.User.logincallback=function(res){
+        if(res.success){
+            location.href=res.model;
+        }
+    }
+</script>

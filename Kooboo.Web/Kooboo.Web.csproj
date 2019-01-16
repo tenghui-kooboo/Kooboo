@@ -293,10 +293,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kooboo.Model\Kooboo.Model\Kooboo.Model\Kooboo.Model.csproj">
-      <Project>{667015b3-b5e6-4e2c-acc9-b2192da96fc6}</Project>
-      <Name>Kooboo.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Kooboo.Api\Kooboo.Api.csproj">
       <Project>{964f25fd-7257-4e6d-8652-9df77cdb6337}</Project>
       <Name>Kooboo.Api</Name>
@@ -324,6 +320,10 @@
     <ProjectReference Include="..\Kooboo.Mail\Kooboo.Mail.csproj">
       <Project>{6fd5d24d-1bc3-487b-b62d-388c7091231e}</Project>
       <Name>Kooboo.Mail</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kooboo.Model\Kooboo.Model.csproj">
+      <Project>{667015b3-b5e6-4e2c-acc9-b2192da96fc6}</Project>
+      <Name>Kooboo.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kooboo.Render\Kooboo.Render.csproj">
       <Project>{8d9bea84-1b86-491b-a457-eeb4369a243c}</Project>
