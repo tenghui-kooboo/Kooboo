@@ -1,0 +1,16 @@
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th v-if='selectable'>
+                <input type="checkbox" v-model='allSelected' />
+            </th>
+            <th v-for='col in columns' :class='col.class' v-text='col.displayName' :key='col.fieldName'></th>
+            <th class="table-action" v-for='action in actions' :key='action.fieldName'></th>
+        </tr>
+    </thead>
+    <tbody>
+        <template v-for='doc in docs'>
+            <kb-table-row :doc='doc' :key='doc.id' :selectable='selectable' :columns='columns' :actions='actions' :selectedDocs='selectedDocs' @toggleSelectDoc='onToggleSelectDoc'></kb-table-row>
+        </template>
+    </tbody>
+</table>

@@ -1,0 +1,68 @@
+<!-- #layout name=blank-->
+<div id="test">
+    <kb-table :docs='docs' :columns='columns' :actions='actions'></kb-table>
+</div>
+<script src="/_Admin/Scripts/vue/vue.js"></script>
+<script src="/_Admin/Scripts/vue/components/kbTable/index.js"></script>
+<script>
+    var test = new Vue({
+        el: '#test',
+        data: {
+            docs: [{
+                id: 1,
+                name: 'test',
+                badge: {
+                    text: 323,
+                    class: 'green'
+                },
+                label: {
+                    text: 'hello',
+                    class: 'green'
+                }
+            }, {
+                id: 2,
+                name: 'test2',
+                badge: {
+                    text: 3,
+                    class: 'blue'
+                },
+                label: {
+                    text: 'hello',
+                    size: 'sm',
+                    class: 'blue'
+                },
+                link: {
+                    text: 'hello',
+                    title: 'test',
+                    url: 'kb/test/hello',
+                    type: 'event'
+                }
+            }],
+            columns: [{
+                fieldName: 'name',
+                displayName: 'Name',
+                type: 'text'
+            }, {
+                fieldName: 'badge',
+                displayName: 'Badge',
+                type: 'badge'
+            }, {
+                fieldName: 'label',
+                displayName: 'Label',
+                type: 'label'
+            }, {
+                fieldName: 'link',
+                displayName: 'Link',
+                type: 'link'
+            }],
+            actions: []
+        },
+        components: {
+            kbTable
+        }
+    })
+
+    Kooboo.EventBus.subscribe('kb/test/hello', function(doc) {
+        debugger
+    })
+</script>

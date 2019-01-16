@@ -1,10 +1,6 @@
 (function() {
     Vue.directive('validate', {
         bind: function(el, binding, vnode) {
-            debugger
-            // binding.value.isValid = true;
-            // binding.value.errors = [];
-
             el.value = binding.value.value || '';
 
             el.addEventListener('blur', function() {

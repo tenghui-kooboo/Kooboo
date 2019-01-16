@@ -69,8 +69,8 @@ namespace Kooboo.Web.Api.Implementation
             header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("Sites", context), Url = AdminUrl("Sites"), Icon = "fa fa-sitemap", Count = 0, BadgeIcon = "badge-success" });
 
             header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("Emails", context), Url = AdminUrl("Emails/Inbox"), Icon = "fa fa-envelope", Count = 0, BadgeIcon = "badge-primary" });
-             
-              header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("Market", context), Url = "/_api/user/onlineserver", Icon = "fa fa-plug", Count = 0, BadgeIcon = "badge-primary", OpenInNewWindow = true });
+
+            header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("Market", context), Url = "/_api/user/onlineserver", Icon = "fa fa-plug", Count = 0, BadgeIcon = "badge-primary", OpenInNewWindow = true });
 
             //  header.Menu.Add(new GlobalMenuItem { Name = Hardcoded.GetValue("E-Commerce", context), Url = AdminUrl("Ecommerce"), Icon = "fa fa-shopping-cart", Count = 0, BadgeIcon = "badge-success" });
 
@@ -231,7 +231,7 @@ namespace Kooboo.Web.Api.Implementation
                 new MenuItem { Name = Hardcoded.GetValue("SiteMirror", call.Context), Icon = "icon fa fa-sitemap", Url = AdminUrl("Domains/SiteMirror") },
 
              }.ToList();
- 
+
             return menus;
         }
 
@@ -288,10 +288,10 @@ namespace Kooboo.Web.Api.Implementation
             if (call.WebSite != null && call.WebSite.EnableFrontEvents)
             {
                 var eventmenus = SiteMenu_Events(call);
-                if (eventmenus !=null && eventmenus.Items.Count()>0)
+                if (eventmenus != null && eventmenus.Items.Count() > 0)
                 {
                     sysmenu.Items.Add(eventmenus);
-                }       
+                }
             }
 
             items.Add(sysmenu);
@@ -361,6 +361,16 @@ namespace Kooboo.Web.Api.Implementation
                 {
                     new MenuItem { Name = Hardcoded.GetValue("Table",context), Url = AdminUrl("Storage/Database", siteDb) },
                     new MenuItem { Name = Hardcoded.GetValue("Key-Value",context), Url = AdminUrl("Storage/KeyValue", siteDb) }
+                }
+            });
+
+            items.Add(new MenuItem
+            {
+                Name = Hardcoded.GetValue("VueTest", context),
+                Icon = "icon fa fa-vine",
+                Items =
+                {
+                    new MenuItem { Name = Hardcoded.GetValue("Test",context), Url = AdminUrl("vue/test") }
                 }
             });
 

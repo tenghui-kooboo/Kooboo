@@ -82,20 +82,16 @@
             },
             onLogin: function() {
                 if (this.isValid()) {
-                    console.log({
+                    Kooboo.User.login({
                         username: this.$data.username.value,
                         password: this.$data.password.value,
                         remember: this.$data.remember
+                    }).then(function(res) {
+                        if (res.success) {
+                            location.href = res.model
+                        }
                     })
                 }
-
-                // Kooboo.User.login({
-                //     username: this.data.username.value,
-                //     password: this.data.password.value,
-                //     remember: this.data.remember
-                // }).then(function(res) {
-                //     if (res.success) {}
-                // })
             }
         }
     })

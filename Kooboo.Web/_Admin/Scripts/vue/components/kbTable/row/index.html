@@ -1,0 +1,11 @@
+<tr @click='onToggleSelectDoc'>
+    <td v-if='selectable' class="table-checkbox">
+        <input type="checkbox" :value='doc.id' v-model='selectedDocs'>
+    </td>
+    <template v-for='col in columns'>
+        <component :is='"kb-table-cell-" + col.type' :data='getCellData(col)' :key='col.fieldName'></component>
+    </template>
+    <template v-for='action in actions'>
+        <component :is='"kb-table-cell-" + actions.type' :data='getCellData(action)' :key='action.fieldName'></component>
+    </template>
+</tr>
