@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Kooboo.Api; 
 using Kooboo.Data.Language;
+using Kooboo.Model.Setting;
 
 namespace Kooboo.Web.Api.Implementation
 {
@@ -36,6 +37,7 @@ namespace Kooboo.Web.Api.Implementation
             }
         }
 
+        [UserModelSetting]
         public MetaResponse Login(string UserName, string Password, ApiCall apiCall)
         {
             var user = Kooboo.Data.GlobalDb.Users.Validate(UserName, Password);

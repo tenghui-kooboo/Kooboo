@@ -86,6 +86,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kooboo.Model\Kooboo.Model\Kooboo.Model\Kooboo.Model.csproj">
+      <Project>{667015b3-b5e6-4e2c-acc9-b2192da96fc6}</Project>
+      <Name>Kooboo.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kooboo.Data\Kooboo.Data.csproj">
       <Project>{d8413e81-0018-4dab-aeaf-5d36c3c43a52}</Project>
       <Name>Kooboo.Data</Name>

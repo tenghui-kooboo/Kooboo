@@ -151,6 +151,8 @@ namespace Kooboo.Render
                 return response;
             }
 
+            htmlbody = Kooboo.Model.KoobooModelManager.Render(htmlbody);
+
             var hashid = Lib.Security.Hash.ComputeHashGuid(htmlbody);
 
             var RenderPlan = RenderPlanCache.GetOrAddRenderPlan(hashid, () => RenderEvaluator.Evaluate(htmlbody, new EvaluatorOption()));

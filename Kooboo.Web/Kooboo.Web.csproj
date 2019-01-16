@@ -293,6 +293,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kooboo.Model\Kooboo.Model\Kooboo.Model\Kooboo.Model.csproj">
+      <Project>{667015b3-b5e6-4e2c-acc9-b2192da96fc6}</Project>
+      <Name>Kooboo.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kooboo.Api\Kooboo.Api.csproj">
       <Project>{964f25fd-7257-4e6d-8652-9df77cdb6337}</Project>
       <Name>Kooboo.Api</Name>

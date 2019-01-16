@@ -22,9 +22,12 @@
                         break;
                 }
             })
-
-            binding.value.isValid = passed;
-            binding.value.errors = errors;
+            if(binding.value.isValid!=passed)
+            {
+                binding.value.isValid = passed;
+                binding.value.errors = errors;
+            }
+           
         }
     })
 })()
