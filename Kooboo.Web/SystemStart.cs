@@ -17,7 +17,7 @@ namespace Kooboo.Web
     {
         private static object _locker = new object();
 
-        public static Dictionary<int, WebServer> WebServers = new Dictionary<int, WebServer>();
+        public static Dictionary<int, IWebServer> WebServers = new Dictionary<int, IWebServer>();
 
         public static void Start(int port)
         {
@@ -67,14 +67,14 @@ namespace Kooboo.Web
             {
                 if (port == 443)
                 {
-                    Data.Server.WebServer server = new WebServer(port, new Kooboo.Web.Security.SslProvider());
+                    var server = WebServerManager.Create(port, new Kooboo.Web.Security.SslProvider());
                     server.SetMiddleWares(Middleware);
                     server.Start();
                     WebServers[port] = server;
                 }
                 else
                 {
-                    Data.Server.WebServer server = new WebServer(port, null);
+                    var server = WebServerManager.Create(port,null);
                     server.SetMiddleWares(Middleware);
                     server.Start();
                     WebServers[port] = server;

@@ -11,7 +11,7 @@ namespace Kooboo.Data.Server
     {
         static SslCertificate()
         {
-            var bytes = Kooboo.Data.Embedded.EmbeddedHelper.GetBytes("kooboo.pfx", typeof(Kooboo.Data.Server.WebServer));  
+            var bytes = Kooboo.Data.Embedded.EmbeddedHelper.GetBytes("kooboo.pfx", typeof(Kooboo.Data.Server.IWebServer));  
 
             var cert =  new X509Certificate2(bytes, "kooboo");
 

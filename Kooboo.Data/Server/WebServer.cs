@@ -1,4 +1,5 @@
-﻿using Kooboo.HttpServer;
+﻿#if !NETSTANDARD2_0
+using Kooboo.HttpServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,13 @@ using System.Threading.Tasks;
 namespace Kooboo.Data.Server
 {
   
-    public class WebServer 
+    public class WebServer:IWebServer
     {
         private int port = 80;
         private List<IKoobooMiddleWare> MiddleWares = new List<IKoobooMiddleWare>();
         private IKoobooMiddleWare StartWare = null;
          
-        public WebServer(int Port, ISslCertificateProvider SslCertProvider)
+        public WebServer(int Port, ISSLProvider SslCertProvider)
         {
             this.port = Port;
 
@@ -24,10 +25,11 @@ namespace Kooboo.Data.Server
             {
                 https = true;
             }  
+            var serverHandle=new ServerHandler(r => this.StartWare.Invoke(r));
             var options = new HttpServerOptions()
             {
-                HttpHandler = new ServerHandler(r => this.StartWare.Invoke(r)),
-                SslCertificateProvider = SslCertProvider, 
+                Handle = serverHandle.Handle,
+                SelectCertificate = SslCertProvider.SelectCertificate, 
                 IsHttps = https
             };
 
@@ -40,10 +42,11 @@ namespace Kooboo.Data.Server
 
             bool https = IsHttps;
              
+            var serverHandle=new ServerHandler(r => this.StartWare.Invoke(r));
             var options = new HttpServerOptions()
             {
-                HttpHandler = new ServerHandler(r => this.StartWare.Invoke(r)),
-                SslCertificateProvider = SslCertProvider,
+                Handle = serverHandle.Handle,
+                SelectCertificate = SslCertProvider.SelectCertificate,
                 IsHttps = https
             };
 
@@ -102,3 +105,4 @@ namespace Kooboo.Data.Server
     }
 
 }
+#endif

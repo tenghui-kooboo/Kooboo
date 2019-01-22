@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Data.Helper;
 using Kooboo.Data.Models;
-using Kooboo.HttpServer;
 using Kooboo.Lib.Helper;
 using Microsoft.AspNetCore.Http;
 
@@ -52,7 +51,11 @@ namespace Kooboo.Data.Context
 
         public static Func<RenderContext, Guid> GetWebSiteFunc { get; set; }
 
-        public static async Task<RenderContext> GetRenderContext(HttpContext httpContext)
+#if NETSTANDARD2_0
+        public static async Task<RenderContext> GetRenderContext(Microsoft.AspNetCore.Http.HttpContext httpContext)
+#else
+        public static async Task<RenderContext> GetRenderContext(Kooboo.HttpServer.HttpContext httpContext)
+#endif
         {
             RenderContext context = new RenderContext();
             context.Request = await GetRequest(httpContext);
@@ -466,18 +469,41 @@ namespace Kooboo.Data.Context
             }
             return default(Guid);
         }
-
-        private static async Task<HttpRequest> GetRequest(HttpContext context)
+#if NETSTANDARD2_0
+        private static async Task<HttpRequest> GetRequest(Microsoft.AspNetCore.Http.HttpContext context)
+#else
+        private static async Task<HttpRequest> GetRequest(Kooboo.HttpServer.HttpContext context)
+#endif
         {
-            var header = context.Features.Request.Headers as Kooboo.HttpServer.Http.HttpRequestHeaders;
+#if NETSTANDARD2_0
+            var httpContextRequest = context.Request;
+            var header = httpContextRequest.Headers;
+
+            var ip = context.Connection.RemoteIpAddress.ToString();
+            var port= context.Connection.LocalPort;
+
+            var requestFeature = context.Features.Get<Microsoft.AspNetCore.Http.Features.IHttpRequestFeature>();
+            var rawTarget = requestFeature.RawTarget;
+            var headerHost = header["Host"];
+#else
+            var httpContextRequest = context.Features.Request;
+            var header = httpContextRequest.Headers as Kooboo.HttpServer.Http.HttpRequestHeaders;
+            
+            var connection = context.Features.Connection;
+            var ip = connection.RemoteEndPoint.Address.ToString();
+            var port= connection.LocalEndPoint.Port;
+
+            var rawTarget = httpContextRequest.RawTarget;
+            var headerHost = header.HeaderHost;
+#endif
 
             HttpRequest httprequest = new HttpRequest();
 
             // httprequest.Host
 
-            if (header != null && header.HeaderHost.Any())
+            if (header != null && headerHost.Any())
             {
-                string host = header.HeaderHost.First();
+                string host = headerHost.First();
 
                 int delimiterIndex = host.IndexOf(":");
                 if (delimiterIndex > 0)
@@ -487,22 +513,22 @@ namespace Kooboo.Data.Context
                 httprequest.Host = host;
             }
 
-            httprequest.Path = context.Features.Request.Path;
-            var url = GetUrl(context.Features.Request.RawTarget);
+            httprequest.Path = httpContextRequest.Path;
+            var url = GetUrl(rawTarget);
 
             httprequest.Url = url;
             httprequest.RawRelativeUrl = url;
-            httprequest.Method = context.Features.Request.Method.ToUpper();
-            httprequest.IP = context.Features.Connection.RemoteEndPoint.Address.ToString();
-            httprequest.Port = context.Features.Connection.LocalEndPoint.Port;
-            httprequest.Scheme = context.Features.Request.Scheme;
+            httprequest.Method = httpContextRequest.Method.ToUpper();
+            httprequest.IP = ip;
+            httprequest.Port = port;
+            httprequest.Scheme = httpContextRequest.Scheme;
 
             foreach (var item in header)
             {
                 httprequest.Headers.Add(item.Key, item.Value);
             }
 
-            foreach (var item in context.Features.Request.Query)
+            foreach (var item in httpContextRequest.Query)
             {
                 httprequest.QueryString.Add(item.Key, item.Value);
             }
@@ -510,11 +536,11 @@ namespace Kooboo.Data.Context
 
             if (httprequest.Method != "GET")
             {
-                if (context.Features.Request.Body != null && context.Features.Request.Body.CanRead)
+                if (httpContextRequest.Body != null && httpContextRequest.Body.CanRead)
                 {
                     MemoryStream ms = new MemoryStream();
-                    var body = context.Features.Request.Body;
-                    await context.Features.Request.Body.CopyToAsync(ms);
+                    var body = httpContextRequest.Body;
+                    await httpContextRequest.Body.CopyToAsync(ms);
                     httprequest.PostData = ms.ToArray();
                     ms.Dispose();
                 }
@@ -604,12 +630,21 @@ namespace Kooboo.Data.Context
 
             return result;
         }
-
-        private static Dictionary<string, string> GetCookie(HttpContext context)
+#if NETSTANDARD2_0
+        private static Dictionary<string, string> GetCookie(Microsoft.AspNetCore.Http.HttpContext context)
+#else
+        private static Dictionary<string, string> GetCookie(Kooboo.HttpServer.HttpContext context)
+#endif
         {
             Dictionary<string, string> cookies = new Dictionary<string, string>();
 
-            foreach (var item in context.Features.Request.Cookies)
+#if NETSTANDARD2_0
+            var httpContextRequest = context.Request;
+#else
+            var httpContextRequest = context.Features.Request;
+#endif
+
+            foreach (var item in httpContextRequest.Cookies)
             {
                 if (!cookies.ContainsKey(item.Key))
                 {
@@ -618,22 +653,32 @@ namespace Kooboo.Data.Context
             }
             return cookies;
         }
-
-        public static async Task SetResponse(HttpContext context, RenderContext renderContext)
+#if NETSTANDARD2_0
+        public static async Task SetResponse(Microsoft.AspNetCore.Http.HttpContext context, RenderContext renderContext)
+#else
+        public static async Task SetResponse(Kooboo.HttpServer.HttpContext context, RenderContext renderContext)
+#endif
         {
             var response = renderContext.Response;
 
-            var header = context.Features.Response.Headers as Kooboo.HttpServer.Http.HttpResponseHeaders;
+#if NETSTANDARD2_0
+            var httpContextResponse = context.Response;
+            var httpContextRequest = context.Request;
+#else
+            var httpContextResponse = context.Features.Response;
+            var httpContextRequest = context.Features.Request;
+#endif
 
-            context.Features.Response.StatusCode = response.StatusCode;
+
+            httpContextResponse.StatusCode = response.StatusCode;
 
             if (response.StatusCode == 200)
             {
-                context.Features.Response.Headers["Server"] = "http://www.kooboo.com";
+                httpContextResponse.Headers["Server"] = "http://www.kooboo.com";
 
                 foreach (var item in response.Headers)
                 {
-                    context.Features.Response.Headers[item.Key] = item.Value;
+                    httpContextResponse.Headers[item.Key] = item.Value;
                 }
 
                 foreach (var item in response.DeletedCookieNames)
@@ -645,7 +690,8 @@ namespace Kooboo.Data.Context
                         Path = "/",
                         Expires = DateTime.Now.AddDays(-30)
                     };
-                    context.Features.Response.Cookies.Append(item, "", options);
+
+                    httpContextResponse.Cookies.Append(item, "", options);
 
                     response.AppendedCookies.RemoveAll(o => o.Name == item);
                 }
@@ -682,25 +728,27 @@ namespace Kooboo.Data.Context
                         Expires = item.Expires
                     };
 
-                    context.Features.Response.Cookies.Append(item.Name, item.Value, options);
+                    httpContextResponse.Cookies.Append(item.Name, item.Value, options);
                     // }   
                 }
+                //Content-Type
+                httpContextResponse.Headers["Content-Type"]= response.ContentType;
 
-                header.HeaderContentType = response.ContentType;
-
-                if (response.Body != null && context.Features.Request.Method.ToLower() != "head")
+                if (response.Body != null && httpContextRequest.Method.ToLower() != "head")
                 {
                     //int len = response.Body.Length;
                     //if (len > 0)
                     //{
                     try
                     {
-                        header.ContentLength = response.Body.Length;
-                        await context.Features.Response.Body.WriteAsync(response.Body, 0, response.Body.Length).ConfigureAwait(false);
+                        //Content-Length
+                        httpContextResponse.Headers["Content-Length"]= response.Body.Length.ToString();
+                        
+                        await httpContextResponse.Body.WriteAsync(response.Body, 0, response.Body.Length).ConfigureAwait(false);
                     }
                     catch (Exception)
                     {
-                        context.Features.Response.Body.Close();
+                        httpContextResponse.Body.Close();
                     }
                     //}
                 }
@@ -708,7 +756,7 @@ namespace Kooboo.Data.Context
                 {
                     if (response.Stream != null)
                     {
-                        response.Stream.CopyTo(context.Features.Response.Body);
+                        response.Stream.CopyTo(httpContextResponse.Body);
                     }
                     else if (response.ContentType !=null && response.ContentType.ToLower().Contains("javascript"))
                     {
@@ -723,9 +771,9 @@ namespace Kooboo.Data.Context
                         {
                             string text = System.IO.File.ReadAllText(filename);
                             var bytes = System.Text.Encoding.UTF8.GetBytes(text);
-                            header.ContentLength = bytes.Length;
-                            context.Features.Response.StatusCode = 404;
-                            await context.Features.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+                            httpContextResponse.Headers["Content-Length"] = bytes.Length.ToString();
+                            httpContextResponse.StatusCode = 404;
+                            await httpContextResponse.Body.WriteAsync(bytes, 0, bytes.Length);
                         }  
 
                     }
@@ -745,7 +793,7 @@ namespace Kooboo.Data.Context
                         Expires = DateTime.Now.AddDays(-30)
                     };
 
-                    context.Features.Response.Cookies.Append(item, "", options);
+                    httpContextResponse.Cookies.Append(item, "", options);
                 }
 
                 foreach (var item in response.AppendedCookies)
@@ -766,7 +814,7 @@ namespace Kooboo.Data.Context
                         Expires = item.Expires
                     };
 
-                    context.Features.Response.Cookies.Append(item.Name, item.Value, options);
+                    httpContextResponse.Cookies.Append(item.Name, item.Value, options);
                 }
 
                 if (!string.IsNullOrEmpty(location))
@@ -779,17 +827,17 @@ namespace Kooboo.Data.Context
                     var newUrl = UrlHelper.Combine(BaseUrl, location);
                     if (response.StatusCode != 200)
                     {
-                        context.Features.Response.StatusCode = response.StatusCode;
+                        httpContextResponse.StatusCode = response.StatusCode;
                     }
                     //status code doesn't start with 3xx,it'will not redirect.
                     if (!response.StatusCode.ToString().StartsWith("3"))
                     {
-                        context.Features.Response.StatusCode = StatusCodes.Status302Found;
+                        httpContextResponse.StatusCode = StatusCodes.Status302Found;
                     }
+                    //Location
+                    httpContextResponse.Headers["Location"] = newUrl;
 
-                    header.HeaderLocation = newUrl;
-
-                    context.Features.Response.Body.Dispose();
+                    httpContextResponse.Body.Dispose();
 
                     Log(renderContext);
                     return;
@@ -797,15 +845,15 @@ namespace Kooboo.Data.Context
 
                 if (response.Body != null && response.Body.Length > 0)
                 {
-                    context.Features.Response.StatusCode = response.StatusCode;
-                    await context.Features.Response.Body.WriteAsync(response.Body, 0, response.Body.Length).ConfigureAwait(false);
+                    httpContextResponse.StatusCode = response.StatusCode;
+                    await httpContextResponse.Body.WriteAsync(response.Body, 0, response.Body.Length).ConfigureAwait(false);
 
-                    context.Features.Response.Body.Dispose();
+                    httpContextResponse.Body.Dispose();
                     Log(renderContext);
                     return;
                 }
 
-                context.Features.Response.StatusCode = response.StatusCode;
+                httpContextResponse.StatusCode = response.StatusCode;
                 string responsebody = null;
                 switch (response.StatusCode)
                 {
@@ -853,11 +901,11 @@ namespace Kooboo.Data.Context
                     }
                 }
                 var bytes = Encoding.UTF8.GetBytes(responsebody);
-                await context.Features.Response.Body.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+                await httpContextResponse.Body.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
             }
 
 
-            context.Features.Response.Body.Dispose();
+            httpContextResponse.Body.Dispose();
             Log(renderContext);
             context = null;
         }

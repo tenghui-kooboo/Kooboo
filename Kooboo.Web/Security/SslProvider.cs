@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using Kooboo.HttpServer;
 
 namespace Kooboo.Web.Security
 {
-    public class SslProvider : Kooboo.HttpServer.ISslCertificateProvider
+    public class SslProvider : Kooboo.Data.Server.ISSLProvider
     {
 
         public SslProvider()
@@ -18,7 +17,7 @@ namespace Kooboo.Web.Security
 
         private Dictionary<string, X509Certificate2> cache = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase);
 
-        X509Certificate ISslCertificateProvider.SelectCertificate(string hostName)
+       public X509Certificate SelectCertificate(string hostName)
         {
             if (hostName != null)
             {

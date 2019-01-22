@@ -1,12 +1,11 @@
 ﻿using System;
 using Kooboo.Data.Context;
-using Kooboo.HttpServer; 
 using System.Threading.Tasks;
 
 namespace Kooboo.Data.Server
 {
    
-    public class ServerHandler : IHttpHandler
+    public class ServerHandler : IServerHttpHander
     {
         public Func<RenderContext, Task> _handle;
 
@@ -14,8 +13,11 @@ namespace Kooboo.Data.Server
         {
             _handle = handle;
         }
-
-        public async Task Handle(HttpContext context)
+#if NETSTANDARD2_0
+        public async Task Handle(Microsoft.AspNetCore.Http.HttpContext context)
+#else
+        public async Task Handle(Kooboo.HttpServer.HttpContext context)
+#endif
         {
             RenderContext renderContext = await WebServerContext.GetRenderContext(context);
             try

@@ -9,9 +9,9 @@ namespace Kooboo.HttpServer
 {
     public class HttpApplication : IHttpApplication<HttpContext>
     {
-        private IHttpHandler _handler;
+        private Func<HttpContext, Task> _handler;
 
-        public HttpApplication(IHttpHandler handler)
+        public HttpApplication(Func<HttpContext,Task> handler)
         {
             _handler = handler;
         }
@@ -30,7 +30,7 @@ namespace Kooboo.HttpServer
 
         public async Task ProcessRequestAsync(HttpContext context)
         {
-            await _handler.Handle(context);
+            await _handler(context);
         }
     }
 }

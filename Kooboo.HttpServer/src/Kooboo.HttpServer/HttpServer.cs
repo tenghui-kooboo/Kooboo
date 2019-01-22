@@ -45,7 +45,7 @@ namespace Kooboo.HttpServer
                 DateHeaderValueManager = new DateHeaderValueManager(systemClock),
                 HttpParser = new HttpParser<Http1ParsingHandler>(),
                 ThreadPool = GetThreadPool(logger),
-                Application = new HttpApplication(options.HttpHandler)
+                Application = new HttpApplication(options.Handle)
             };
             //todo add http2 heatbeatManager
             heartbeat = new Heartbeat(
@@ -106,6 +106,7 @@ namespace Kooboo.HttpServer
                                               (IntPtr)(&optionValue), sizeof(int));
             }
 #endif
+
             if (setsockoptStatus != 0)
             {
                 Console.WriteLine(string.Format("Setting SO_REUSEADDR failed with errno '{0}'.", Marshal.GetLastWin32Error()));
