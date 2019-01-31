@@ -23,5 +23,6 @@ namespace Kooboo.IndexedDB.Query
       NotEqualTo = 5,
       StartWith = 6,
       Contains =7,
+      ContainsIgnoreCase=8,
     }
 }

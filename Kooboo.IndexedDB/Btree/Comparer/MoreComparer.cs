@@ -72,5 +72,14 @@ namespace Kooboo.IndexedDB.Btree.Comparer
 
         }
 
+        public static bool ContainsIgnoreCase(byte[] input, byte[] comparevalue,int ValueLength, int MaxInputLength)
+        {
+            var inputStr = System.Text.Encoding.UTF8.GetString(input).TrimEnd('\0');
+            var compareValue= System.Text.Encoding.UTF8.GetString(comparevalue).TrimEnd('\0');
+
+            return inputStr.IndexOf(compareValue, StringComparison.OrdinalIgnoreCase) > -1;
+
+        }
+
     }
 }

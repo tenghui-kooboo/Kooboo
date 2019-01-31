@@ -65,7 +65,8 @@ namespace Kooboo.IndexedDB.Query
 
               case Comparer.Contains:
                   return Btree.Comparer.MoreComparer.Contains(columnbytes, this.ValueBytes, this.columnLength, this.maxColumnLength);
-
+              case Comparer.ContainsIgnoreCase:
+                  return Btree.Comparer.MoreComparer.ContainsIgnoreCase(columnbytes, this.ValueBytes, this.columnLength, this.maxColumnLength);
               default:
                   return false;
           }

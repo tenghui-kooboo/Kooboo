@@ -362,6 +362,10 @@ namespace Kooboo.IndexedDB.Dynamic
             {
                 return Comparer.Contains;
             }
+            else if(input.ToLower() == "containsic")
+            {
+                return Comparer.ContainsIgnoreCase;
+            }
             else if (input.ToLower() == "startwith")
             {
                 return Comparer.StartWith;
