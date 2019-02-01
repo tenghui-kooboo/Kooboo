@@ -307,7 +307,19 @@ $(function() {
                     self.typesMatrix(self.variants().map(function(vari) {
                         var types = [];
                         self.specNames().forEach(function(name) {
-                            types.push({ name: name, value: vari.variants[name] });
+                            var item = {
+                                name: name
+                            };
+
+                            var value = null;
+                            var keys = Object.keys(vari.variants);
+                            keys.forEach(function(key){
+                                if(key.toLowerCase() == name.toLowerCase()){
+                                    value = vari.variants[key]
+                                }
+                            })
+                            item.value = value;
+                            types.push(item);
                         })
 
                         var images = [];
@@ -344,66 +356,52 @@ $(function() {
 
                     initTimes++;
                 } else {
-                    var types = [];
-                    self.fixedSpecFields().forEach(function(f) {
-                        var options = JSON.parse(f.selectionOptions).map(function(opt) {
-                            return {
-                                name: f.name,
-                                value: opt.key
-                            };
-                        })
-
-                        types.push(options);
-                    });
-
-                    self.dynamicSpecFields().forEach(function(f) {
-                        if (f.options().length) {
-                            var options = f.options().map(function(opt) {
-                                return {
-                                    name: f.name(),
-                                    value: opt
-                                }
-                            })
-                            types.push(options);
-                        }
-                    })
-
-                    var matrix = getTableDataByTypes(types);
-                    self.typesMatrix(matrix.map(function(m) {
-                        var find = _.find(self.typesMatrix(), function(row) {
-                            return getValue(row.types) == getValue(m);
-
-                            function getValue(list) {
-                                return list.map(function(item) {
-                                    return item.value
-                                }).join(',');
-                            }
-                        })
-
-                        return find || {
-                            types: m,
-                            showError: ko.observable(false),
-                            stock: ko.validateField({
-                                required: '',
-                                min: { value: 0 }
-                            }),
-                            price: ko.validateField({
-                                required: '',
-                                min: { value: 0 }
-                            }),
-                            sku: ko.observable(),
-                            skuImage: ko.observable(),
-                            skuThumbnail: ko.observable(),
-                            images: ko.observableArray(),
-                            online: ko.observable(true),
-                            isValid: function() {
-                                return this.stock.isValid() && this.price.isValid();
-                            }
-                        }
-                    }))
+                    getTypeMatrix();
                 }
             } else {
-                self.typesMatrix([{
+                getTypeMatrix();
+            }
+        }
+
+        function getTypeMatrix(){
+            var types = [];
+            self.fixedSpecFields().forEach(function(f) {
+                var options = JSON.parse(f.selectionOptions).map(function(opt) {
+                    return {
+                        name: f.name,
+                        value: opt.key
+                    };
+                })
+
+                types.push(options);
+            });
+
+            self.dynamicSpecFields().forEach(function(f) {
+                if (f.options().length) {
+                    var options = f.options().map(function(opt) {
+                        return {
+                            name: f.name(),
+                            value: opt
+                        }
+                    })
+                    types.push(options);
+                }
+            })
+
+            var matrix = getTableDataByTypes(types);
+            self.typesMatrix(matrix.map(function(m) {
+                var find = _.find(self.typesMatrix(), function(row) {
+                    return getValue(row.types) == getValue(m);
+
+                    function getValue(list) {
+                        return list.map(function(item) {
+                            return item.value
+                        }).join(',');
+                    }
+                })
+
+                return find || {
+                    types: m,
                     showError: ko.observable(false),
                     stock: ko.validateField({
                         required: '',
@@ -421,8 +419,8 @@ $(function() {
                     isValid: function() {
                         return this.stock.isValid() && this.price.isValid();
                     }
-                }])
-            }
+                }
+            }))
         }
 
         this.toggleStatus = function(m, e) {
