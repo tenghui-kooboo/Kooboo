@@ -1,10 +1,12 @@
 (function() {
-    Kooboo.vue.component.kbTableCellLink = Vue.component('kb-table-cell-link', {
+    Kooboo.vue.component.kbTableCellSummary = Vue.component('kb-table-cell-summary', {
         props: ['data', 'col'],
         render: function(createElement) {
             var self = this;
             if (this.data) {
-                return createElement('td', [
+                return createElement('td', {
+                    class: 'summary'
+                }, [
                     createElement('a', {
                         attrs: {
                             title: this.data.title || '',
@@ -23,7 +25,19 @@
                                 }
                             }
                         }
-                    })
+                    }, [
+                        createElement('p', {
+                            class: 'title',
+                            domProps: {
+                                innerHTML: this.data.title
+                            }
+                        }),
+                        createElement('p', {
+                            domProps: {
+                                innerHTML: this.data.description
+                            }
+                        })
+                    ])
                 ])
             } else {
                 return createElement('td');

@@ -3,21 +3,35 @@
         '/_Admin/Scripts/vue/components/kbTable/row/index.js'
     ]);
 
-    window.kbTable = Vue.component('kb-table', {
+    Kooboo.vue.component.kbTable = Vue.component('kb-table', {
         props: {
-            docs: Array,
-            columns: Array,
-            actions: Array,
-            selectable: {
-                type: Boolean,
-                default: function() {
-                    return true
-                }
-            }
+            data: Object,
+            deleteTrigger: Boolean
         },
         data: function() {
             return {
                 selectedDocs: []
+            }
+        },
+        watch: {
+            selectedDocs: function(ids) {
+                this.$emit('select', ids);
+            },
+            deleteTrigger: function(trigged) {
+                var self = this;
+                if (trigged) {
+                    if (this.data.onDelete) {
+                        this.data.onDelete(function() {
+                            self.selectedDocs = [];
+                            self.$emit('delete-trigged')
+                        })
+                    } else {
+
+                    }
+                }
+            },
+            'data.docs': function() {
+                this.selectedDocs = [];
             }
         },
         methods: {
@@ -33,17 +47,17 @@
         computed: {
             allSelected: {
                 get: function() {
-                    if (this.docs && this.docs.length) {
-                        return this.selectedDocs.length == this.docs.length;
+                    if (this.data.docs && this.data.docs.length) {
+                        return this.selectedDocs.length == this.data.docs.length;
                     } else {
                         return false;
                     }
                 },
                 set: function(val) {
                     var self = this;
-                    if (this.docs && this.docs.length) {
+                    if (this.data.docs && this.data.docs.length) {
                         if (val) {
-                            this.docs.forEach(function(doc) {
+                            this.data.docs.forEach(function(doc) {
                                 if (self.selectedDocs.indexOf(doc.id) == -1) {
                                     self.selectedDocs.push(doc.id);
                                 }
@@ -58,7 +72,7 @@
             }
         },
         components: {
-            kbTableRow
+            'kb-table': Kooboo.vue.component.kbTableRow
         },
         template: Kooboo.getTemplate('/_Admin/Scripts/vue/components/kbTable/index.html')
     })

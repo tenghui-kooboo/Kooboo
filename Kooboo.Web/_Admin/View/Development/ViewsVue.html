@@ -1,0 +1,273 @@
+<!-- #layout name=vue -->
+<div class="page-header">
+    <h1 class="title">Views</h1>
+</div>
+<div id="vue-container">
+    <kb-breadcrumb :items='breadcrumbItems'></kb-breadcrumb>
+    <div class="navbar navbar-default">
+        <div class="container-fluid">
+            <a class="btn green navbar-btn" :href='createUrl'>Create</a>
+            <a class="btn green navbar-btn" v-if='selectedDocs.length == 1' @click='showCopyModal = true'>Copy</a>
+            <a class="btn red navbar-btn" v-if='selectedDocs.length' @click='deleteTrigger = true'>Delete</a>
+        </div>
+    </div>
+    <kb-table :data='tableData' :delete-trigger='deleteTrigger' @select='onSelectedDocsChange' @delete-trigged='deleteTrigger = false'></kb-table>
+    <kb-modal :show='showCopyModal' :config='modalConfig' @close='onCopyModalClose'>
+        <div class="form-horizontal" slot='body'>
+            <div class="form-group">
+                <label class="col-md-3 control-label">{{ modalConfig.labelName }}</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" v-model='modalConfig.copyViewName'>
+                </div>
+            </div>
+        </div>
+    </kb-modal>
+    <kb-modal :show='showDataSourceModal' :config='dSModal' @close='onDSModalClose'>
+        <table class="table table-striped table-hover" slot='body'>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="table-action">Edit</th>
+                </tr>
+            </thead>
+            <tr v-for='ds in usingDataSources'>
+                <td>{{ ds.name }}</td>
+                <td>
+                    <a :href="ds.url" target="_blank" class="btn btn-xs blue"><i class="fa fa-pencil"></i></a>
+                </td>
+            </tr>
+        </table>
+    </kb-modal>
+    <kb-relation-modal :show='showRelationModal' :config='relactionConfig' @close='showRelationModal = false'></kb-relation-modal>
+</div>
+<script>
+    Kooboo.loadJS([
+        "/_Admin/Scripts/vue/components/kbTable/index.js",
+        "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
+        "/_Admin/Scripts/vue/components/kbModal/index.js",
+        "/_Admin/Scripts/vue/components/kbRelationModal/index.js"
+    ])
+    var viewsVM = new Vue({
+        el: '#vue-container',
+        data: {
+            breadcrumbItems: [{
+                name: "SITES"
+            }, {
+                name: "DASHBOARD"
+            }, {
+                name: Kooboo.text.common.Views
+            }],
+            createUrl: Kooboo.Route.Get(Kooboo.Route.View.Create),
+            tableData: {
+                docs: [],
+                cols: [],
+                acts: [],
+                selectable: true,
+                onDelete: function(cb) {
+                    if (confirm(Kooboo.text.confirm.deleteItems)) {
+                        var self = this;
+                        Kooboo.View.Deletes({
+                            ids: JSON.stringify(viewsVM.selectedDocs)
+                        }).then(function(res) {
+                            cb && cb();
+                            viewsVM.getList(function() {
+                                if (res.success) {
+                                    info.done(Kooboo.text.info.delete.success);
+                                }
+                            })
+                        })
+                    }
+                },
+            },
+            selectedDocs: [],
+            deleteTrigger: false,
+            showCopyModal: false,
+            modalConfig: {
+                title: '复制组件',
+                size: 'sm',
+                copyViewName: '',
+                btns: [{
+                    text: Kooboo.text.common.start,
+                    class: 'green',
+                    onClick: function() {
+                        var view = viewsVM.tableData.docs.find(function(doc) {
+                            return doc.id == viewsVM.selectedDocs[0];
+                        })
+                        if (view) {
+                            Kooboo.View.Copy({
+                                id: view.id,
+                                name: viewsVM.modalConfig.copyViewName
+                            }).then(function(res) {
+                                viewsVM.showCopyModal = false;
+                                if (res.success) {
+                                    viewsVM.getList(function() {
+                                        info.done(Kooboo.text.info.copy.success);
+                                    });
+                                } else {
+                                    info.fail(Kooboo.text.info.copy.fail);
+                                }
+                            })
+                        }
+                    }
+                }],
+                onShow: function() {
+                    var view = viewsVM.tableData.docs.find(function(doc) {
+                        return doc.id == viewsVM.selectedDocs[0];
+                    })
+
+                    if (view) {
+                        viewsVM.modalConfig.title += (': ' + view.name.text);
+                        viewsVM.modalConfig.copyViewName = view.name.text + '_Copy'
+                    }
+                },
+                onClose: function() {
+                    this.copyViewName = ''
+                },
+                showCloseBtn: true,
+                closeBtnText: Kooboo.text.common.cancel,
+                labelName: Kooboo.text.common.name
+            },
+            showDataSourceModal: false,
+            dSModal: {
+                title: Kooboo.text.common.DataSources,
+                showCloseBtn: true,
+                closeBtnText: Kooboo.text.common.OK,
+                onClose: function() {
+                    this.usingDataSources = []
+                }
+            },
+            usingDataSources: [],
+            relactionConfig: {},
+            showRelationModal: false
+        },
+        methods: {
+            getList: function(cb) {
+                var self = this;
+                Kooboo.View.getList().then(function(res) {
+                    if (res.success) {
+                        self.tableData.docs = res.model.map(function(view) {
+                            var date = new Date(view.lastModified);
+                            return {
+                                id: view.id,
+                                name: {
+                                    text: view.name,
+                                    url: Kooboo.Route.Get(Kooboo.Route.View.DetailPage, {
+                                        Id: view.id
+                                    })
+                                },
+                                date: date.toDefaultLangString(),
+                                relations: Kooboo.objToArr(view.relations).map(function(item) {
+                                    return {
+                                        text: item.value + ' ' + Kooboo.text.component.table[item.key],
+                                        class: 'label label-sm kb-table-label-refer',
+                                        style: 'background-color: ' + Kooboo.getLabelColor(item.key),
+                                        data: {
+                                            id: view.id,
+                                            by: item.key,
+                                            type: 'view'
+                                        },
+                                        onClick: function(rel) {
+                                            self.relactionConfig = rel.data;
+                                            self.showRelationModal = true;
+                                        }
+                                    }
+                                }),
+                                dataSourceCount: {
+                                    text: view.dataSourceCount,
+                                    class: view.dataSourceCount > 0 ? "blue" : "default",
+                                    onClick: function(doc) {
+                                        if (doc.dataSourceCount.text) {
+                                            Kooboo.View.ViewMethods({
+                                                id: doc.id
+                                            }).then(function(res) {
+                                                if (res.success) {
+                                                    self.showDataSourceModal = true;
+                                                    self.usingDataSources = res.model.map(function(item) {
+                                                        return {
+                                                            name: item.aliasName,
+                                                            url: Kooboo.Route.Get(Kooboo.Route.DataSource.DataMethodSetting, {
+                                                                id: item.methodId
+                                                            })
+                                                        }
+                                                    });
+                                                }
+                                            })
+                                        }
+                                    }
+                                },
+                                preview: {
+                                    text: view.preview,
+                                    url: view.preview,
+                                    inNewWindow: true
+                                },
+                                versions: {
+                                    class: 'btn-xs blue',
+                                    icon: "fa-clock-o",
+                                    title: Kooboo.text.common.viewAllVersions,
+                                    url: Kooboo.Route.Get(Kooboo.Route.SiteLog.LogVersions, {
+                                        KeyHash: view.keyHash,
+                                        storeNameHash: view.storeNameHash
+                                    }),
+                                    inNewWindow: true
+                                }
+                            }
+                        })
+
+                        self.tableData.cols = [{
+                            displayName: Kooboo.text.common.name,
+                            fieldName: "name",
+                            type: "link"
+                        }, {
+                            displayName: Kooboo.text.common.usedBy,
+                            fieldName: "relations",
+                            class: 'table-short',
+                            type: "array"
+                        }, {
+                            displayName: Kooboo.text.site.view.dataSource,
+                            fieldName: "dataSourceCount",
+                            type: "badge"
+                        }, {
+                            displayName: Kooboo.text.common.preview,
+                            fieldName: "preview",
+                            type: "link"
+                        }, {
+                            displayName: Kooboo.text.common.lastModified,
+                            fieldName: "date",
+                            class: 'table-short',
+                            type: "text"
+                        }];
+
+                        self.tableData.acts = [{
+                            fieldName: "versions",
+                            type: "button"
+                        }]
+
+                        cb && cb()
+                    }
+                })
+            },
+            onSelectedDocsChange: function(ids) {
+                this.selectedDocs = ids;
+            },
+            onDSModalClose: function() {
+                this.showDataSourceModal = false;
+            },
+            onDelete: function() {
+                this.deleteTrigger = true;
+            },
+            onCopyModalClose: function() {
+                this.modalConfig.copyViewName = '';
+                this.showCopyModal = false;
+            }
+        },
+        components: {
+            'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-table': Kooboo.vue.component.kbTable,
+            'kb-modal': Kooboo.vue.component.kbModal,
+            'kb-relation-modal': Kooboo.vue.component.kbRelationModal
+        },
+        created: function() {
+            this.getList();
+        }
+    })
+</script>

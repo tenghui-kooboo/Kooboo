@@ -1,4 +1,4 @@
-<!-- #layout name=blank-->
+<!-- #layout name=vue-->
 <div id="test">
     <kb-table :docs='docs' :columns='columns' :actions='actions'></kb-table>
 </div>
@@ -11,37 +11,118 @@
             docs: [{
                 id: 1,
                 name: 'test',
+                icon: {
+                    class: 'fa-home',
+                    title: 'Home'
+                },
+                relations: [{
+                    text: '1 view',
+                    class: 'label label-sm kb-table-label-refer',
+                    style: 'background-color: ' + Kooboo.getLabelColor('view'),
+                    data: {
+                        type: 'view'
+                    },
+                    onClick: function(rel) {
+                        console.log(rel.data.type)
+                    }
+                }, {
+                    text: '4 layout',
+                    class: 'label label-sm kb-table-label-refer',
+                    style: 'background-color: ' + Kooboo.getLabelColor('layout'),
+                    data: {
+                        type: 'layout'
+                    },
+                    onClick: function(rel) {
+                        console.log(rel.data.type)
+                    }
+                }],
                 badge: {
                     text: 323,
-                    class: 'green'
+                    class: 'green',
+                    url: '#testlink',
                 },
                 label: {
                     text: 'hello',
-                    class: 'green'
+                    class: 'green',
+                    onClick: function(doc) {
+                        test.onLabelClick(doc);
+                    }
+                },
+                link: {
+                    text: 'event link',
+                    onClick: function(doc) {
+                        test.onLinkClick(doc);
+                    }
+                },
+                summary: {
+                    title: 'hello',
+                    description: 'VGO',
+                    url: '#test-summary'
+                },
+                action: {
+                    size: 'xs',
+                    class: 'btn-xs blue',
+                    icon: 'fa-pencil',
+                    onClick: function(doc) {
+                        test.onActionClick(doc);
+                    }
                 }
             }, {
                 id: 2,
                 name: 'test2',
                 badge: {
                     text: 3,
-                    class: 'blue'
+                    class: 'blue',
+                    onClick: function(doc) {
+                        test.onBadgeClick(doc);
+                    }
                 },
                 label: {
                     text: 'hello',
-                    size: 'sm',
-                    class: 'blue'
+                    class: 'blue',
+                    url: '#labelTest',
                 },
                 link: {
                     text: 'hello',
                     title: 'test',
-                    url: 'kb/test/hello',
-                    type: 'event'
+                    url: '#testLink'
+                },
+                iconText: {
+                    icon: 'fa-home',
+                    text: 'icon text',
+                    title: 'nothing new here'
+                },
+                summary: {
+                    title: 'hello',
+                    description: 'VGO',
+                    onClick: function(doc) {
+                        test.onSummaryClick(doc);
+                    }
+                },
+                action: {
+                    text: 'hello',
+                    class: 'btn-xs blue',
+                    onClick: function(doc) {
+                        test.onActionClick(doc);
+                    }
                 }
             }],
             columns: [{
+                fieldName: 'icon',
+                displayName: '',
+                type: 'icon'
+            }, {
+                fieldName: 'summary',
+                displayName: 'Summary',
+                type: 'summary'
+            }, {
                 fieldName: 'name',
                 displayName: 'Name',
                 type: 'text'
+            }, {
+                fieldName: 'relations',
+                displayName: 'Relations',
+                type: 'array'
             }, {
                 fieldName: 'badge',
                 displayName: 'Badge',
@@ -54,15 +135,36 @@
                 fieldName: 'link',
                 displayName: 'Link',
                 type: 'link'
+            }, {
+                fieldName: 'iconText',
+                displayName: 'Icon text',
+                type: 'icon-text'
             }],
-            actions: []
+            actions: [{
+                fieldName: 'action',
+                class: 'text-right',
+                type: 'button'
+            }]
+        },
+        methods: {
+            onBadgeClick: function(doc) {
+                console.log(doc.id, doc.badge)
+            },
+            onLabelClick: function(doc) {
+                console.log(doc.id, doc.label);
+            },
+            onLinkClick: function(doc) {
+                console.log(doc.id, doc.link);
+            },
+            onActionClick: function(doc) {
+                console.log(doc.id, doc.action);
+            },
+            onSummaryClick: function(doc) {
+                console.log(doc);
+            }
         },
         components: {
-            kbTable
+            'kb-table': Kooboo.vue.component.kbTable
         }
-    })
-
-    Kooboo.EventBus.subscribe('kb/test/hello', function(doc) {
-        debugger
     })
 </script>

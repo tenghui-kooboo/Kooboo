@@ -1,13 +1,13 @@
 (function() {
-    Kooboo.vue.component.kbTableCellLink = Vue.component('kb-table-cell-link', {
-        props: ['data', 'col'],
+    Kooboo.vue.component.kbTableCellButton = Vue.component('kb-table-cell-button', {
+        props: ['col', 'data'],
         render: function(createElement) {
             var self = this;
-            if (this.data) {
+            if (this.data.onClick || this.data.url) {
                 return createElement('td', [
                     createElement('a', {
+                        class: 'btn ' + this.data.class,
                         attrs: {
-                            title: this.data.title || '',
                             href: this.data.url || '#',
                             target: this.data.inNewWindow ? '_blank' : '_self'
                         },
@@ -23,10 +23,12 @@
                                 }
                             }
                         }
-                    })
+                    }, this.data.icon ? [
+                        createElement('i', {
+                            class: 'fa ' + this.data.icon
+                        })
+                    ] : null)
                 ])
-            } else {
-                return createElement('td');
             }
         }
     })

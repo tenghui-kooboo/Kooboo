@@ -1,0 +1,14 @@
+<div class="page-bar">
+    <ul class="breadcrumb">
+        <template v-for='(item, idx) in _items'>
+        <template v-if='idx !== _items.length -1'>
+            <li>
+                <a :href="item.url">{{ item.name }}</a>
+            </li>
+        </template>
+        <template v-else>
+            <li class="active">{{ item.name }}</li>
+        </template>
+        </template>
+    </ul>
+</div>

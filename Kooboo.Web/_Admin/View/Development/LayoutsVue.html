@@ -1,0 +1,209 @@
+﻿<!-- #layout name=vue -->
+<div class="page-header">
+    <h1 class="title">Layouts</h1>
+</div>
+<div id="layouts">
+    <kb-breadcrumb :items='breadcrumbItems'></kb-breadcrumb>
+    <div class="navbar navbar-default">
+        <div class="container-fluid">
+            <a class="btn green navbar-btn" :href='createUrl'>Create</a>
+            <a class="btn green navbar-btn" v-if='selectedDocs.length == 1' @click='showCopyModal = true'>Copy</a>
+            <a class="btn red navbar-btn" v-if='selectedDocs.length' @click='deleteTrigger = true'>Delete</a>
+        </div>
+    </div>
+    <kb-table :data='tableData' :delete-trigger='deleteTrigger' @select='onSelectedDocsChange' @delete-trigged='deleteTrigger = false'></kb-table>
+    <kb-modal :show='showCopyModal' :config='modalConfig' @close='onCopyModalClose'>
+        <div class="form-horizontal" slot='body'>
+            <div class="form-group">
+                <label class="col-md-3 control-label">{{ modalConfig.labelName }}</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" v-model='modalConfig.copyLayoutName'>
+                </div>
+            </div>
+        </div>
+    </kb-modal>
+    <kb-relation-modal :show='showRelationModal' :config='relactionConfig' @close='showRelationModal = false'></kb-relation-modal>
+</div>
+<script>
+    Kooboo.loadJS([
+        "/_Admin/Scripts/vue/components/kbTable/index.js",
+        "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
+        "/_Admin/Scripts/vue/components/kbModal/index.js",
+        "/_Admin/Scripts/vue/components/kbRelationModal/index.js"
+    ])
+    var layouts = new Vue({
+        el: '#layouts',
+        data: {
+            breadcrumbItems: [{
+                name: "SITES"
+            }, {
+                name: "DASHBOARD"
+            }, {
+                name: Kooboo.text.common.Layouts
+            }],
+            createUrl: Kooboo.Route.Get(Kooboo.Route.Layout.Create),
+            tableData: {
+                docs: [],
+                cols: [],
+                acts: [],
+                selectable: true,
+                onDelete: function(cb) {
+                    if (confirm(Kooboo.text.confirm.deleteItems)) {
+                        var self = this;
+                        Kooboo.Layout.Deletes({
+                            ids: JSON.stringify(layouts.selectedDocs)
+                        }).then(function(res) {
+                            cb && cb();
+                            layouts.getList(function() {
+                                if (res.success) {
+                                    info.done(Kooboo.text.info.delete.success);
+                                }
+                            })
+                        })
+                    }
+                },
+            },
+            selectedDocs: [],
+            deleteTrigger: false,
+            showCopyModal: false,
+            modalConfig: {
+                title: 'Copy layout',
+                size: 'sm',
+                copyLayoutName: '',
+                btns: [{
+                    text: Kooboo.text.common.start,
+                    class: 'green',
+                    onClick: function() {
+                        var layout = layouts.tableData.docs.find(function(doc) {
+                            return doc.id == layouts.selectedDocs[0];
+                        })
+                        if (layout) {
+                            Kooboo.Layout.Copy({
+                                id: layout.id,
+                                name: layouts.modalConfig.copyLayoutName
+                            }).then(function(res) {
+                                layouts.showCopyModal = false;
+                                if (res.success) {
+                                    layouts.getList(function() {
+                                        info.done(Kooboo.text.info.copy.success);
+                                    });
+                                } else {
+                                    info.fail(Kooboo.text.info.copy.fail);
+                                }
+                            })
+                        }
+                    }
+                }],
+                onShow: function() {
+                    var layout = layouts.tableData.docs.find(function(doc) {
+                        return doc.id == layouts.selectedDocs[0];
+                    })
+
+                    if (layout) {
+                        layouts.modalConfig.title += (': ' + layout.name.text);
+                        layouts.modalConfig.copyLayoutName = layout.name.text + '_Copy'
+                    }
+                },
+                onClose: function() {
+                    this.copyLayoutName = ''
+                },
+                showCloseBtn: true,
+                closeBtnText: Kooboo.text.common.cancel,
+                labelName: Kooboo.text.common.name,
+            },
+            showRelationModal: false,
+            relactionConfig: {}
+        },
+        methods: {
+            getList: function(cb) {
+                var self = this;
+                Kooboo.Layout.getList().then(function(res) {
+                    if (res.success) {
+                        self.tableData.docs = res.model.map(function(layout) {
+                            var date = new Date(layout.lastModified);
+                            return {
+                                id: layout.id,
+                                name: {
+                                    text: layout.name,
+                                    url: Kooboo.Route.Get(Kooboo.Route.Layout.DetailPage, {
+                                        Id: layout.id
+                                    })
+                                },
+                                type: layout.extension,
+                                date: date.toDefaultLangString(),
+                                relations: Kooboo.objToArr(layout.relations).map(function(item) {
+                                    return {
+                                        text: item.value + ' ' + Kooboo.text.component.table[item.key],
+                                        class: 'label label-sm kb-table-label-refer',
+                                        style: 'background-color: ' + Kooboo.getLabelColor(item.key),
+                                        data: {
+                                            id: layout.id,
+                                            by: item.key,
+                                            type: 'layout'
+                                        },
+                                        onClick: function(rel) {
+                                            self.relactionConfig = rel.data;
+                                            self.showRelationModal = true;
+                                        }
+                                    }
+                                }),
+                                versions: {
+                                    class: 'btn-xs blue',
+                                    icon: "fa-clock-o",
+                                    title: Kooboo.text.common.viewAllVersions,
+                                    url: Kooboo.Route.Get(Kooboo.Route.SiteLog.LogVersions, {
+                                        KeyHash: layout.keyHash,
+                                        storeNameHash: layout.storeNameHash
+                                    }),
+                                    inNewWindow: true
+                                }
+                            }
+                        })
+
+                        self.tableData.cols = [{
+                            displayName: Kooboo.text.common.name,
+                            fieldName: "name",
+                            type: "link"
+                        }, {
+                            displayName: Kooboo.text.common.usedBy,
+                            fieldName: "relations",
+                            class: 'table-short',
+                            type: "array"
+                        }, {
+                            displayName: Kooboo.text.common.lastModified,
+                            fieldName: "date",
+                            class: 'table-short',
+                            type: "text"
+                        }];
+
+                        self.tableData.acts = [{
+                            fieldName: "versions",
+                            type: "button"
+                        }]
+
+                        cb && cb()
+                    }
+                })
+            },
+            onSelectedDocsChange: function(ids) {
+                this.selectedDocs = ids;
+            },
+            onDelete: function() {
+                this.deleteTrigger = true;
+            },
+            onCopyModalClose: function() {
+                this.modalConfig.copyLayoutName = '';
+                this.showCopyModal = false;
+            }
+        },
+        components: {
+            'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-table': Kooboo.vue.component.kbTable,
+            'kb-modal': Kooboo.vue.component.kbModal,
+            'kb-relation-modal': Kooboo.vue.component.kbRelationModal
+        },
+        created: function() {
+            this.getList();
+        }
+    })
+</script>
