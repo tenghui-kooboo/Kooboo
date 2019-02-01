@@ -93,7 +93,7 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -204,8 +204,8 @@
     <Compile Include="JsTest\JsTestOption.cs" />
     <Compile Include="JQL\CommandExecutor.cs" />
     <Compile Include="Security\ActionControl.cs" />
-    <Compile Include="Security\SslProvider.cs" />
     <Compile Include="Security\AccessControl.cs" />
+    <Compile Include="Security\SslProvider.cs" />
     <Compile Include="Service\AdminLogService.cs" />
     <Compile Include="Service\UserService.cs" />
     <Compile Include="Spa\CommandDiskSourceProvider.cs" />

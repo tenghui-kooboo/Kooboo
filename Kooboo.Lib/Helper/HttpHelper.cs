@@ -15,9 +15,14 @@ namespace Kooboo.Lib.Helper
     {
         static HttpHelper()
         {
-            ServicePointManager.ServerCertificateValidationCallback += CheckValidationResult;
-            //turn on tls12 and tls11,default is ssl3 and tls
+            //ServicePointManager.ServerCertificateValidationCallback += CheckValidationResult;
+            ////turn on tls12 and tls11,default is ssl3 and tls
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+        }
+
+        public static void SetCustomSslChecker()
+        { 
+            ServicePointManager.ServerCertificateValidationCallback += CheckValidationResult; 
         }
          
         private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
@@ -69,7 +74,7 @@ namespace Kooboo.Lib.Helper
         {
             try
             {
-                var postString = String.Join("&", parameters.Select(it => String.Concat(it.Key, "=", System.Net.WebUtility.UrlEncode(it.Value))));
+                var postString = String.Join("&", parameters.Select(it => String.Concat(it.Key, "=", Uri.EscapeDataString(it.Value))));
                 var postData = Encoding.UTF8.GetBytes(postString);
                 using (var client = new WebClient())
                 {
@@ -126,16 +131,15 @@ namespace Kooboo.Lib.Helper
         {
             try
             {
-                json = System.Net.WebUtility.UrlEncode(json);
+                json = System.Net.WebUtility.UrlEncode(json);  ///????? What is this????
                 var postData = Encoding.UTF8.GetBytes(json);
                 using (var client = new WebClient())
                 {
-                    client.Proxy = null;
-
+                    client.Proxy = null; 
                     client.Headers.Add("user-agent", DefaultUserAgent);
                     client.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-
-                    var responseData = client.UploadData(url, "POST", postData);
+                     
+                    var responseData = client.UploadData(url, "POST",  postData);
 
                     return ProcessApiResponse<T>(Encoding.UTF8.GetString(responseData));
                 }
@@ -170,8 +174,7 @@ namespace Kooboo.Lib.Helper
                 return ProcessApiResponse<T>(backstring);
             }
         }
-
-
+         
         public static T TryGet<T>(string url, Dictionary<string, string> query = null)
         {
             if (query != null)
