@@ -67,9 +67,9 @@ namespace Kooboo.Data.Language
                             {
                                 string alltext = System.IO.File.ReadAllText(file);
 
-                                var values = Language.MultiLingualHelper.Deserialize(alltext);
+                                var values = Language.MultiLingualHelper.Deserialize(alltext); 
 
-                                langtext[LangCode] = values; 
+                                langtext[LangCode] = EscapeQuote(values);
                             }
 
                         }
@@ -84,26 +84,39 @@ namespace Kooboo.Data.Language
             return langtext[LangCode]; 
         }
 
+        private static Dictionary<string,string> EscapeQuote(Dictionary<string, string> values)
+        {
+            var newValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var item in values)
+            {  
+                //change " to \",because " will cause js error. 
+                newValues[item.Key] = item.Value.Replace("\"", "\\\"") ;
+            }
+            return newValues;
+        }
+
         public static void SetValue(string LangCode, Dictionary<string, string> Values)
         {
-            lock(_locker)
+            Values = EscapeQuote(Values); 
+
+            lock (_locker)
             {
-                var langcontent = GetLangValues(LangCode); 
+                var langcontent = GetLangValues(LangCode);
                 if (langcontent.Count() == 0)
                 {
-                    langtext[LangCode] = Values; 
+                    langtext[LangCode] = Values;
                 }
                 else
                 {
                     foreach (var item in Values)
                     {
-                        langcontent[item.Key] = item.Value; 
+                        langcontent[item.Key] = item.Value;
                     }
                 }
-              
+
             }
         }
 
-   
+
     }
 }

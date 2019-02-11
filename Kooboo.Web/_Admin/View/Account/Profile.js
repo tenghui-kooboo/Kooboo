@@ -134,6 +134,16 @@ $(function() {
             regex: {
                 pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: Kooboo.text.validation.emailInvalid
+            },
+            remote: {
+                url: Kooboo.User.isUniqueEmail(),
+                message: Kooboo.text.validation.taken,
+                type: "get",
+                data: {
+                    email: function () {
+                        return self.newEmail()
+                    }
+                }
             }
         });
 
@@ -527,15 +537,12 @@ $(function() {
                     userName: self.newUser()
                 }).then(function(res) {
                     self.showError(false);
-                    if (!res.model) {
+                    if (res.success) {
                         self.organizationUsers.push(self.newUser());
-                        self.newUser("");
-                        window.info.show(Kooboo.text.info.update["success"], true);
-                    } else {
-                        self.newUser("");
-                        window.info.show(res.model, false);
+                        self.newUser('');
+                        window.info.done(Kooboo.text.info.update.success);
                     }
-
+                    self.newUser('');
                 })
             }
         }
@@ -566,9 +573,5 @@ $(function() {
 
     var vm = new profileModel();
     ko.applyBindings(vm, document.getElementById("main"));
-    //add 2co.mine
-    // var script = document.createElement("script");
-    // script.src = "https://www.paypalobjects.com/api/checkout.js";
-    //script.src = "https://www.2checkout.com/checkout/api/2co.min.js";
-    // document.getElementsByTagName("head")[0].appendChild(script);
+
 })

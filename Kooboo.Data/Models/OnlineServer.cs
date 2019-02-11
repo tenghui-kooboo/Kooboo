@@ -49,27 +49,16 @@ namespace Kooboo.Data.Models
             get;set;
         }
 
+        [Obsolete]
         public string Country { get; set; }
-
-        private string _forcountry;
+         
+        [Obsolete]
         public string ForCountry
         {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_forcountry))
-                {
-                    return this.Country;
-                }
-                else
-                {
-                    return _forcountry;
-                }
-            }
-            set { _forcountry = value; }
+            get;set;
         }
-
-        public string State { get; set; }
-         
+          
+        //Only for the server that act as DNS server. 
         public string NameServer
         {
             get;set;
@@ -86,7 +75,6 @@ namespace Kooboo.Data.Models
         public string PTR { get; set; }
 
         public int EmailServerId { get; set; }
-
 
         private Guid _privateorgid; 
         public Guid PrivateOrgId {
@@ -111,11 +99,11 @@ namespace Kooboo.Data.Models
 
         public int DesignOrgNumber { get; set; } = 999;
          
+        [Obsolete]
         public string DataCenter
         {
             get;set;
-        }
-
+        } 
 
         private Guid _hostdomainhash; 
 
@@ -169,40 +157,25 @@ namespace Kooboo.Data.Models
                 return _allips;
             }
         }
-
-
-        private string _continent; 
-
+         
+        [Obsolete]
         [Newtonsoft.Json.JsonIgnore]
         public string Continent {
-            get
-            { 
-                if (string.IsNullOrWhiteSpace(_continent))
-                { 
-                   if (!string.IsNullOrEmpty(this.ForCountry))
-                    {
-                        var countryCont =  CountryLocation.FindCountryLocation(this.ForCountry);
-                        if (countryCont != null && !string.IsNullOrWhiteSpace(countryCont.Continent))
-                        {
-                            _continent = countryCont.Continent;
-                        }
-                        else
-                        { _continent = "ZZ"; }
-                    }
-                   else
-                    {
-                        _continent = "ZZ"; 
-                    }
-                     
-                }
+            get;set;
+        }
 
-                return _continent; 
-            }
+        // the new data center id. 
+        public int OnlineDataCenterId { get; set; }
 
-            set
-            {
-                _continent = value; 
-            }
+        public override int GetHashCode()
+        {
+            string unique = this.DesignOrgNumber.ToString() + this.EmailServerId.ToString() + this.HostDomain;
+            unique += this.Name + this.NameServer + this.OnlineDataCenterId.ToString();
+            unique += this.OrgCount.ToString() + this.PrimaryIp.ToString() + this.PTR + this.Secondary;
+            unique += this.SubMask + this.Type.ToString();
+
+            return Lib.Security.Hash.ComputeIntCaseSensitive(unique); 
+
         }
     }
 
@@ -218,4 +191,5 @@ namespace Kooboo.Data.Models
         Root=16
         //0 = normal, 1= template, 2= accountDns, 4= wwwhost. 
     }
+    
 }

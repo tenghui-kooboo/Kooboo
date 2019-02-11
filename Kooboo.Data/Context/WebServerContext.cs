@@ -14,11 +14,9 @@ using Kooboo.Lib.Helper;
 using Microsoft.AspNetCore.Http;
 
 namespace Kooboo.Data.Context
-{
-
+{ 
     public static class WebServerContext
-    {
-
+    { 
         private static Func<string, string, User> _validate;
         public static Func<string, string, User> Validate
         {
@@ -125,6 +123,15 @@ namespace Kooboo.Data.Context
                 {
                     Data.Cache.AccessTokenCache.SetToken(user.Id, token);
                 }
+
+                if (user !=null)
+                {
+                    if (!Kooboo.Data.Service.UserLoginService.IsAllow(user.Id))
+                    {
+                        return null; 
+                    }
+                }
+        
                 return user;
             }
 
@@ -554,13 +561,16 @@ namespace Kooboo.Data.Context
         }
 
 
-        private static NameValueCollection GetForm(byte[] inputstream)
+        internal static NameValueCollection GetForm(byte[] inputstream)
         {
             NameValueCollection result = new NameValueCollection();
 
             string text = System.Text.Encoding.UTF8.GetString(inputstream);
-            text = System.Net.WebUtility.UrlDecode(text);
-            text = System.Net.WebUtility.HtmlDecode(text);
+
+            //text = Uri.UnescapeDataString(text); 
+
+            //text = System.Net.WebUtility.UrlDecode(text);
+            //text = System.Net.WebUtility.HtmlDecode(text);
 
             int textLength = text.Length;
             int equalIndex = text.IndexOf('=');
@@ -583,7 +593,11 @@ namespace Kooboo.Data.Context
                         ++scanIndex;
                     }
                     string name = text.Substring(scanIndex, equalIndex - scanIndex);
+                    name= Uri.UnescapeDataString(name);
+                    
                     string value = text.Substring(equalIndex + 1, delimiterIndex - equalIndex - 1);
+                    value= Uri.UnescapeDataString(value);
+
                     result.Add(name, value);
                     equalIndex = text.IndexOf('=', delimiterIndex);
                     if (equalIndex == -1)
@@ -704,7 +718,7 @@ namespace Kooboo.Data.Context
                     }
                     else if (response.ContentType !=null && response.ContentType.ToLower().Contains("javascript"))
                     {
-
+                        // TODO:???? what is this???? 
                     }
                     else
 
@@ -763,6 +777,7 @@ namespace Kooboo.Data.Context
 
                 if (!string.IsNullOrEmpty(location))
                 {
+                    location = GetEncodedLocation(location);
 
                     var host = renderContext.Request.Port == 80 || renderContext.Request.Port == 443
                         ? renderContext.Request.Host
@@ -778,7 +793,7 @@ namespace Kooboo.Data.Context
                     {
                         context.Features.Response.StatusCode = StatusCodes.Status302Found;
                     }
-
+                    
                     header.HeaderLocation = newUrl;
 
                     context.Features.Response.Body.Dispose();
@@ -854,7 +869,46 @@ namespace Kooboo.Data.Context
             context = null;
         }
 
+        internal static string GetEncodedLocation(string location)
+        {
+            if (string.IsNullOrEmpty(location))
+                return location;
+            var builder = new StringBuilder();
+            Uri uri;
+            if(Uri.TryCreate(location, UriKind.Absolute,out uri))
+            {
+                var baseUrl = uri.Scheme + "://" + uri.Authority;
+                builder.Append(baseUrl);
+                location = location.Replace(baseUrl,"");
+            }
 
+            var queryString = string.Empty;
+
+            int questionmark = location.IndexOf("?");
+            if (questionmark > -1)
+            {
+                queryString = location.Substring(questionmark);
+                location = location.Substring(0, questionmark);
+                
+            }
+            var segments = location.Split('/');
+
+            for(var i=0;i<segments.Length;i++)
+            {
+                var seg = segments[i];
+                builder.Append(System.Net.WebUtility.UrlEncode(seg));
+                if (segments.Length - 1 != i)
+                {
+                    builder.Append("/");
+                }
+                
+            }
+            if(!string.IsNullOrEmpty(queryString))
+            {
+                builder.Append(queryString);
+            }
+            return builder.ToString();
+        }
         public static void Log(RenderContext context)
         {
             if (Data.AppSettings.Global.EnableLog)

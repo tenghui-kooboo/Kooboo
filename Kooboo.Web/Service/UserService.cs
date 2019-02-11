@@ -1,13 +1,8 @@
 //Copyright (c) 2018 Yardi Technology Limited. Http://www.kooboo.com 
 //All rights reserved.
-using Kooboo.Data;
 using Kooboo.Data.Context;
 using Kooboo.Data.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kooboo.Web.Service
 {
@@ -48,7 +43,7 @@ namespace Kooboo.Web.Service
           
         }
 
-        public static string GetRedirectUrl(RenderContext context, User User, string currentRequestUrl, string returnUrl)
+        public static string GetRedirectUrl(RenderContext context, User User, string currentRequestUrl, string returnUrl, bool samesite)
         {
             if (!string.IsNullOrWhiteSpace(returnUrl))
             {
@@ -62,17 +57,16 @@ namespace Kooboo.Web.Service
                 }
             }
 
-            string baseurl = currentRequestUrl;
-            if (Data.AppSettings.IsOnlineServer && !string.IsNullOrWhiteSpace(User.TempRedirectUrl))
-            {
-#if !DEBUG
-                {
-                          baseurl = User.TempRedirectUrl;
-                }
-#endif 
-         
+            string baseurl = currentRequestUrl; 
+            if (!samesite && Data.AppSettings.IsOnlineServer && !string.IsNullOrWhiteSpace(User.TempRedirectUrl))
+            { 
+                 baseurl = User.TempRedirectUrl;  
             }
-
+            else if (Data.AppSettings.RedirectUser && !string.IsNullOrWhiteSpace(User.TempRedirectUrl))
+            {
+                baseurl = User.TempRedirectUrl; 
+            }
+             
             string url;
 
             if (string.IsNullOrEmpty(returnUrl))
@@ -94,9 +88,9 @@ namespace Kooboo.Web.Service
             return fullurl;
         }
 
-        public static string GetLoginRedirectUrl(RenderContext context, User user, string currentrequesturl, string returnurl)
+        public static string GetLoginRedirectUrl(RenderContext context, User user, string currentrequesturl, string returnurl, bool SameSite)
         {
-            string redirecturl = GetRedirectUrl(context, user, currentrequesturl, returnurl);
+            string redirecturl = GetRedirectUrl(context, user, currentrequesturl, returnurl, SameSite);
 
             string token = GetToken(user);
 

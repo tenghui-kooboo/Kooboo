@@ -46,10 +46,24 @@ namespace Kooboo.Web.Api.Implementation
             {
                 string remember = apiCall.GetValue("remember");
 
+                bool samesite = false;
+                string type = apiCall.GetValue("type"); 
+                if (type !=null && type == "site")
+                {
+                    samesite = true; 
+                }
+
+#if DEBUG
+                {
+                samesite = true; 
+                }
+#endif 
+
                 string returnUrl = apiCall.GetValue("returnurl");
                 if (returnUrl != null)
                 {
                     returnUrl = System.Web.HttpUtility.UrlDecode(returnUrl);
+                    returnUrl = System.Web.HttpUtility.UrlDecode(returnUrl); 
                     // the redirect from access token. 
                     if (returnUrl != null && returnUrl.ToLower().Contains("accesstoken"))
                     {
@@ -75,8 +89,9 @@ namespace Kooboo.Web.Api.Implementation
                 int days = isRemember ? 60 : 0;
                 var response = new MetaResponse();
 
-                response.Success = true;
-                string redirct = Kooboo.Web.Service.UserService.GetLoginRedirectUrl(apiCall.Context, user, apiCall.Context.Request.Url, returnUrl);
+                response.Success = true; 
+
+                string redirct = Kooboo.Web.Service.UserService.GetLoginRedirectUrl(apiCall.Context, user, apiCall.Context.Request.Url, returnUrl, samesite);
 
                 if (isRemember)
                 {
@@ -181,12 +196,9 @@ namespace Kooboo.Web.Api.Implementation
             }
               
         }
-
-
-        [Kooboo.Attributes.RequireModel(typeof(User))]
-        public bool UpdateProfile(ApiCall call)
-        {
-            var newuser = call.Context.Request.Model as User;
+         
+        public bool UpdateProfile(User newuser, ApiCall call)
+        { 
             var user = call.Context.User;
             user.UserName = newuser.UserName;
             user.Language = newuser.Language;
@@ -225,6 +237,11 @@ namespace Kooboo.Web.Api.Implementation
 
         public MetaResponse ChangePassword(string UserName, string OldPassword, string NewPassword, ApiCall call)
         {
+            if (GlobalDb.Users.IsDefaultUser(call.Context.User))
+            {
+                throw new Exception(Data.Language.Hardcoded.GetValue("Default User can not reset password", call.Context)); 
+            }
+
             bool isSuccess = GlobalDb.Users.ChangePassword(UserName, OldPassword, NewPassword);
             MetaResponse response = new MetaResponse();
             response.Success = isSuccess;
