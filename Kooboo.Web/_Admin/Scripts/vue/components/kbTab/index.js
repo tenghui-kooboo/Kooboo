@@ -1,4 +1,8 @@
 (function() {
+    Kooboo.loadJS([
+        "/_Admin/Scripts/vue/components/kbTab/panel/index.js"
+    ])
+
     Kooboo.vue.component.kbTab = Vue.component('kb-tab', {
         props: {
             tabs: Array
