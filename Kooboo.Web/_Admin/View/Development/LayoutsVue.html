@@ -3,7 +3,11 @@
     <h1 class="title">Layouts</h1>
 </div>
 <div id="layouts">
-    <kb-breadcrumb :items='breadcrumbItems'></kb-breadcrumb>
+    <kb-breadcrumb>
+        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='LAYOUTS' :active='true'></kb-breadcrumb-item>
+    </kb-breadcrumb>
     <div class="navbar navbar-default">
         <div class="container-fluid">
             <a class="btn green navbar-btn" :href='createUrl'>Create</a>
@@ -34,13 +38,6 @@
     var layouts = new Vue({
         el: '#layouts',
         data: {
-            breadcrumbItems: [{
-                name: "SITES"
-            }, {
-                name: "DASHBOARD"
-            }, {
-                name: Kooboo.text.common.Layouts
-            }],
             createUrl: Kooboo.Route.Get(Kooboo.Route.Layout.Create),
             tableData: {
                 docs: [],
@@ -198,6 +195,7 @@
         },
         components: {
             'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-breadcrumb-item': Kooboo.vue.component.kbBreadcrumbItem,
             'kb-table': Kooboo.vue.component.kbTable,
             'kb-modal': Kooboo.vue.component.kbModal,
             'kb-relation-modal': Kooboo.vue.component.kbRelationModal

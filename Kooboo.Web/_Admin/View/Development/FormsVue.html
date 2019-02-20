@@ -3,7 +3,11 @@
     <h1 class="title">Layouts</h1>
 </div>
 <div id="vue-container">
-    <kb-breadcrumb :items='breadcrumbItems'></kb-breadcrumb>
+    <kb-breadcrumb>
+        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='FORMS' :active='true'></kb-breadcrumb-item>
+    </kb-breadcrumb>
     <div class="navbar navbar-default">
         <div class="container-fluid">
             <a class="btn green navbar-btn" :href="createFormUrl">Create a form</a>
@@ -19,13 +23,11 @@
         </template>
     </kb-tab>
     <kb-relation-modal :show='showRelationModal' :config='relactionConfig' @close='showRelationModal = false'></kb-relation-modal>
-
 </div>
 <script>
     Kooboo.loadJS([
         "/_Admin/Scripts/vue/components/kbTable/index.js",
         "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
-        "/_Admin/Scripts/vue/components/kbModal/index.js",
         "/_Admin/Scripts/vue/components/kbRelationModal/index.js",
         "/_Admin/Scripts/vue/components/kbTab/index.js",
         "/_Admin/Scripts/vue/components/kbTab/panel/index.js"
@@ -33,13 +35,6 @@
     var layouts = new Vue({
         el: '#vue-container',
         data: {
-            breadcrumbItems: [{
-                name: "SITES"
-            }, {
-                name: "DASHBOARD"
-            }, {
-                name: Kooboo.text.common.Layouts
-            }],
             tabs: [{
                 name: Kooboo.text.common.external,
                 value: 'External'
@@ -204,11 +199,10 @@
         components: {
             'kb-tab': Kooboo.vue.component.kbTab,
             'kb-table': Kooboo.vue.component.kbTable,
-            'kb-modal': Kooboo.vue.component.kbModal,
             'kb-tab-panel': Kooboo.vue.component.kbTabPanel,
             'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-breadcrumb-item': Kooboo.vue.component.kbBreadcrumbItem,
             'kb-relation-modal': Kooboo.vue.component.kbRelationModal,
-        },
-        created: function() {}
+        }
     })
 </script>

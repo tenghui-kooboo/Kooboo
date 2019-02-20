@@ -83,7 +83,11 @@
         Menu: {
             DetailPage: GetRoute("Development/Menu"),
             ListPage: GetRoute("Development/Menus"),
-            DialogPage: GetRoute("Development/MenuDialog")
+            DialogPage: GetRoute("Development/MenuDialog"),
+            Vue: {
+                ListPage: GetRoute("Development/MenusVue"),
+                DetailPage: GetRoute("Development/MenuVue")
+            }
         },
         HtmlBlock: {
             Create: GetRoute("Contents/HtmlBlock"),

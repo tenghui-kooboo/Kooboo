@@ -3,7 +3,11 @@
     <h1 class="title">Views</h1>
 </div>
 <div id="vue-container">
-    <kb-breadcrumb :items='breadcrumbItems'></kb-breadcrumb>
+    <kb-breadcrumb>
+        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='VIEWS' :active='true'></kb-breadcrumb-item>
+    </kb-breadcrumb>
     <div class="navbar navbar-default">
         <div class="container-fluid">
             <a class="btn green navbar-btn" :href='createUrl'>Create</a>
@@ -50,13 +54,6 @@
     var viewsVM = new Vue({
         el: '#vue-container',
         data: {
-            breadcrumbItems: [{
-                name: "SITES"
-            }, {
-                name: "DASHBOARD"
-            }, {
-                name: Kooboo.text.common.Views
-            }],
             createUrl: Kooboo.Route.Get(Kooboo.Route.View.Create),
             tableData: {
                 docs: [],
@@ -241,7 +238,6 @@
                             fieldName: "versions",
                             type: "button"
                         }]
-
                         cb && cb()
                     }
                 })
@@ -262,6 +258,7 @@
         },
         components: {
             'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-breadcrumb-item': Kooboo.vue.component.kbBreadcrumbItem,
             'kb-table': Kooboo.vue.component.kbTable,
             'kb-modal': Kooboo.vue.component.kbModal,
             'kb-relation-modal': Kooboo.vue.component.kbRelationModal

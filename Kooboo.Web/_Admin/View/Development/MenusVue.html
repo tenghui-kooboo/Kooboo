@@ -1,0 +1,174 @@
+<!-- #layout name=vue -->
+<div class="page-header">
+    <h1 class="title">Menus</h1>
+</div>
+<div id="vue-container">
+    <kb-breadcrumb>
+        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='MENUS' :active='true'></kb-breadcrumb-item>
+    </kb-breadcrumb>
+    <div class="navbar navbar-default">
+        <div class="container-fluid">
+            <a class="btn green navbar-btn" @click="onCreate">Create</a>
+            <a class="btn red navbar-btn" v-if='selectedDocs.length' @click='deleteTrigger = true'>Delete</a>
+        </div>
+    </div>
+    <kb-table :data='tableData' :delete-trigger='deleteTrigger' @select='onSelectedDocsChange' @delete-trigged='deleteTrigger = false'></kb-table>
+    <kb-modal :show='showCreateModal' :config='createModal' @close='onCreateModalClose'>
+        <div class="form-horizontal" slot='body'>
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" v-model='createModal.value'>
+                </div>
+            </div>
+        </div>
+    </kb-modal>
+    <kb-relation-modal :show='showRelationModal' :config='relactionConfig' @close='showRelationModal = false'></kb-relation-modal>
+</div>
+<script>
+    Kooboo.loadJS([
+        "/_Admin/Scripts/vue/components/kbTable/index.js",
+        "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
+        "/_Admin/Scripts/vue/components/kbModal/index.js",
+        "/_Admin/Scripts/vue/components/kbRelationModal/index.js",
+    ])
+    var MenuVM = new Vue({
+        el: '#vue-container',
+        data: {
+            showCreateModal: false,
+            createModal: {
+                title: 'New menu',
+                value: '',
+                showCloseBtn: true,
+                closeBtnText: Kooboo.text.common.cancel,
+                btns: [{
+                    text: Kooboo.text.common.create,
+                    class: 'green',
+                    onClick: function() {
+                        if (MenuVM.createModal.value) {
+                            Kooboo.Menu.Create({
+                                name: MenuVM.createModal.value
+                            }).then(function(res) {
+                                if (res.success) {
+                                    MenuVM.showCreateModal = false;
+                                    MenuVM.getList();
+                                }
+                            })
+                        }
+                    }
+                }],
+            },
+            tableData: {
+                docs: [],
+                cols: [{
+                    displayName: Kooboo.text.common.name,
+                    fieldName: 'name',
+                    type: 'link'
+                }, {
+                    displayName: Kooboo.text.common.usedBy,
+                    fieldName: 'relations',
+                    class: 'table-short',
+                    type: 'array'
+                }, {
+                    displayName: Kooboo.text.common.lastModified,
+                    class: 'table-short',
+                    fieldName: 'date',
+                    type: 'text'
+                }],
+                acts: [{
+                    fieldName: 'versions',
+                    type: 'button'
+                }],
+                selectable: true,
+                onDelete: function() {
+                    if (confirm(Kooboo.text.confirm.deleteItems)) {
+                        Kooboo.Menu.Deletes({
+                            ids: JSON.stringify(MenuVM.selectedDocs)
+                        }).then(function(res) {
+                            if (res.success) {
+                                info.done(Kooboo.text.info.delete.success);
+                                MenuVM.getList();
+                            }
+                        })
+                    }
+                }
+            },
+            selectedDocs: [],
+            deleteTrigger: false,
+            showRelationModal: false,
+            relactionConfig: {}
+        },
+        methods: {
+            onCreate: function() {
+                this.showCreateModal = true;
+            },
+            onCreateModalClose: function() {
+                this.createModal.value = '';
+                this.showCreateModal = false;
+            },
+            onSelectedDocsChange: function(ids) {
+                this.selectedDocs = ids;
+            },
+            onDelete: function() {
+                this.deleteTrigger = true;
+            },
+            getList: function() {
+                var self = this;
+                Kooboo.Menu.getList().then(function(res) {
+                    if (res.success) {
+                        self.tableData.docs = res.model.map(function(menu) {
+                            var date = new Date(menu.lastModified);
+                            return {
+                                id: menu.id,
+                                name: {
+                                    text: menu.name,
+                                    url: Kooboo.Route.Get(Kooboo.Route.Menu.Vue.DetailPage, {
+                                        id: menu.id
+                                    })
+                                },
+                                relations: Kooboo.objToArr(menu.relations).map(function(item) {
+                                    return {
+                                        text: item.value + ' ' + Kooboo.text.component.table[item.key],
+                                        class: 'label label-sm kb-table-label-refer',
+                                        style: 'background-color: ' + Kooboo.getLabelColor(item.key),
+                                        data: {
+                                            id: menu.id,
+                                            by: item.key,
+                                            type: 'menu'
+                                        },
+                                        onClick: function(rel) {
+                                            self.relactionConfig = rel.data;
+                                            self.showRelationModal = true;
+                                        }
+                                    }
+                                }),
+                                date: date.toDefaultLangString(),
+                                versions: {
+                                    icon: 'fa-clock-o',
+                                    class: 'btn-xs blue',
+                                    title: Kooboo.text.common.viewAllVersions,
+                                    url: Kooboo.Route.Get(Kooboo.Route.SiteLog.LogVersions, {
+                                        KeyHash: menu.keyHash,
+                                        storeNameHash: menu.storeNameHash
+                                    }),
+                                    inNewWindow: true
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        },
+        components: {
+            'kb-table': Kooboo.vue.component.kbTable,
+            'kb-modal': Kooboo.vue.component.kbModal,
+            'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-relation-modal': Kooboo.vue.component.kbRelationModal,
+        },
+        created: function() {
+            this.getList();
+        }
+    })
+</script>

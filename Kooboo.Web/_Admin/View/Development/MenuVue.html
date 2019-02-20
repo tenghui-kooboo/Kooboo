@@ -1,0 +1,38 @@
+<!-- #layout name=vue -->
+<div class="page-header">
+    <h1 class="title">Menu</h1>
+</div>
+<div id="vue-container">
+    <kb-breadcrumb>
+        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='MENUS'></kb-breadcrumb-item>
+        <kb-breadcrumb-item :item='{ name: menuName }' :active='true'></kb-breadcrumb-item>
+    </kb-breadcrumb>
+</div>
+<script>
+    Kooboo.loadJS([
+        "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js"
+    ])
+
+    var MenuVM = new Vue({
+        el: '#vue-container',
+        data: {
+            menuName: ''
+        },
+        mounted: function() {
+            var self = this;
+            Kooboo.Menu.getFlat({
+                id: Kooboo.getQueryString('id')
+            }).then(function(res) {
+                if (res.success) {
+                    self.menuName = res.model[0].name;
+                }
+            })
+        },
+        components: {
+            'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
+            'kb-breadcrumb-item': Kooboo.vue.component.kbBreadcrumbItem
+        },
+    })
+</script>
