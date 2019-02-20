@@ -10,7 +10,7 @@ namespace Kooboo.Model.Setting
     public class UserModelSetting: RuleSetting
     {
         [RequireRule("username can't be empty")]
-        [MaxLengthRule(5,"username max Length is {0}")]
+        [MaxLengthRule(50,"username max Length is {0}")]
         public string UserName { get; set; }
 
         [RequireRule("password can't be empty")]

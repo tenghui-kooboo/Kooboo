@@ -379,6 +379,7 @@ namespace Kooboo.Data
             {
                 var res = new ApiResource();
                 res.AccountUrl = localvalue.KeyValues["AccountUrl"];
+                res.AccountUrl = "https://3.kooboo.site";
                 res.ThemeUrl = localvalue.KeyValues["ThemeUrl"];
                 res.ConvertUrl = localvalue.KeyValues["ConvertUrl"];
                 res.Expiration = localvalue.Expiration;

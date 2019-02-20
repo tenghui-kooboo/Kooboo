@@ -1,5 +1,6 @@
 (function() {
-    Kooboo.vue.component.kbModal = Vue.component('kb-modal', {
+    //Kooboo.vue.component.kbModal = 
+    Vue.component('kb-modal', {
         props: {
             config: Object,
             show: Boolean
