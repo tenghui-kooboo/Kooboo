@@ -7,8 +7,9 @@
         v-if="action.condition" 
         @click="action.click">{{action.displayName}}</a>
     </div>
-</div>
     
+</div>
+<kb-copy-modal :show="showCopyModal" :config='data' :selectedDocs="selectedDocs"></kb-copy-modal>   
 <table class="table table-striped table-hover">
     <thead>
         <tr>

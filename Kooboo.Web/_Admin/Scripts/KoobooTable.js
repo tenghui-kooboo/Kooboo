@@ -10,25 +10,43 @@ Kooboo.Table={
 
                 var urls=tableData.urls;
                 for(var i=0;i<data.length;i++){
-                    var doc={};
                     var item=data[i];
-                    for(var j=0;j<cols.length;j++){
-                        var col=cols[j];
-                        doc[col.fieldName]=Kooboo.Table.getValue(item,col,modelName,tableData);
-                    }
-                    var rowActions=tableData.rowActions;
-                    if(rowActions.length>0){
-                        rowActions.forEach(function(action){
-                            doc[action.fieldName]=Kooboo.Table.getValue(item,action,modelName,tableData);
-                        });
-                    }
-                    if(!doc.id){
-                        doc.id=item.id;
-                    }
+                    var doc=Kooboo.Table.getDoc(tableData,item);
+                    
                     tableData.docs.push(doc);
                 }
             }
         });
+    },
+    copy:function(tableData,param,callback){
+        var method=Kooboo.Table.getModel(tableData.modelName,"Copy",param);
+        method.then(function(res) {
+            if (res.success) {
+                var doc=Kooboo.Table.getDoc(tableData,res.model);
+                //put in beginning of an array.
+                tableData.docs.unshift(doc);
+            } 
+            callback &&callback(res.success);
+        })
+    },
+    getDoc:function(tableData,item){
+        var doc={};
+        var cols=tableData.cols;
+
+        for(var j=0;j<cols.length;j++){
+            var col=cols[j];
+            doc[col.fieldName]=Kooboo.Table.getValue(item,col,tableData);
+        }
+        var rowActions=tableData.rowActions;
+        if(rowActions.length>0){
+            rowActions.forEach(function(action){
+                doc[action.fieldName]=Kooboo.Table.getValue(item,action,tableData);
+            });
+        }
+        if(!doc.id){
+            doc.id=item.id;
+        }
+        return doc;
     },
     getModel:function(modelName,methodName,param){
         var model=eval("Kooboo."+modelName);
@@ -96,7 +114,7 @@ Kooboo.Table={
         }
         return "";
     },
-    getValue:function(data,col,modelType,tableData){
+    getValue:function(data,col,tableData){
         var urls=tableData.urls;
         var relations=tableData.relations;
         switch(col.type.toLowerCase()){
@@ -118,7 +136,7 @@ Kooboo.Table={
                             data: {
                                 id: data.id,//todo rewrite
                                 by: item.key,
-                                type: modelType
+                                type: tableData.modelName
                             },
                             onClick:function(rel){
                                 relation.config=rel.data;

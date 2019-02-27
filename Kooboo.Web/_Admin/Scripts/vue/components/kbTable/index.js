@@ -1,6 +1,7 @@
 (function() {
     Kooboo.loadJS([
-        '/_Admin/Scripts/vue/components/kbTable/row/index.js'
+        '/_Admin/Scripts/vue/components/kbTable/row/index.js',
+        '/_Admin/Scripts/vue/components/kbCopyModal/index.js'
     ]);
 
     Kooboo.vue.component.kbTable = Vue.component('kb-table', {
@@ -11,7 +12,8 @@
         data: function() {
             return {
                 selectedDocs: [],
-                deleteTrigger:false
+                deleteTrigger:false,
+                showCopyModal:false,
             }
         },
         watch: {
@@ -61,6 +63,9 @@
                     //todo confirm,why render twice
                     if(action.actionName=="Copy"){
                         action.condition=self.selectedDocs.length==1;
+                        action.click=function(){
+                            self.showCopyModal=true;
+                        }
                     }else if(action.actionName=="Delete"){
                         action.condition=self.selectedDocs.length>0;
                         action.click=function(){
