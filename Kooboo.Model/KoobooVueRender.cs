@@ -84,7 +84,7 @@ namespace Kooboo.Model
             var modelFromHtml = new ModelFromHtml(doc);
             model.El = modelFromHtml.El;
 
-            model.Data = GetDataList(modelFromHtml.DataFrom);
+            model.Data = GetData(modelFromHtml.DataFrom);
 
             var methods = modelFromHtml.Methods;
             foreach(var method in methods)
@@ -94,23 +94,66 @@ namespace Kooboo.Model
             model.Methods = methods;
             
             model.Computed = new List<string>(); //need get from html;
-            
+
+            model.VueCreated = GetVueCreated(modelFromHtml);
+
+
             return model;
         }
-        
 
-        public List<VueField> GetDataList(string dataFrom)
+        private VueCreated GetVueCreated(ModelFromHtml modelFromHtml)
         {
+            VueCreated vueCreated=null;
+            if (IsApi(modelFromHtml.DataFrom))
+            {
+                var setting = ModelHelper.GetSetting(modelFromHtml.DataFrom, ApiProvider);
+
+                var method = ModelApiHelper.GetMethod(modelFromHtml.DataFrom);
+                if (IsTable(setting) && method != null)
+                {
+                    vueCreated = new VueCreated()
+                    {
+                        API = modelFromHtml.DataFrom,
+                        ModelType = method.Class
+                    };
+                }
+
+            }
+            return vueCreated;
+        }
+
+        public List<VueField> GetData(string dataFrom)
+        {
+            //get rule by api
+            //get method by api
+            //get component by api
+
             //dataFrom="api" isReturn="true"
             //fromApi
             //returnByApi
             var dataList = new List<VueField>();
+
             if (IsApi(dataFrom))
             {
-                var ruleSetting = RuleHelper.GetRuleSettingByApi(dataFrom, ApiProvider);
-                if (ruleSetting != null)
+                var setting = ModelHelper.GetSetting(dataFrom, ApiProvider);
+                if (setting != null)
                 {
-                    dataList =RuleHelper.GetVueFields(ruleSetting.GetType());
+                    //for list/table
+                    if(IsTable(setting))
+                    {
+                        var tableModel = ModelHelper.GetTableSetting(setting.GetType(), null);
+                        if(tableModel!=null)
+                        {
+                            dataList.AddRange(tableModel.GetTableFields());
+                        }
+
+                    }
+                    else
+                    {
+                        //for normal
+                        dataList = RuleHelper.GetVueFields(setting.GetType());
+                    }
+                    
                 }
 
             }
@@ -122,15 +165,20 @@ namespace Kooboo.Model
             return dataList;
         }
 
-        public bool IsApi(string dataFrom)
+        private bool IsApi(string dataFrom)
         {
             return dataFrom.IndexOf(".") > -1;
         }
+        private bool IsTable(KoobooSetting settting)
+        {
+            return settting is ITable;
+        }
+
 
 
         //private List<VueMethods> GetVueMethods(string html)
         //{
-            
+
         //    var methods = new List<VueMethods>();
         //    methods.Add(new VueMethods()
         //    {

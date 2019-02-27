@@ -7,7 +7,7 @@ using Kooboo.Model.ValidateRules;
 
 namespace Kooboo.Model.Setting
 {
-    public class UserModelSetting: RuleSetting
+    public class UserModelSetting: KoobooSetting
     {
         [RequireRule("username can't be empty")]
         [MaxLengthRule(50,"username max Length is {0}")]

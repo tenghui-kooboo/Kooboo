@@ -19,6 +19,8 @@ namespace Kooboo.Model
 
         public List<string> Computed { get; set; }
 
+        public VueCreated VueCreated { get; set; }
+
         public string GetJs()
         {
             var sb = new StringBuilder();
@@ -41,6 +43,7 @@ namespace Kooboo.Model
             sb.AppendTabs(tabCount, GetEl());
             sb.Append(GetData(tabCount));
             sb.Append(GetMethod(tabCount));
+            sb.Append(GetCreated(tabCount));
             //sb.Append(GetComputed());
             return sb.ToString();
         }
@@ -60,11 +63,10 @@ namespace Kooboo.Model
             {
                 var field = Data[i];
                 
-                sb.AppendTabs(newTabCount, field.Name + ":{");
-
+                sb.AppendTabs(newTabCount, field.Name + ":");
+                //todo review
                 field.TabCount = newTabCount + 1;
                 sb.Append(field.GetDataValue());
-                sb.AppendTabs(newTabCount,"},");
             }
             sb.AppendTabs(tabCount,"},");
             return sb.ToString();
@@ -96,6 +98,21 @@ namespace Kooboo.Model
                 //todo implement
             }
             sb.Append("},");
+            return sb.ToString();
+        }
+
+        public string GetCreated(int tabCount)
+        {
+            //VueCreated data can be removed.
+            if (VueCreated == null || string.IsNullOrEmpty(VueCreated.API))
+                return string.Empty;
+
+            var sb = new StringBuilder();
+            sb.Append("created:function(){");
+            sb.AppendLine();
+            //sb.AppendTabs(tabCount, string.Format("Kooboo.Table.getList(this,'{0}','{1}')", VueCreated.API, VueCreated.ModelType)); 
+            sb.AppendTabs(tabCount, string.Format("Kooboo.Table.getList(this.tableData)"));
+            sb.Append("}");
             return sb.ToString();
         }
     }

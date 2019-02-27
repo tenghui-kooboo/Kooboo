@@ -42,10 +42,10 @@ namespace Kooboo.Model
             tabCount++;
             var sb = new StringBuilder();
 
-            var ruleSetting = RuleHelper.GetRuleSettingByApi(api, ApiProvider);
-            if(ruleSetting!=null)
+            var setting = ModelHelper.GetSetting(api, ApiProvider);
+            if(setting!=null)
             {
-                var fields = RuleHelper.GetVueFields(ruleSetting.GetType());
+                var fields = RuleHelper.GetVueFields(setting.GetType());
                 if (fields.Count > 0)
                 {
                     sb.AppendTabs(tabCount, "var self=this");
@@ -108,10 +108,10 @@ namespace Kooboo.Model
             tabCount++;
             var sb = new StringBuilder();
             
-            var ruleSetting = RuleHelper.GetRuleSettingByApi(Api, ApiProvider);
-            if(ruleSetting!=null)
+            var setting = ModelHelper.GetSetting(Api, ApiProvider);
+            if(setting!=null)
             {
-                var fields = RuleHelper.GetVueFields(ruleSetting.GetType());
+                var fields = RuleHelper.GetVueFields(setting.GetType());
                 var dataBuilder = new StringBuilder();
 
                 foreach (var field in fields)

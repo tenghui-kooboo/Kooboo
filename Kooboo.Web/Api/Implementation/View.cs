@@ -10,6 +10,7 @@ using Kooboo.Web.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kooboo.Model.Setting;
 
 namespace Kooboo.Web.Api.Implementation
 {
@@ -36,6 +37,7 @@ namespace Kooboo.Web.Api.Implementation
             return viewmodel;
         }
 
+        [ViewsModel]
         public override List<object> List(ApiCall call)
         {
             var sitedb = call.WebSite.SiteDb();

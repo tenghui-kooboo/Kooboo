@@ -32,7 +32,7 @@ namespace Kooboo.Model
                 if (item is Element)
                 {
                     var element = item as Element;
-                    var vueContainer = element.attributes.Find(a => a.name.Equals("vue-container", StringComparison.OrdinalIgnoreCase));
+                    var vueContainer = element.attributes.Find(a => a.name.Equals("vue-el", StringComparison.OrdinalIgnoreCase));
                     if (vueContainer != null)
                     {
                         this.El = vueContainer.value;
@@ -65,7 +65,7 @@ namespace Kooboo.Model
                     var methodAttr = element.attributes.Find(a => a.name.Equals("vue-api", StringComparison.OrdinalIgnoreCase));
                     if (methodAttr != null)
                     {
-                        var api = RuleHelper.GetMethod(methodAttr.value);
+                        var api = ModelApiHelper.GetMethod(methodAttr.value);
                         
                         var method = new VueMethod()
                         {

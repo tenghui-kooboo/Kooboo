@@ -13,15 +13,20 @@ namespace Kooboo.Model
 
         public string Value { get; set; }//type
 
-        public List<Rule> ValidateRules { get; set; }
+        public List<Rule> ValidateRules { get; set; } = new List<Rule>();
 
         public int TabCount { get; set; }
 
         public string GetDataValue()
         {
             var sb = new StringBuilder();
+            sb.Append(Value);
+            sb.Append(",");
+            //sb.AppendTabs(TabCount, Value);
+            return sb.ToString();
 
             //todo get value string
+            sb.AppendTabs(TabCount - 1, "{");
             sb.AppendTabs(TabCount, string.Format("value:\"{0}\",", Value));
 
             if(ValidateRules.Count>0)
@@ -42,7 +47,7 @@ namespace Kooboo.Model
                 sb.AppendTabs(TabCount, "isValid:true,");
                 sb.AppendTabs(TabCount, "errors: []");
             }
-                
+            sb.AppendTabs(TabCount - 1, "{");
 
             return sb.ToString();
         }

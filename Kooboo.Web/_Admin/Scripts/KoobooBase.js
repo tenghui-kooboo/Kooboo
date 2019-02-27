@@ -41,7 +41,6 @@
     }
 
     BaseModel.prototype = {
-
         executeGet: function(method, data, hideLoading, useSync) {
             var self = this;
             var hideLoading = !!hideLoading && true;
@@ -127,6 +126,9 @@
         getEdit: function(para) {
             return this.executeGet("GetEdit", para);
         },
+        list: function(paras) {
+            return this.executeGet("list", paras);
+        },
         getList: function(paras) {
             return this.executeGet("list", paras);
         },
@@ -139,7 +141,7 @@
         Delete: function(paras) {
             return this.executePost("Delete", paras);
         },
-        Deletes: function(paras) {
+        Deletes: function(paras) {0
             return this.executePost("Deletes", paras);
         },
         isUniqueName: function(paras) {

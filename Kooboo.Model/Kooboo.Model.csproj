@@ -33,6 +33,10 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\KoobooLinuxMerge\src\Github\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,17 +47,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Table\Attributes\TableAttribute.cs" />
+    <Compile Include="Components\Table\CellDataType.cs" />
+    <Compile Include="Components\Table\CellType.cs" />
+    <Compile Include="Components\Table\TableModel.cs" />
+    <Compile Include="Helper\ApiHelper.cs" />
+    <Compile Include="Interfaces\ITable.cs" />
     <Compile Include="Helper\ModelHelper.cs" />
+    <Compile Include="Helper\StringBuilderExtension.cs" />
     <Compile Include="Helper\RuleHelper.cs" />
     <Compile Include="KoobooModelManager.cs" />
     <Compile Include="Models\ModelFromHtml.cs" />
+    <Compile Include="Models\VueCreated.cs" />
     <Compile Include="Models\VueModel.cs" />
     <Compile Include="KoobooVueRender.cs" />
     <Compile Include="Models\VueField.cs" />
     <Compile Include="Models\VueMethods.cs" />
-    <Compile Include="Setting\RuleSetting.cs" />
+    <Compile Include="Setting\KoobooModel.cs" />
+    <Compile Include="Setting\LayoutModel.cs" />
     <Compile Include="Setting\UserModelSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setting\ViewsModel.cs" />
     <Compile Include="ValidateRules\EmailRule.cs" />
     <Compile Include="ValidateRules\MaxLengthRule.cs" />
     <Compile Include="ValidateRules\RequireFieldRule.cs" />
@@ -66,6 +80,10 @@
       <Project>{964f25fd-7257-4e6d-8652-9df77cdb6337}</Project>
       <Name>Kooboo.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kooboo.Data\Kooboo.Data.csproj">
+      <Project>{d8413e81-0018-4dab-aeaf-5d36c3c43a52}</Project>
+      <Name>Kooboo.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kooboo.Dom\Kooboo.Dom.csproj">
       <Project>{83d7b143-e3ab-44dc-b1fe-ade82e415aad}</Project>
       <Name>Kooboo.Dom</Name>
@@ -75,5 +93,6 @@
       <Name>Kooboo.Lib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

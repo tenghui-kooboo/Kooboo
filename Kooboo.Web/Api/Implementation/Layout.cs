@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Model.Setting;
 
 namespace Kooboo.Web.Api.Implementation
 {
@@ -56,6 +57,7 @@ namespace Kooboo.Web.Api.Implementation
             return template.Replace("{{BaseUrl}}", baseurl);
         }
 
+        [LayoutModel]
         public override List<object> List(ApiCall call)
         {
             List<LayoutItemViewModel> result = new List<LayoutItemViewModel>();

@@ -10,6 +10,28 @@ var pageListModel=[];
         }
     });
 
+    var tableData={
+        selectable:true,
+        docs:[{
+            id:''
+        }],
+        cols:[{
+            class:'',
+            displayName:'',
+            fieldName:''
+        }],
+        acts:[{
+            fieldName:'',
+            class:''
+        }],
+        selectedDocs:function(){
+
+        },
+        onToggleSelectDoc:function(){
+            
+        }
+    }
+
     var vm=new Vue({
         el:"#app",
         data:{
@@ -19,18 +41,18 @@ var pageListModel=[];
             isShowCopyBtn:true,
             isShowCopyModel:false,
             copyModalConfig:{
-                //title:Kooboo.text.site.page.copyPage + ': ' + copyPage().name,
+                //title:Kooboo.text.site.page.copyPage + ': ' + this.copyPage.name,
                 title:Kooboo.text.site.page.copyPage,
-                closeBtnText:"Cancel",
+                closeBtnText:Kooboo.text.common.cancel,
                 showCloseBtn:true,
                 btns:[{
-                    text:"Start",
+                    text:Kooboo.text.common.start,
                     class:"green",
                     onClick:function(){
 
                     }
                 }]
-            }
+            }, 
         },
         computed:{
             layouts:function(){
