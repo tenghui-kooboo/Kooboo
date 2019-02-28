@@ -15,7 +15,7 @@
                 modalConfig: {
                     //title: 'Copy layout',
                     title: 'Copy',
-                    size: 'sm',
+                    //size: 'sm',
                     copyName: '',
                     btns: [{
                         text: Kooboo.text.common.start,
