@@ -71,6 +71,7 @@
             },
             onClose: function() {
                 this.showModal = false;
+                this.$emit("close");
             }
         },
         watch:{

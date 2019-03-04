@@ -64,7 +64,6 @@
                     if(action.actionName=="Copy"){
                         action.condition=self.selectedDocs.length==1;
                         action.click=function(){
-                            debugger;
                             self.showCopyModal=true;
                         }
                     }else if(action.actionName=="Delete"){
