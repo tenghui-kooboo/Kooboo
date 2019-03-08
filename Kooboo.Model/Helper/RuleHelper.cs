@@ -40,7 +40,7 @@ namespace Kooboo.Model.Helper
 
                     if (prop.PropertyType.IsValueType)
                     {
-                        field.Value= Activator.CreateInstance(type) as string;
+                        field.Value= Activator.CreateInstance(type);
                     }
                     field.ValidateRules = new List<Rule>();
                     var rules = prop.GetCustomAttributes(typeof(Rule));

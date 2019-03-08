@@ -50,6 +50,7 @@
                     },function(success){
                         if(success){
                             self.showModal=false;
+                            self.$emit("close");
                             info.done(Kooboo.text.info.copy.success);
                         }else{
                             info.fail(Kooboo.text.info.copy.fail);

@@ -11,7 +11,7 @@ namespace Kooboo.Model
     {
         public string Name { get; set; }
 
-        public string Value { get; set; }//type
+        public object Value { get; set; }//type
 
         public List<Rule> ValidateRules { get; set; } = new List<Rule>();
 
@@ -20,7 +20,9 @@ namespace Kooboo.Model
         public string GetDataValue()
         {
             var sb = new StringBuilder();
-            sb.Append(Value);
+            var valueStr = Kooboo.Lib.Helper.JsonHelper.Serialize(Value);
+
+            sb.Append(valueStr);
             sb.Append(",");
             //sb.AppendTabs(TabCount, Value);
             return sb.ToString();

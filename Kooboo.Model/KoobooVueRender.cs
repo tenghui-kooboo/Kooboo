@@ -144,7 +144,7 @@ namespace Kooboo.Model
                         var tableModel = ModelHelper.GetTableSetting(setting.GetType(), null);
                         if(tableModel!=null)
                         {
-                            dataList.AddRange(tableModel.GetTableFields());
+                            dataList.Add(tableModel.GetField());
                         }
 
                     }

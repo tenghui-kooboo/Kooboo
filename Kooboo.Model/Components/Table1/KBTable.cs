@@ -7,12 +7,17 @@ using Kooboo.Model.Components.Table.Attributes;
 
 namespace Kooboo.Model.Components.Table
 {
-    public class TableModel
+    public class TableModel:IComponent
     {
+        public ComponentType Type => ComponentType.KTable;
+
         public string ModelName { get; set; }
-        public List<TableAction> Actions { get; set; } = new List<TableAction>();
 
         public List<TableColumn> Columns { get; set; } = new List<TableColumn>();
+
+        public bool Selectable { get; set; } = true;
+
+        public List<TableAction> Actions { get; set; } = new List<TableAction>();
 
         public List<TableRowAction> RowActions { get; set; } = new List<TableRowAction>();
 
@@ -39,7 +44,7 @@ namespace Kooboo.Model.Components.Table
             }
         }
 
-        public List<VueField> GetTableFields()
+        public VueField GetField()
         {
             var tableData = new VueField();
             tableData.Name = "tableData";
@@ -48,22 +53,21 @@ namespace Kooboo.Model.Components.Table
             //todo confirm
             var dic = new Dictionary<string,object>();
             dic.Add("modelName", ModelName);
-            dic.Add("actions", Actions);
-            dic.Add("cols", GetColumnsData());
-            dic.Add("rowActions", GetRowActions());
             dic.Add("docs", new List<string>());
-            dic.Add("selectable", true);
+            dic.Add("cols", GetColumnsData());
+            dic.Add("selectable", Selectable);
 
+            dic.Add("rowActions", GetRowActions());
+            dic.Add("actions", Actions);
+            
             //url for link
             dic.Add("urls", UrlColumns);
 
             dic.Add("relations", RelationColumns);
 
-            tableData.Value = Kooboo.Lib.Helper.JsonHelper.Serialize(dic);
+            tableData.Value = dic;
 
-            var list = new List<VueField>();
-            list.Add(tableData);
-            return list;
+            return tableData;
         }
 
         //public List<VueField> DoGetTableFields()
@@ -134,12 +138,18 @@ namespace Kooboo.Model.Components.Table
             }
             return list;
         }
+
+        public bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TableAction
     {
         public string ActionName { get; set; }
         public string DisplayName { get; set; }
+        public ActionType ActionType { get; set; }
         public string Url { get; set; }
     }
 
@@ -172,4 +182,12 @@ namespace Kooboo.Model.Components.Table
 
         public string FieldName { get; set; }
     }
+
+    public enum ActionType
+    {
+        Link,
+        Modal
+    }
+
+
 }
