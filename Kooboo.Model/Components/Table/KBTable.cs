@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Components.Table;
+using Kooboo.Model.Attributes;
 
 namespace Kooboo.Model.Components
 {
@@ -17,7 +18,7 @@ namespace Kooboo.Model.Components
 
         public List<TableColumn> RowActions { get; set; } = new List<TableColumn>();
 
-        public List<KBTableActionBtn> Actions { get; set; } = new List<KBTableActionBtn>();
+        public List<IAction> Actions { get; set; } = new List<IAction>();
 
         public bool Selectable { get; set; } = true;
 
@@ -72,6 +73,82 @@ namespace Kooboo.Model.Components
         {
             throw new NotImplementedException();
         }
+
+        public bool IsMatch(Attribute attribute)
+        {
+            return attribute is RowActionAttribute ||
+                attribute is ColumnAttribute ||
+                attribute is TableActionAttribute;
+        }
+
+        public void SetData(List<Dictionary<string, List<Attribute>>> attributes)
+        {
+            //todo to be optimized
+            foreach (var item in attributes)
+            {
+                if (item.Count > 0)
+                {
+                    var keyPair = item.First();
+                    var fieldName = keyPair.Key;
+                    var list = keyPair.Value;
+
+                    var obj = list.Find(l => l is TableActionAttribute);
+                    if (obj != null)
+                    {
+                        var attr = obj as TableActionAttribute;
+
+                        var action = ButtonActionManager.Instance.Get(attr.ActionType);
+                        if (action != null)
+                        {
+                            action.Name = fieldName;
+                            action.DisplayName = attr.DisplayName;
+                            action.Color = attr.Color;
+                            action.SetData(list);
+                        }
+                        Actions.Add(action);
+                        continue;
+                    }
+
+                    obj = list.Find(l => (l is ColumnAttribute));
+                    if (obj != null)
+                    {
+                        var attr = obj as ColumnAttribute;
+                        var column = new TableColumn();
+                        column.FieldName = fieldName;
+                        column.DisplayName = attr.DisplayName;
+
+                        column.Cell = CellManager.Instance.Get(attr.CellType);
+                        if (column.Cell != null)
+                        {
+                            column.Cell.CellDataType = attr.CellDataType;
+                            column.Cell.ColumnName = fieldName;
+                            column.Cell.SetData(list);
+                        }
+                        Columns.Add(column);
+                        continue;
+                    }
+
+                    obj = list.Find(l => (l is RowActionAttribute));
+                    if (obj != null)
+                    {
+                        var attr = obj as RowActionAttribute;
+                        var column = new TableColumn();
+                        column.FieldName = fieldName;
+                        column.DisplayName = attr.DisplayName;
+                        column.Cell = CellManager.Instance.Get(attr.CellType);
+                        if (column.Cell != null)
+                        {
+                            column.Cell.ColumnName = fieldName;
+                            column.Cell.SetData(list);
+                        }
+
+                        RowActions.Add(column);
+                        continue;
+                    }
+                }
+
+            }
+        }
     }
 
     public class TableColumn
@@ -84,15 +161,17 @@ namespace Kooboo.Model.Components
 
         public object GetData()
         {
-            var dic = new Dictionary<string, string>();
+            var dic = new Dictionary<string, object>();
             dic.Add("displayName", DisplayName);
             dic.Add("fieldName", FieldName);
             //todo confirm
             var cellType = Cell.CellType.ToString();
             //todo review
+            //redundant fields
             dic.Add("type", cellType.Substring(0, 1).ToLower() + cellType.Substring(1));
             dic.Add("dataType", Cell.CellDataType.ToString());
             //dic.Add("cellData",Cell.GetData())
+            dic.Add("data", Cell.GetData());
 
             return dic;
         }

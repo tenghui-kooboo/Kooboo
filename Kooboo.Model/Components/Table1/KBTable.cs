@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kooboo.Model.Components.Table.Attributes;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -22,27 +21,27 @@ namespace Kooboo.Model.Components.Table
         public List<TableRowAction> RowActions { get; set; } = new List<TableRowAction>();
 
         //todo need review this setting
-        public List<UrlAttribute> UrlColumns { get; set; } = new List<UrlAttribute>();
+        //public List<UrlAttribute> UrlColumns { get; set; } = new List<UrlAttribute>();
 
-        public List<TableRowRelation> RelationColumns
-        {
-            get
-            {
-                var columns = Columns.FindAll(c => c.CellType == CellType.Array).ToList();
+        //public List<TableRowRelation> RelationColumns
+        //{
+        //    get
+        //    {
+        //        var columns = Columns.FindAll(c => c.CellType == CellType.Array).ToList();
 
-                var list = new List<TableRowRelation>();
-                foreach(var col in columns)
-                {
-                    list.Add(new TableRowRelation()
-                    {
-                        FieldName=col.FieldName,
-                        Config = new object(),
-                        IsShow=false
-                    });
-                }
-                return list;
-            }
-        }
+        //        var list = new List<TableRowRelation>();
+        //        foreach(var col in columns)
+        //        {
+        //            list.Add(new TableRowRelation()
+        //            {
+        //                FieldName=col.FieldName,
+        //                Config = new object(),
+        //                IsShow=false
+        //            });
+        //        }
+        //        return list;
+        //    }
+        //}
 
         public VueField GetField()
         {
@@ -61,9 +60,9 @@ namespace Kooboo.Model.Components.Table
             dic.Add("actions", Actions);
             
             //url for link
-            dic.Add("urls", UrlColumns);
+            //dic.Add("urls", UrlColumns);
 
-            dic.Add("relations", RelationColumns);
+            //dic.Add("relations", RelationColumns);
 
             tableData.Value = dic;
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Model.Attributes;
 
-namespace Kooboo.Model.Components.Table.Cell
+namespace Kooboo.Model.Components.Table
 {
     public class SummaryCell : ICell
     {
@@ -14,9 +15,37 @@ namespace Kooboo.Model.Components.Table.Cell
 
         public CellDataType CellDataType { get; set; }
 
+        public string TitleField { get; set; }
+
+        public string DescField { get; set; }
+
+        public string Url { get; set; }
+
+        public string[] Paras { get; set; }
+
         public object GetData()
         {
-            throw new NotImplementedException();
+            var dic = new Dictionary<string, object>();
+
+            dic.Add("titleField", TitleField);
+            dic.Add("descField", DescField);
+            dic.Add("url", Url);
+            dic.Add("paras", Paras);
+
+            return dic;
+        }
+
+        public void SetData(List<Attribute> attrs)
+        {
+            var summaryAttr = attrs.Find(a => a is ColumnSummaryAttributeAttribute) as ColumnSummaryAttributeAttribute;
+            if (summaryAttr != null)
+            {
+                TitleField = summaryAttr.TitleField;
+                DescField = summaryAttr.DescField;
+                Url = summaryAttr.Url;
+                Paras = summaryAttr.Paras;
+            }
+
         }
     }
 }

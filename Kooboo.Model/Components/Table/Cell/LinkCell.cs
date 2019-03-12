@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Model.Attributes;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -27,6 +28,16 @@ namespace Kooboo.Model.Components.Table
             dic.Add("paras", Paras);
 
             return dic;
+        }
+
+        public void SetData(List<Attribute> attrs)
+        {
+            var linkAttr = attrs.Find(a => a is LinkAttribute) as LinkAttribute;
+            if (linkAttr != null)
+            {
+                Url = linkAttr.Url;
+                Paras = linkAttr.Paras;
+            }
         }
     }
 }

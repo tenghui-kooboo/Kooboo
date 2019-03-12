@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.Components.Table
+namespace Kooboo.Model
 {
-    public enum ButtonActionType
+    public interface IKoobooModel
     {
-        None,
-        Link,
-        Modal,
-        Dropdown
     }
 }

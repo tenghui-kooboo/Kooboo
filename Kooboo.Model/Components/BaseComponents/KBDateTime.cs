@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Components
 {
-    public class KBInput : IComponent
+    public class KBDateTime : BaseComponent
     {
-        public ComponentType Type =>ComponentType.Input;
+        public override ComponentType Type => ComponentType.DateTime;
 
-        public VueField GetField()
+        //ShowValue 
+        public override VueField GetField()
         {
-            throw new NotImplementedException();
+            return base.GetField();
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             throw new NotImplementedException();
         }

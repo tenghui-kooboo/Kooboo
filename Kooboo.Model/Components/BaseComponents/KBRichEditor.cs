@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Components.CtrlType
 {
-    public class KBRichEditor : IComponent
+    public class KBRichEditor : BaseComponent
     {
-        public ComponentType Type => ComponentType.RadioBox;
+        public override ComponentType Type => ComponentType.RichEditor;
 
-        public VueField GetField()
+        public override VueField GetField()
         {
-            throw new NotImplementedException();
+            return base.GetField();
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             throw new NotImplementedException();
         }

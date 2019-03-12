@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Components.CtrlType
 {
-    public class KBNumber : IComponent
+    public class KBNumber : BaseComponent
     {
-        public ComponentType Type => ComponentType.Number;
+        public override ComponentType Type => ComponentType.Number;
 
-        public VueField GetField()
+        public override VueField GetField()
         {
-            throw new NotImplementedException();
+            return base.GetField();
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             throw new NotImplementedException();
         }

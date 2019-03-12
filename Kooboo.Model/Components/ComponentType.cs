@@ -8,6 +8,7 @@ namespace Kooboo.Model.Components
 {
     public enum ComponentType
     {
+        None,
         KTable,
         KTableActionBtn,
         KForm,

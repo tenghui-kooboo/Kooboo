@@ -12,8 +12,10 @@ namespace Kooboo.Model.Components.Table
 
         CellType CellType { get; }
 
-        CellDataType CellDataType { get; }
+        CellDataType CellDataType { get; set; }
 
         object GetData();
+
+        void SetData(List<Attribute> attrs);
     }
 }

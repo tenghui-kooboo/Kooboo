@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Model.Attributes;
 
-namespace Kooboo.Model.Components.Table.Cell
+namespace Kooboo.Model.Components.Table
 {
     public class IconCell : ICell
     {
@@ -14,9 +15,27 @@ namespace Kooboo.Model.Components.Table.Cell
 
         public CellDataType CellDataType { get; set; }
 
+        public string Class { get; set; }
+
+        public string Title { get; set; }
+
         public object GetData()
         {
-            throw new NotImplementedException();
+            var dic = new Dictionary<string, object>();
+            dic.Add("class", Class);
+            dic.Add("title", Title);
+
+            return dic;
+        }
+
+        public void SetData(List<Attribute> attrs)
+        {
+            var attr = attrs.Find(a => a is ColumnIconAttribute) as ColumnIconAttribute;
+            if (attr != null)
+            {
+                Class = attr.Class;
+                Title = attr.Title;
+            }
         }
     }
 }

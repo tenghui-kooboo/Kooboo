@@ -37,7 +37,6 @@ namespace Kooboo.Web.Api.Implementation
             return viewmodel;
         }
 
-        [ViewsModel]
         public override List<object> List(ApiCall call)
         {
             var sitedb = call.WebSite.SiteDb();

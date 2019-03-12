@@ -4,12 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model
+namespace Kooboo.Model.Attributes
 {
-    public class KoobooSetting:Attribute
-    {
-    }
-
     public class ModelNameAttribute : Attribute
     {
         public string ModelName { get; set; }

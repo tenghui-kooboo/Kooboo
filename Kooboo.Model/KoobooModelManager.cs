@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Helper;
 using Kooboo.Api;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model
 {
@@ -16,9 +17,9 @@ namespace Kooboo.Model
             KoobooVueRender = new KoobooVueRender(provider);
         }
 
-        public static string Render(string html)
+        public static string Render(string html,RenderContext context)
         {
-            return KoobooVueRender.Render(html);
+            return KoobooVueRender.Render(html,context);
         }
     }
 }

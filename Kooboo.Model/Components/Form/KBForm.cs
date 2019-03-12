@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Model.Attributes;
 
 namespace Kooboo.Model.Components.Form
 {
@@ -27,9 +28,60 @@ namespace Kooboo.Model.Components.Form
             return vueField;
         }
 
+        public bool IsMatch(Attribute attribute)
+        {
+            return attribute is FormFieldAttribute;
+        }
+
         public bool IsValid()
         {
             throw new NotImplementedException();
+        }
+
+        public void SetData(List<Dictionary<string, List<Attribute>>> attributes)
+        {
+            foreach (var attr in attributes)
+            {
+                foreach (var keyPair in attr)
+                {
+                    var fieldName = keyPair.Key;
+                    var list = keyPair.Value;
+
+                    foreach (var item in list)
+                    {
+                        var formFieldAttr = item as FormFieldAttribute;
+                        if (formFieldAttr == null) continue;
+
+                        var component = ComponentManager.Instance.Get(formFieldAttr.ComponentType);
+                        if(component!=null)
+                        {
+                            var formFieldAttrs = GetFormFieldAttrs(fieldName, list);
+                            component.SetData(formFieldAttrs);
+
+                            Fields.Add(new FormField()
+                            {
+                                Name = fieldName,
+                                DisplayName = formFieldAttr.DisplayName,
+                                Component=component as IBaseComponent
+                            });
+                        }
+                        
+                    }
+
+                }
+            }
+        }
+
+        private List<Dictionary<string,List<Attribute>>> GetFormFieldAttrs(string fieldName, List<Attribute> attributes)
+        {
+            var formFieldAttrs = new List<Dictionary<string, List<Attribute>>>();
+
+            var dic = new Dictionary<string, List<Attribute>>();
+            dic.Add(fieldName, attributes);
+
+            formFieldAttrs.Add(dic);
+
+            return formFieldAttrs;
         }
     }
 

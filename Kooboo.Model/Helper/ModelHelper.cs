@@ -4,92 +4,101 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-using Kooboo.Model.Components.Table.Attributes;
-using Kooboo.Model.Components.Table;
 using Kooboo.Data.Context;
 using Kooboo.Data.Language;
 using Kooboo.Api;
+using Kooboo.Model.Attributes;
+using Kooboo.Model.Components;
 
 namespace Kooboo.Model.Helper
 {
     public class ModelHelper
     {
-        /// <summary>
-        /// get table model by type
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public static TableModel GetTableSetting(Type type,RenderContext context)
+        public static string GetApi(string modelName)
         {
-            if (typeof(ITable).IsAssignableFrom(type))
+            if (!string.IsNullOrEmpty(modelName))
             {
-                var tableModel = new TableModel();
-
-                tableModel.ModelName =GetModelName(type);
-
-                var props = type.GetProperties();
-
-                foreach(var prop in props)
+                var type = ModelCache.Instance.Get(modelName);
+                if (type != null)
                 {
-                    var attributes = prop.GetCustomAttributes().ToList();
-                    foreach(var attr in attributes)
-                    {
-                        if(attr is TableActionAttribute)
-                        {
-                            var tableAction = attr as TableActionAttribute;
-                            tableModel.Actions.Add(new TableAction()
-                            {
-                                ActionName=tableAction.DisplayName,
-                                DisplayName= Hardcoded.GetValue(tableAction.DisplayName,context),
-                                Url=tableAction.Url
-                            });
-
-                        }
-                        else if(attr is ColumnAttribute)
-                        {
-                            var columnAttr = attr as ColumnAttribute;
-                            tableModel.Columns.Add(new TableColumn()
-                            {
-                                //todo review
-                                FieldName = prop.Name.Substring(0,1).ToLower()+prop.Name.Substring(1),
-                                DisplayName= Hardcoded.GetValue(columnAttr.DisplayName,context),
-                                CellType=columnAttr.CellType,
-                                CellDataType=columnAttr.CellDataType
-                            });
-                        }
-                        else if (attr is RowActionAttribute)
-                        {
-                            var rowActionAttr = attr as RowActionAttribute;
-                            tableModel.RowActions.Add(new TableRowAction()
-                            {
-                                FieldName=rowActionAttr.FieldName,
-                                DisplayName = Hardcoded.GetValue(rowActionAttr.DisplayName,context),
-                                CellType=rowActionAttr.CellType
-                            });
-                        }
-                        else if(attr is UrlAttribute)
-                        {
-                            tableModel.UrlColumns.Add(attr as UrlAttribute);
-                        }
-                    }
-
+                    return GetApi(type);
                 }
-                return tableModel;
             }
-            return null;
+            return string.Empty;
+        }
+        public static List<VueField> GetVueFields(string modelName, RenderContext context)
+        {
+            if (!string.IsNullOrEmpty(modelName))
+            {
+                var type =ModelCache.Instance.Get(modelName);
+                if (type != null)
+                {
+                    return GetVueFields(type, context);
+                }
+            }
+            return new List<VueField>();
+        }
+        public static List<VueField> GetVueFields(Type type, RenderContext context)
+        {
+            var components = ComponentManager.Instance.GetComponents(type);
+
+            var list = new List<VueField>();
+            foreach (var component in components)
+            {
+                list.Add(component.GetField());
+            }
+
+            var modelName = GetModelName(type);
+            var modelField = new VueField()
+            {
+                Name = "modelName",
+                Value = modelName
+            };
+            list.Add(modelField);
+
+            var title = GetTitle(type);
+            var titleField = new VueField()
+            {
+                Name = "title",
+                Value = title
+            };
+            list.Add(titleField);
+            return list;
+        }
+
+        private static string GetApi(Type type)
+        {
+            var api = string.Empty;
+            var attr = type.GetCustomAttribute(typeof(ApiAttribute)) as ApiAttribute;
+            if (attr != null)
+            {
+                api = attr.API;
+            }
+            return api;
         }
 
         private static string GetModelName(Type type)
         {
             var modelName = type.Name;
             var modelAttr = type.GetCustomAttribute(typeof(ModelNameAttribute)) as ModelNameAttribute;
-            if(modelAttr!=null)
+            if (modelAttr != null)
             {
                 modelName = modelAttr.ModelName;
             }
             return modelName;
         }
+
+        private static string GetTitle(Type type)
+        {
+            var title = string.Empty;
+            var attr = type.GetCustomAttribute(typeof(TitleAttribute)) as TitleAttribute;
+            if (attr != null)
+            {
+                title = attr.Title;
+            }
+            return title;
+        }
+
         /// <summary>
         /// get kooboosetting from api
         /// </summary>
@@ -102,5 +111,12 @@ namespace Kooboo.Model.Helper
             var setting = methodInfo.GetCustomAttributes(typeof(KoobooSetting), true);
             return setting.ToList().Select(s => s as KoobooSetting).FirstOrDefault();
         }
+    }
+
+    public class ComponentModel
+    {
+        public Type Type { get; set; }
+
+        public List<Dictionary<string, List<Attribute>>> Attributes { get; set; }
     }
 }

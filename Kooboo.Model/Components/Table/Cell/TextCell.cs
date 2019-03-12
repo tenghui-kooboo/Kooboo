@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.Components.Table.Cell
+namespace Kooboo.Model.Components.Table
 {
     public class TextCell : ICell
     {
@@ -16,7 +16,16 @@ namespace Kooboo.Model.Components.Table.Cell
 
         public object GetData()
         {
-            throw new NotImplementedException();
+            var dic = new Dictionary<string, object>();
+            dic.Add("columnName", ColumnName);
+            dic.Add("cellDataType", CellDataType.ToString());
+
+            return dic;
+        }
+
+        public void SetData(List<Attribute> attrs)
+        {
+            
         }
     }
 }

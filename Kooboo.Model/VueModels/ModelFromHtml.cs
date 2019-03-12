@@ -14,6 +14,8 @@ namespace Kooboo.Model
 
         public string DataFrom { get; set; }
 
+        public string CreatedDataFrom { get; set; }
+
         public List<VueMethod> Methods { get; set; } = new List<VueMethod>(); 
 
         private Element VueEl { get; set; }
@@ -40,6 +42,11 @@ namespace Kooboo.Model
                         if (dataFromAttr != null)
                         {
                             this.DataFrom = dataFromAttr.value;
+                        }
+                        var initDataFromAttr = element.attributes.Find(a => a.name.Equals("vue-createdfrom", StringComparison.OrdinalIgnoreCase));
+                        if (initDataFromAttr != null)
+                        {
+                            this.CreatedDataFrom = initDataFromAttr.value;
                         }
                         this.VueEl = element;
                         break;

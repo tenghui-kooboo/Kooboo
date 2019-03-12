@@ -11,6 +11,8 @@ using System.Reflection;
 using Kooboo.Lib;
 using Kooboo.Model.Helper;
 using Kooboo.Dom;
+using Kooboo.Data.Context;
+using Kooboo.Data;
 
 namespace Kooboo.Model
 {
@@ -27,14 +29,14 @@ namespace Kooboo.Model
             ApiProvider = apiProvider;
         }
 
-        public string Render(string html)
+        public string Render(string html,RenderContext context)
         {
             try
             {
                 if(NeedGenerateJs(html))
                 {
                     var doc = DomParser.CreateDom(html);
-                    var js = GetJs(doc);
+                    var js = GetJs(doc,context);
 
                     var script = string.Format("<script>{0}</script>", js);
                     html += script;
@@ -69,22 +71,26 @@ namespace Kooboo.Model
             }
             return needGenerateJs;
         }
-        public string GetJs(Document doc=null)
+        public string GetJs(Document doc,RenderContext context)
         {
-            var model = GetKoobooModel(doc);
+            //todo need cache
+            var model = GetKoobooModel(doc,context);
             var js = model.GetJs();
             return js;
         }
 
-        public VueModel GetKoobooModel(Document doc)
+        public VueModel GetKoobooModel(Document doc,RenderContext context)
         {
             var model = new VueModel() ;
             if (doc == null) return model;
 
             var modelFromHtml = new ModelFromHtml(doc);
-            model.El = modelFromHtml.El;
 
-            model.Data = GetData(modelFromHtml.DataFrom);
+            model.El = GetEl(modelFromHtml.El);
+
+            model.Data = GetData(modelFromHtml.DataFrom, context);
+
+            model.VueCreated = GetVueCreated(modelFromHtml.CreatedDataFrom, context);
 
             var methods = modelFromHtml.Methods;
             foreach(var method in methods)
@@ -95,71 +101,66 @@ namespace Kooboo.Model
             
             model.Computed = new List<string>(); //need get from html;
 
-            model.VueCreated = GetVueCreated(modelFromHtml);
-
-
             return model;
         }
 
-        private VueCreated GetVueCreated(ModelFromHtml modelFromHtml)
+        private string GetEl(string el)
+        {
+            //temp hardcode el id.this can be change to model setting
+            return string.IsNullOrEmpty(el) ? "#id" : el;
+        }
+        private VueCreated GetVueCreated(string api,RenderContext context)
         {
             VueCreated vueCreated=null;
-            if (IsApi(modelFromHtml.DataFrom))
+            if (string.IsNullOrEmpty(api))
             {
-                var setting = ModelHelper.GetSetting(modelFromHtml.DataFrom, ApiProvider);
-
-                var method = ModelApiHelper.GetMethod(modelFromHtml.DataFrom);
-                if (IsTable(setting) && method != null)
+                var modelName = context.Request.QueryString["modelName"];
+                api = ModelHelper.GetApi(modelName);
+            }
+            if (IsApi(api))
+            {
+                var setting = ModelHelper.GetSetting(api, ApiProvider);
+                var method = ModelApiHelper.GetMethod(api);
+                if (method != null)
                 {
                     vueCreated = new VueCreated()
                     {
-                        API = modelFromHtml.DataFrom,
+                        API = api,
                         ModelType = method.Class
                     };
                 }
-
             }
+
             return vueCreated;
         }
 
-        public List<VueField> GetData(string dataFrom)
+        public List<VueField> GetData(string dataFrom,RenderContext context)
         {
-            //get rule by api
-            //get method by api
-            //get component by api
-
-            //dataFrom="api" isReturn="true"
-            //fromApi
-            //returnByApi
             var dataList = new List<VueField>();
 
+            //get data from api
             if (IsApi(dataFrom))
             {
                 var setting = ModelHelper.GetSetting(dataFrom, ApiProvider);
                 if (setting != null)
                 {
-                    //for list/table
-                    if(IsTable(setting))
-                    {
-                        var tableModel = ModelHelper.GetTableSetting(setting.GetType(), null);
-                        if(tableModel!=null)
-                        {
-                            dataList.Add(tableModel.GetField());
-                        }
-
-                    }
-                    else
-                    {
-                        //for normal
-                        dataList = RuleHelper.GetVueFields(setting.GetType());
-                    }
-                    
+                    dataList = RuleHelper.GetVueFields(setting.GetType());
                 }
 
             }
             else
             {
-
+                var modelName = dataFrom;
+                if (string.IsNullOrEmpty(modelName))
+                {
+                    modelName = context.Request.QueryString["modelName"];
+                }
+                if (string.IsNullOrEmpty(modelName))
+                {
+                    throw new Exception(Kooboo.Data.Language.Hardcoded.GetValue("can't find model", context));
+                }
+                //get data from model
+                dataList = ModelHelper.GetVueFields(modelName, context);
             }
 
             return dataList;
@@ -169,12 +170,6 @@ namespace Kooboo.Model
         {
             return dataFrom.IndexOf(".") > -1;
         }
-        private bool IsTable(KoobooSetting settting)
-        {
-            return settting is ITable;
-        }
-
-
 
         //private List<VueMethods> GetVueMethods(string html)
         //{

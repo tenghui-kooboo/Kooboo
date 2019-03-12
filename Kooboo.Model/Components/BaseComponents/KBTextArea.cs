@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Components.CtrlType
 {
-    public class KBRadioBox : IComponent
+    public class KBTextArea : BaseComponent
     {
-        public ComponentType Type => ComponentType.RadioBox;
+        public override ComponentType Type => ComponentType.TextArea;
 
-        public VueField GetField()
+        public override VueField GetField()
         {
-            throw new NotImplementedException();
+            return base.GetField();
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             throw new NotImplementedException();
         }

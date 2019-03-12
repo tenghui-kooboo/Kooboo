@@ -37,9 +37,19 @@ namespace Kooboo.Model.Components.Table
             return field;
         }
 
+        public bool IsMatch(Attribute attribute)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsValid()
         {
             return Action.IsValid();
+        }
+
+        public void SetData(List<Dictionary<string, List<Attribute>>> attributes)
+        {
+            return;
         }
     }
 

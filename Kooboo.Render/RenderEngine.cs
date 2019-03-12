@@ -151,7 +151,7 @@ namespace Kooboo.Render
                 return response;
             }
 
-            htmlbody = Kooboo.Model.KoobooModelManager.Render(htmlbody);
+            htmlbody = Kooboo.Model.KoobooModelManager.Render(htmlbody, Context);
 
             var hashid = Lib.Security.Hash.ComputeHashGuid(htmlbody);
 

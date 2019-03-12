@@ -10,7 +10,10 @@ namespace Kooboo.Model.Components.Table
     {
         string Name { get; set; }
         string DisplayName { get; set; }
+        string Color { get; set; }
         ButtonActionType ActionType { get; }
         bool IsValid();
+        VueField GetField();
+        void SetData(List<Attribute> attributes);
     }
 }

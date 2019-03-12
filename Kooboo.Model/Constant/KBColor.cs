@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.Components.Table
+namespace Kooboo.Model
 {
-    public enum ButtonActionType
+    public class KBColor
     {
-        None,
-        Link,
-        Modal,
-        Dropdown
+        public const string Green = "green";
+        public const string Red = "Red";
     }
 }

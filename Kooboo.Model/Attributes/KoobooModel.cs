@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model
 {
-    public interface ITable
+    public class KoobooSetting:Attribute
     {
-        string Actions { get; set; }
-
-        string RowActions { get; set; }
+        
     }
+
 }
