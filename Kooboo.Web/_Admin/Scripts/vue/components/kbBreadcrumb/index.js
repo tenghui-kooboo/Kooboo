@@ -1,12 +1,10 @@
 (function() {
-    Kooboo.loadJS([
-        '/_Admin/Scripts/vue/components/kbBreadcrumb/item/index.js'
-    ])
-
-    Kooboo.vue.component.kbBreadcrumb = Vue.component('kb-breadcrumb', {
-        data: function() {
-            return {}
-        },
-        template: Kooboo.getTemplate('/_Admin/Scripts/vue/components/kbBreadcrumb/index.html')
-    })
-})()
+  Kooboo.vue.component.kbBreadcrumb = Vue.component("kb-breadcrumb", {
+    props: {
+      items: Array
+    },
+    template: Kooboo.getTemplate(
+      "/_Admin/Scripts/vue/components/kbBreadcrumb/index.html"
+    )
+  });
+})();
