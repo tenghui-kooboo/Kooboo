@@ -5,11 +5,7 @@
     <h1 class="title">{{title}}</h1>
 </div>
 <div>
-    <kb-breadcrumb>
-        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
-        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
-        <kb-breadcrumb-item item='LAYOUTS' :active='true'></kb-breadcrumb-item>
-    </kb-breadcrumb>
+    <kb-breadcrumb :items="breadCrumb"></kb-breadcrumb>
     <kb-table :data='tableData' ></kb-table>
     <kb-relation-modal :show='tableData.isShowModal' :config='tableData.modalConfig' @close='tableData.isShowModal = false'></kb-relation-modal>
 </div>
