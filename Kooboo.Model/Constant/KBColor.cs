@@ -9,6 +9,6 @@ namespace Kooboo.Model
     public class KBColor
     {
         public const string Green = "green";
-        public const string Red = "Red";
+        public const string Red = "red";
     }
 }

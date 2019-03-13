@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -15,6 +16,8 @@ namespace Kooboo.Model.Components.Table
 
         public string DisplayName { get; set; }
 
+        public RenderContext Context { get; set; }
+
         public List<LinkAction> Links { get; set; } = new List<LinkAction>();
 
         public string Color { get; set; }
@@ -25,8 +28,8 @@ namespace Kooboo.Model.Components.Table
             field.Name = this.Name;
             var dic = new Dictionary<string, object>();
             dic.Add("name", this.Name);
-            dic.Add("displayName", this.DisplayName);
-
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName,Context));
+            dic.Add("color", this.Color);
             dic.Add("links", this.Links);
             field.Value = dic;
 
@@ -48,11 +51,11 @@ namespace Kooboo.Model.Components.Table
                 Links.Add(new LinkAction()
                 {
                     Name=linkAttr.FieldName,
-                    DisplayName=linkAttr.FieldName,
+                    DisplayName= linkAttr.FieldName,
                     Url=linkAttr.Url
                 });
             }
-            //throw new NotImplementedException();
+            
         }
     }
 }

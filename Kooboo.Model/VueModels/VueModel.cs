@@ -111,7 +111,7 @@ namespace Kooboo.Model
             sb.Append("created:function(){");
             sb.AppendLine();
             //sb.AppendTabs(tabCount, string.Format("Kooboo.Table.getList(this,'{0}','{1}')", VueCreated.API, VueCreated.ModelType)); 
-            sb.AppendTabs(tabCount, string.Format("Kooboo.Table.getList(this.tableData)"));
+            sb.AppendTabs(tabCount, string.Format("Kooboo.Table.getList(this.tableData,this)"));
             sb.Append("}");
             return sb.ToString();
         }

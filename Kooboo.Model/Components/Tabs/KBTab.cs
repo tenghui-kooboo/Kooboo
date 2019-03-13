@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Context;
 using Kooboo.Model.Attributes;
 
 namespace Kooboo.Model.Components.Tabs
@@ -13,6 +14,8 @@ namespace Kooboo.Model.Components.Tabs
 
         public List<KTabItem> Tabs { get; set; } = new List<KTabItem>();
 
+        public RenderContext Context { get; set; }
+
         public VueField GetField()
         {
             var field = new VueField();
@@ -21,7 +24,7 @@ namespace Kooboo.Model.Components.Tabs
             var list = new List<Dictionary<string, object>>();
             foreach(var item in Tabs)
             {
-                list.Add(item.GetData());
+                list.Add(item.GetData(Context));
             }
             field.Value = list;
 
@@ -94,12 +97,12 @@ namespace Kooboo.Model.Components.Tabs
 
         public IComponent Component { get; set; }
 
-        public Dictionary<string,object> GetData()
+        public Dictionary<string,object> GetData(RenderContext context)
         {
             var dic = new Dictionary<string, object>();
 
             dic.Add("name",Name);
-            dic.Add("displayName", DisplayName);
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName,context));
             dic.Add("type", Component.Type);
 
             var field = Component.GetField();

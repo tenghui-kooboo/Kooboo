@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.Form
 {
@@ -12,6 +13,8 @@ namespace Kooboo.Model.Components.Form
         public ComponentType Type => ComponentType.KForm;
 
         public List<FormField> Fields { get; set; } = new List<FormField>();
+
+        public RenderContext Context { get; set; }
 
         //"fields:[]"
         public VueField GetField()
@@ -22,7 +25,7 @@ namespace Kooboo.Model.Components.Form
             var list = new List<Dictionary<string,object>>();
             foreach(var field in Fields)
             {
-                list.Add(field.GetData());
+                list.Add(field.GetData(Context));
             }
             vueField.Value = list;
             return vueField;
@@ -93,11 +96,11 @@ namespace Kooboo.Model.Components.Form
 
         public IBaseComponent Component { get; set; }
 
-        public Dictionary<string,object> GetData()
+        public Dictionary<string,object> GetData(RenderContext context)
         {
             var dic = new Dictionary<string, object>();
             dic.Add("name", Name);
-            dic.Add("displayName", DisplayName);
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName,context));
             dic.Add("type", Component.Type.ToString());
             //some component needs data. 
             //like select component needs options

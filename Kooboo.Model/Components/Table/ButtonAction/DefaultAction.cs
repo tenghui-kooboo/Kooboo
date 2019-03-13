@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Context;
 
 
 namespace Kooboo.Model.Components.Table
@@ -12,6 +13,8 @@ namespace Kooboo.Model.Components.Table
         public ButtonActionType ActionType => ButtonActionType.None;
 
         public string Name { get; set; }
+
+        public RenderContext Context { get; set; }
 
         public string DisplayName { get; set; }
 
@@ -23,8 +26,8 @@ namespace Kooboo.Model.Components.Table
             field.Name = this.Name;
             var dic = new Dictionary<string, object>();
             dic.Add("name", this.Name);
-            dic.Add("displayName", this.DisplayName);
-
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName,Context));
+            dic.Add("color", this.Color);
             field.Value = dic;
 
             return field;

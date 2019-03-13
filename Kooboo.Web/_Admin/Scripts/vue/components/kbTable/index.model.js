@@ -22,7 +22,7 @@
             },
             deleteTrigger: function(trigged) {
                 var self = this;
-
+                debugger;
                 if (trigged) {
                     Kooboo.Table.deletes(self.data,self.selectedDocs,function(){
                         self.selectedDocs = [];
@@ -50,24 +50,22 @@
                 var actions=this.data.actions;
                 //clone
                 var computeActions=JSON.parse(JSON.stringify(actions));
-                
                 computeActions.forEach(function(action){
                     if(action.url){
-                        var url=eval(action.url);
-                        action.url=Kooboo.Route.Get(url);
+                        action.url=Kooboo.UrlHelper.Get(action.url);
                     }else{
                         //can be optimized
                         action.url="javascript:void(0)"
                     }
                     action.click=function(){};
                     //todo confirm,why render twice
-                    if(action.actionName=="Copy"){
+                    if(action.name=="Copy"){
                         action.condition=self.selectedDocs.length==1;
                         action.click=function(){
                             debugger;
                             self.showCopyModal=true;
                         }
-                    }else if(action.actionName=="Delete"){
+                    }else if(action.name=="Delete"){
                         action.condition=self.selectedDocs.length>0;
                         action.click=function(){
                             self.deleteTrigger=true;

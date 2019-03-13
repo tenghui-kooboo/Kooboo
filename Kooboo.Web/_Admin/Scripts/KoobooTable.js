@@ -1,14 +1,15 @@
+
 Kooboo.Table={
-    getList:function(tableData){
-        var modelName=tableData.modelName;
-        var method=Kooboo.Table.getModel(modelName,"list");
+    getList:function(tableData,vm){
+        if(!tableData.modelName){
+            tableData.modelName=vm.modelName;
+        }
+        var method=Kooboo.Table.getModel(tableData.modelName,"list");
         method.then(function(res) {
         //Kooboo.Layout.list().then(function(res) {
             if(res.success){
                 var data=res.model;
                 var cols=tableData.cols;
-
-                var urls=tableData.urls;
                 for(var i=0;i<data.length;i++){
                     var item=data[i];
                     var doc=Kooboo.Table.getDoc(tableData,item);
@@ -97,36 +98,31 @@ Kooboo.Table={
     //     return model[method].call(model);
 
     // },
-    getLinkUrl:function(data,col,urls){
+    getLinkUrl:function(data,col){
         var name=col.fieldName;
-        var link=_.find(urls,function(url){
-            return url.fieldName.toLowerCase()==name.toLowerCase();
-        });
-        
-        if(link!=null){
+        var colData=col.data;
+        if(colData.url){
             var urlData={};
-            for(var i=0;i<link.paras.length;i++){
-                var para=link.paras[i];
+            for(var i=0;i<colData.paras.length;i++){
+                var para=colData.paras[i];
                 urlData[para]=data[para];
             }
-            var url=eval(link.url);
-            return  Kooboo.Route.Get(url,urlData);
+            return Kooboo.UrlHelper.Get(colData.url,urlData);
         }
-        return "";
     },
+    
     getValue:function(data,col,tableData){
         var urls=tableData.urls;
-        var relations=tableData.relations;
-        switch(col.type.toLowerCase()){
-            case 'array':
+       
+        switch(col.type){
+            case Kooboo.Table.CellType.Array:
                 var obj=data[col.fieldName];
                 var arr=Kooboo.objToArr(obj);
+                debugger;
 
                 var tableArray=[];
                 if(arr && arr.length>0){
-                    var relation=_.find(relations,function(rel){
-                                    return rel.fieldName.toLowerCase()==col.fieldName.toLowerCase();
-                                });
+                    var relation=col.data;
                     for(var i =0;i<arr.length;i++){
                         var item=arr[i];
                         tableArray.push({
@@ -139,50 +135,70 @@ Kooboo.Table={
                                 type: tableData.modelName
                             },
                             onClick:function(rel){
-                                relation.config=rel.data;
-                                relation.isShow=true;
+                                tableData.modalConfig=rel.data;
+                                tableData.isShowModal=true;
                             }
                         })
                     }
                 }
                 return tableArray;
             break;
-            case 'badge':
+            case Kooboo.Table.CellType.Badge:
             
             break;
-            case 'button':
+            case Kooboo.Table.CellType.Button:
                 return {
                     class: 'btn-xs blue',
                     icon: "fa-clock-o",
                     title: col.displayName,
-                    url: Kooboo.Table.getLinkUrl(data,col,urls),
+                    url: Kooboo.Table.getLinkUrl(data,col),
                     inNewWindow: true
                 }
             break;
-            case 'icontext':
+            case Kooboo.Table.CellType.IconText:
             break;
-            case 'icon':
+            case Kooboo.Table.CellType.Icon:
             break;
-            case 'label':
+            case Kooboo.Table.CellType.Label:
             break;
-            case 'link':
+            case Kooboo.Table.CellType.Link:
                 return {
                     text:data[col.fieldName],
-                    url:Kooboo.Table.getLinkUrl(data,col,urls)
+                    url:Kooboo.Table.getLinkUrl(data,col)
                 };
             break;
-            case 'summary':
+            case Kooboo.Table.CellType.Summary:
             break;
-
-            case 'text':
+            case Kooboo.Table.CellType.Text:
             default:
                 var value=data[col.fieldName];
-                if(col.dataType=="Date"){
+                if(col.dataType==Kooboo.Table.CellDataType.Date){
                     var date=new Date(value);
                     value=date.toDefaultLangString();
                 }
                 return value;
             break;
         }
-    }
+    },
+    // getValueByField:function(data,field){
+    //     if(!field) return '';
+    //     field=field[0].toLowerCase()+field.substring(1);
+    //     return data[field];
+    // }
+}
+
+Kooboo.Table.CellType={
+        Array:"array",
+        Badge:"badge",
+        Button:"button",
+        IconText:"iconText",
+        Icon:"icon",
+        Label:"label",
+        Link:"link",
+        Summary:"summary",
+        Text:"text"
+}
+Kooboo.Table.CellDataType={
+    Text:"Text",
+    Date:"Date"
 }

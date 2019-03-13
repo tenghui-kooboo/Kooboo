@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -18,6 +19,8 @@ namespace Kooboo.Model.Components.Table
 
         public string ModalName { get; set; }
 
+        public RenderContext Context { get; set; }
+
         public VueField GetField()
         {
             var field = new VueField();
@@ -25,7 +28,7 @@ namespace Kooboo.Model.Components.Table
 
             var dic = new Dictionary<string, object>();
             dic.Add("name", this.Name);
-            dic.Add("displayName", this.DisplayName);
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName,Context));
             dic.Add("color", this.Color);
             dic.Add("modalName", this.ModalName);
             field.Value = dic;

@@ -9,8 +9,9 @@ using Kooboo.Data.Language;
 using Kooboo.Api;
 using Kooboo.Model.Attributes;
 using Kooboo.Model.Components;
+using Kooboo.Model.Helper;
 
-namespace Kooboo.Model.Helper
+namespace Kooboo.Model
 {
     public class ModelHelper
     {
@@ -40,14 +41,8 @@ namespace Kooboo.Model.Helper
         }
         public static List<VueField> GetVueFields(Type type, RenderContext context)
         {
-            var components = ComponentManager.Instance.GetComponents(type);
-
+            
             var list = new List<VueField>();
-            foreach (var component in components)
-            {
-                list.Add(component.GetField());
-            }
-
             var modelName = GetModelName(type);
             var modelField = new VueField()
             {
@@ -60,9 +55,19 @@ namespace Kooboo.Model.Helper
             var titleField = new VueField()
             {
                 Name = "title",
-                Value = title
+                Value = GetMultiLang(title,context)
             };
             list.Add(titleField);
+
+            var components = ComponentManager.Instance.GetComponents(type,context);
+            foreach (var component in components)
+            {
+                list.Add(component.GetField());
+            }
+
+            
+
+            
             return list;
         }
 
@@ -111,10 +116,16 @@ namespace Kooboo.Model.Helper
             var setting = methodInfo.GetCustomAttributes(typeof(KoobooSetting), true);
             return setting.ToList().Select(s => s as KoobooSetting).FirstOrDefault();
         }
+
+        public static string GetMultiLang(string displayName,RenderContext context)
+        {
+            return Hardcoded.GetValue(displayName);
+        }
     }
 
     public class ComponentModel
     {
+        //componet Type
         public Type Type { get; set; }
 
         public List<Dictionary<string, List<Attribute>>> Attributes { get; set; }

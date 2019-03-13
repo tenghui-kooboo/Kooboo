@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components
 {
@@ -105,7 +106,7 @@ namespace Kooboo.Model.Components
             return componentModels;
         }
 
-        public List<IComponent> GetComponents(Type type)
+        public List<IComponent> GetComponents(Type type,RenderContext context)
         {
             var props = type.GetProperties();
 
@@ -117,6 +118,7 @@ namespace Kooboo.Model.Components
                 try
                 {
                     var instance = Activator.CreateInstance(model.Type) as IComponent;
+                    instance.Context = context;
                     instance.SetData(model.Attributes);
                     components.Add(instance);
                 }

@@ -23,8 +23,8 @@ namespace Kooboo.Model
         public ModelFromHtml(Document document)
         {
             Init(document.childNodes.item);
-
-            InitMethods(VueEl.childNodes.item);
+            if(VueEl!=null)
+             InitMethods(VueEl.childNodes.item);
         }
 
         private void Init(List<Node> items)

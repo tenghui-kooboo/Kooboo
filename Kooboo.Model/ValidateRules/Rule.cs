@@ -12,7 +12,7 @@ namespace Kooboo.Model.ValidateRules
 
         public virtual string GetRule()
         {
-            return string.Empty;
+            return "{}";
         }
     }
 }

@@ -2,7 +2,7 @@
 <div class="navbar navbar-default">
     <div class="container-fluid">
         <a v-for="action in computedActions" class="btn navbar-btn" 
-        :class="action.actionName=='Delete'? 'red':'green'"
+        :class="action.color"
         :href="action.url"
         v-if="action.condition" 
         @click="action.click">{{action.displayName}}</a>

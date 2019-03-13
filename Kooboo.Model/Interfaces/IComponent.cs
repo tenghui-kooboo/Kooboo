@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Components;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model
 {
@@ -14,6 +15,9 @@ namespace Kooboo.Model
         bool IsValid();
 
         VueField GetField();
+
+        //for multi lang
+        RenderContext Context { get; set; }
 
         // model attribute is belong to component
         bool IsMatch(Attribute attribute);

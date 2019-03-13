@@ -53,36 +53,40 @@ namespace Kooboo.Model
 
             return sb.ToString();
         }
-        //private string GetRule()
-        //{
-        //    var sb = new StringBuilder();
-        //    sb.AppendLine("validate:{");
 
-        //    #region rules
-        //    sb.AppendLine("rules:[");
+        private string GetRule()
+        {
+            var sb = new StringBuilder();
+            #region rules
+            if(ValidateRules.Count>0)
+            {
+                sb.AppendLine(string.Format("{0}:[", Name));
+            }
+            
+            for (var i = 0; i < ValidateRules.Count; i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append(",");
+                    sb.AppendLine();
+                }
 
-        //    for(var i=0;i<ValidateRules.Count;i++)
-        //    {
-        //        if (i > 0)
-        //        {
-        //            sb.Append(",");
-        //            sb.AppendLine();
-        //        }
-                    
-        //        var rule = ValidateRules[i];
-        //        sb.Append(rule.GetRule());
-        //    }
+                var rule = ValidateRules[i];
+                sb.Append(rule.GetRule());
+            }
 
-        //    sb.AppendLine("]");
+            if (ValidateRules.Count > 0)
+            {
+                sb.AppendLine("]");
+            }
 
-        //    #endregion
-        //    sb.AppendLine("},");
-        //    sb.AppendLine("isValid:true,");
-        //    sb.AppendLine("errors: []");
+            #endregion
+            sb.AppendLine("isValid:true,");
+            sb.AppendLine("errors: []");
 
-        //    return sb.ToString();
-        //}
+            return sb.ToString();
+        }
 
-        
+
     }
 }

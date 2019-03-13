@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components
 {
@@ -21,12 +22,15 @@ namespace Kooboo.Model.Components
 
         public string Tooltip { get; set; }
 
+        public RenderContext Context { get; set; }
+
         public virtual VueField GetField()
         {
             var field = new VueField();
             field.Name = FieldName;
 
             var dic = new Dictionary<string, object>();
+            //todo confirm multi lang
             dic.Add("isMultilingual", IsMultilingual);
             dic.Add("fieldName", FieldName);
             dic.Add("disabled", Disabled);

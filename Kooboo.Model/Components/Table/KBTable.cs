@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Components.Table;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components
 {
@@ -13,6 +14,8 @@ namespace Kooboo.Model.Components
         public ComponentType Type => ComponentType.KTable;
 
         public string ModelName { get; set; }//todo change to name
+
+        public RenderContext Context { get; set; }
 
         public List<TableColumn> Columns { get; set; } = new List<TableColumn>();
 
@@ -34,6 +37,10 @@ namespace Kooboo.Model.Components
             dic.Add("cols", GetCols());
             dic.Add("rowActions", GetRowCols());
             dic.Add("actions", GetActions());
+
+            //for table modal
+            dic.Add("isShowModal", false);
+            dic.Add("modalConfig", new object());
             
             field.Value = dic;
 
@@ -44,7 +51,7 @@ namespace Kooboo.Model.Components
             var cols = new List<object>();
             foreach (var col in Columns)
             {
-                cols.Add(col.GetData());
+                cols.Add(col.GetData(Context));
             }
             return cols;
         }
@@ -53,7 +60,7 @@ namespace Kooboo.Model.Components
             var rowCols = new List<object>();
             foreach (var col in RowActions)
             {
-                rowCols.Add(col.GetData());
+                rowCols.Add(col.GetData(Context));
             }
             return rowCols;
         }
@@ -100,6 +107,7 @@ namespace Kooboo.Model.Components
                         var action = ButtonActionManager.Instance.Get(attr.ActionType);
                         if (action != null)
                         {
+                            action.Context = Context;
                             action.Name = fieldName;
                             action.DisplayName = attr.DisplayName;
                             action.Color = attr.Color;
@@ -159,15 +167,16 @@ namespace Kooboo.Model.Components
 
         public ICell Cell { get; set; }
 
-        public object GetData()
+        public object GetData(RenderContext context)
         {
             var dic = new Dictionary<string, object>();
-            dic.Add("displayName", DisplayName);
-            dic.Add("fieldName", FieldName);
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName, context));
+            dic.Add("fieldName", FieldName.Substring(0, 1).ToLower() + FieldName.Substring(1));
             //todo confirm
             var cellType = Cell.CellType.ToString();
             //todo review
             //redundant fields
+            //first char need to change to lowercase
             dic.Add("type", cellType.Substring(0, 1).ToLower() + cellType.Substring(1));
             dic.Add("dataType", Cell.CellDataType.ToString());
             //dic.Add("cellData",Cell.GetData())

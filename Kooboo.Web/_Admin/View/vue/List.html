@@ -1,0 +1,28 @@
+<!-- #layout name=vue -->
+<!--VueRender-->
+<div id="id">
+<div class="page-header">
+    <h1 class="title">{{title}}</h1>
+</div>
+<div>
+    <kb-breadcrumb>
+        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
+        <kb-breadcrumb-item item='LAYOUTS' :active='true'></kb-breadcrumb-item>
+    </kb-breadcrumb>
+    <kb-table :data='tableData' ></kb-table>
+    <kb-relation-modal :show='tableData.isShowModal' :config='tableData.modalConfig' @close='tableData.isShowModal = false'></kb-relation-modal>
+</div>
+</div>
+<script>
+    Kooboo.loadJS([
+        "/_Admin/Scripts/vue/components/kbTable/index.model.js",
+        "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
+        "/_Admin/Scripts/vue/components/kbModal/index.js",
+        "/_Admin/Scripts/vue/components/kbRelationModal/index.js",
+        "/_Admin/Scripts/vue/components/kbCopyModal/index.js",
+        "/_Admin/Scripts/vue/urlHelper.js",
+        "/_Admin/Scripts/KoobooTable.js"
+    ])
+ 
+</script>

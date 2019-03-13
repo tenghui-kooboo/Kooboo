@@ -168,6 +168,7 @@ namespace Kooboo.Model
 
         private bool IsApi(string dataFrom)
         {
+            if (string.IsNullOrEmpty(dataFrom)) return false;
             return dataFrom.IndexOf(".") > -1;
         }
 

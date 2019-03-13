@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.BreadCrumb
 {
@@ -13,6 +14,8 @@ namespace Kooboo.Model.Components.BreadCrumb
 
         public List<KBreadCrumbItem> Breadcrumbs { get; set; } = new List<KBreadCrumbItem>();
 
+        public RenderContext Context { get; set; }
+
         public VueField GetField()
         {
             //todo can be optimized
@@ -20,7 +23,7 @@ namespace Kooboo.Model.Components.BreadCrumb
             
             foreach(var item in Breadcrumbs)
             {
-                list.Add(item.GetData());
+                list.Add(item.GetData(Context));
             }
            
 
@@ -90,10 +93,10 @@ namespace Kooboo.Model.Components.BreadCrumb
 
         public string Url { get; set; }
 
-        public Dictionary<string,string> GetData()
+        public Dictionary<string,string> GetData(RenderContext context)
         {
             var dic = new Dictionary<string, string>();
-            dic.Add("displayName", DisplayName);
+            dic.Add("displayName", ModelHelper.GetMultiLang(DisplayName,context));
             dic.Add("url", Url);
             return dic;
         }
