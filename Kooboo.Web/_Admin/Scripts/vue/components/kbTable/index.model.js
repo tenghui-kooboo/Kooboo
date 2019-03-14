@@ -22,7 +22,6 @@
             },
             deleteTrigger: function(trigged) {
                 var self = this;
-                debugger;
                 if (trigged) {
                     Kooboo.Table.deletes(self.data,self.selectedDocs,function(){
                         self.selectedDocs = [];
@@ -62,7 +61,6 @@
                     if(action.name=="Copy"){
                         action.condition=self.selectedDocs.length==1;
                         action.click=function(){
-                            debugger;
                             self.showCopyModal=true;
                         }
                     }else if(action.name=="Delete"){

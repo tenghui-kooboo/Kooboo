@@ -54,6 +54,7 @@
     <Compile Include="Attributes\FormFieldAttribute.cs" />
     <Compile Include="Attributes\ModalAttribute.cs" />
     <Compile Include="Attributes\ModelNameAttribute.cs" />
+    <Compile Include="Attributes\NewModalAttribute.cs" />
     <Compile Include="Attributes\TabAttribute.cs" />
     <Compile Include="Attributes\Table\ColumnBadgeAttribute.cs" />
     <Compile Include="Attributes\Table\ColumnIconAttribute.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Attributes\Table\ColumnSummaryAttribute.cs" />
     <Compile Include="Attributes\Table\TableAttribute.cs" />
     <Compile Include="Attributes\LinkAttribute.cs" />
+    <Compile Include="Attributes\Table\TableSelectableAttribute.cs" />
     <Compile Include="Attributes\TitleAttribute.cs" />
     <Compile Include="Components\BaseComponents\BaseComponent.cs" />
     <Compile Include="Components\BreadCrumb\KBreadCrumb.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Helper\RuleHelper.cs" />
     <Compile Include="KoobooModelManager.cs" />
     <Compile Include="Helper\ModelCache.cs" />
+    <Compile Include="Setting\ViewsModel.cs" />
     <Compile Include="VueModels\ModelFromHtml.cs" />
     <Compile Include="VueModels\VueCreated.cs" />
     <Compile Include="VueModels\VueModel.cs" />

@@ -11,6 +11,7 @@ namespace Kooboo.Model.Attributes
         public string FieldName { get; set; }
         public string Url { get; set; }
         public string[] Paras { get; set; }
+        //url can be optimized
         public LinkAttribute(string name, string url, params string[] paras)
         {
             FieldName = name;

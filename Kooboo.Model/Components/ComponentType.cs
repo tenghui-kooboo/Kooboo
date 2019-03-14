@@ -10,7 +10,6 @@ namespace Kooboo.Model.Components
     {
         None,
         KTable,
-        KTableActionBtn,
         KForm,
         KBreadCrumb,
         KTab,

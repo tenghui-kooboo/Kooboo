@@ -85,7 +85,8 @@ namespace Kooboo.Model.Components
         {
             return attribute is RowActionAttribute ||
                 attribute is ColumnAttribute ||
-                attribute is TableActionAttribute;
+                attribute is TableActionAttribute||
+                attribute is TableSelectableAttribute;
         }
 
         public void SetData(List<Dictionary<string, List<Attribute>>> attributes)
@@ -133,6 +134,12 @@ namespace Kooboo.Model.Components
                             column.Cell.SetData(list);
                         }
                         Columns.Add(column);
+
+                        var tableSelectableAttr = list.Find(l => l is TableSelectableAttribute) as TableSelectableAttribute;
+                        if (tableSelectableAttr != null)
+                        {
+                            Selectable = tableSelectableAttr.Selectable;
+                        }
                         continue;
                     }
 
@@ -153,6 +160,7 @@ namespace Kooboo.Model.Components
                         RowActions.Add(column);
                         continue;
                     }
+
                 }
 
             }

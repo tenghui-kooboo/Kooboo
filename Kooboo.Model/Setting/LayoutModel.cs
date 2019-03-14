@@ -15,13 +15,6 @@ namespace Kooboo.Model.Setting
     [Api("Kooboo.Layout.list")]
     public class LayoutModel: KoobooSetting, IKoobooModel
     {
-        //[TableAction("Create",ButtonActionType.Link)]
-        //[Link("Kooboo.Route.Layout.Create", null, null)]
-        //[TableAction("Copy",ButtonActionType.Modal)]
-        //[Modal("copy",null,null)]
-        //[TableAction("Delete",ButtonActionType.None)]
-        //public string Actions { get; set; }
-
         [BreadCrumb("sites", "/_Admin/Sites")]
         [BreadCrumb("dashboard", "/_Admin/Site")]
         [BreadCrumb("Layouts", "")]
@@ -45,6 +38,7 @@ namespace Kooboo.Model.Setting
 
         [Column("Used by", CellType.Array)]
         [Modal("relation",null,null)]
+        [NewModal("Relation",ComponentType.KTable, "relations")]
         public string Relations { get; set; }
 
         [Column("Last modified", CellType.Text,CellDataType.Date)]
@@ -55,5 +49,32 @@ namespace Kooboo.Model.Setting
         public string Versions { get; set; }
 
     }
+    
+    //[ModelName("LayoutCopyModel")]
+    //public class CopyModel:IKoobooModel
+    //{
+    //    [FormField("Name","Name",ComponentType.Input)]
+    //    public string Name { get; set; }
+
+    //}
+
+    [ModelName("relations")]
+    [Title("Relation")]
+    [Api("Kooboo.Relation.showBy")]
+    public class RelationsModel : IKoobooModel
+    {
+        [Column("Name",CellType.Link)]
+        [Link("Name","url")]
+        [TableSelectable(false)]
+        public string Name { get; set; }
+
+        [Column("Remark", CellType.Text)]
+        public string Remark { get; set; }
+
+        [RowAction("Edit","Edit",CellType.Button)]
+        [Link("Edit","/aa","Id")]//url 1.additional js function //2.unified url
+        public string Edit { get; set; }
+    }
+
 
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
-
+using Kooboo.Data.Context;
 namespace Kooboo.Model.Components.Table
 {
     //temp only support link btn
@@ -15,6 +15,8 @@ namespace Kooboo.Model.Components.Table
         public CellType CellType => CellType.Button;
 
         public CellDataType CellDataType { get; set; }
+
+        public RenderContext Context { get; set; }
 
         public string Url { get; set; }
 

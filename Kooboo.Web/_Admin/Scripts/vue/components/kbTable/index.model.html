@@ -1,5 +1,5 @@
 <div>
-<div class="navbar navbar-default">
+<div class="navbar navbar-default" v-if="computedActions.length">
     <div class="container-fluid">
         <a v-for="action in computedActions" class="btn navbar-btn" 
         :class="action.color"

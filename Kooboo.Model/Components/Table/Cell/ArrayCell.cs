@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -19,6 +20,8 @@ namespace Kooboo.Model.Components.Table
 
         public object Config { get; set; } = new object();
 
+        public RenderContext Context { get; set; }
+
         public object GetData()
         {
             var dic = new Dictionary<string, object>();
@@ -32,12 +35,20 @@ namespace Kooboo.Model.Components.Table
 
         public void SetData(List<Attribute> attrs)
         {
-            //change the show key
-            //var attr= attrs.Find(a => a is ModalAttribute) as ModalAttribute;
-            //if(attr!=null)
-            //{
-
-            //}
+            var attr = attrs.Find(a => a is NewModalAttribute) as NewModalAttribute;
+            if(attr!=null)
+            {
+                if(attr.ComponentType==ComponentType.KTable||
+                    attr.ComponentType == ComponentType.KForm)
+                {
+                    var modelName = attr.ComponentModelName;
+                    if (!string.IsNullOrEmpty(modelName))
+                    {
+                        var config = ModelHelper.GetVueFields(modelName,Context);
+                        Config = config;
+                    }
+                }
+            }
         }
     }
 }

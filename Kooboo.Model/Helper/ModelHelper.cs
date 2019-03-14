@@ -39,7 +39,7 @@ namespace Kooboo.Model
             }
             return new List<VueField>();
         }
-        public static List<VueField> GetVueFields(Type type, RenderContext context)
+        private static List<VueField> GetVueFields(Type type, RenderContext context)
         {
             
             var list = new List<VueField>();
@@ -59,15 +59,20 @@ namespace Kooboo.Model
             };
             list.Add(titleField);
 
+            var api = GetApi(type);
+            var apiField = new VueField()
+            {
+                Name = "api",
+                Value = api
+            };
+            list.Add(apiField);
+
             var components = ComponentManager.Instance.GetComponents(type,context);
             foreach (var component in components)
             {
                 list.Add(component.GetField());
             }
 
-            
-
-            
             return list;
         }
 

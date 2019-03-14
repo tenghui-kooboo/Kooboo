@@ -33,7 +33,9 @@ namespace Kooboo.Model
         {
             try
             {
-                if(NeedGenerateJs(html))
+                var url = context.Request.Path;
+                if(url.StartsWith("/_Admin/Vue",StringComparison.OrdinalIgnoreCase))
+                //if(NeedGenerateJs(html))
                 {
                     var doc = DomParser.CreateDom(html);
                     var js = GetJs(doc,context);
@@ -119,16 +121,21 @@ namespace Kooboo.Model
             }
             if (IsApi(api))
             {
-                var setting = ModelHelper.GetSetting(api, ApiProvider);
-                var method = ModelApiHelper.GetMethod(api);
-                if (method != null)
+                vueCreated = new VueCreated()
                 {
-                    vueCreated = new VueCreated()
-                    {
-                        API = api,
-                        ModelType = method.Class
-                    };
-                }
+                    API = api,
+                    //ModelType = method.Class
+                };
+                //var setting = ModelHelper.GetSetting(api, ApiProvider);
+                //var method = ModelApiHelper.GetMethod(api);
+                //if (method != null)
+                //{
+                //    vueCreated = new VueCreated()
+                //    {
+                //        API = api,
+                //        ModelType = method.Class
+                //    };
+                //}
             }
 
             return vueCreated;

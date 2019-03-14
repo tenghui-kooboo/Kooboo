@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -13,6 +14,8 @@ namespace Kooboo.Model.Components.Table
         public CellType CellType => CellType.Text;
 
         public CellDataType CellDataType { get; set; }
+
+        public RenderContext Context { get; set; }
 
         public object GetData()
         {

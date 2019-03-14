@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Model.Attributes;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Components.Table
 {
@@ -14,6 +15,8 @@ namespace Kooboo.Model.Components.Table
         public CellType CellType => CellType.Icon;
 
         public CellDataType CellDataType { get; set; }
+
+        public RenderContext Context { get; set; }
 
         public string Class { get; set; }
 

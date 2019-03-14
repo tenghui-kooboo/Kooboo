@@ -1,23 +1,55 @@
 
 Kooboo.Table={
-    getList:function(tableData,vm){
+    getList:function(tableData,vm,api){
         if(!tableData.modelName){
             tableData.modelName=vm.modelName;
         }
-        var method=Kooboo.Table.getModel(tableData.modelName,"list");
-        method.then(function(res) {
-        //Kooboo.Layout.list().then(function(res) {
+        Kooboo.Table.execApi(api,{},function(data){
+            Kooboo.Table.setDocs(data,tableData);
+        })
+
+        // var method=Kooboo.Table.getModel(tableData.modelName,"list");
+        // method.then(function(res) {
+        // //Kooboo.Layout.list().then(function(res) {
+        //     if(res.success){
+        //         var data=res.model;
+        //         Kooboo.Table.setDocs(data,tableData);
+        //         // var cols=tableData.cols;
+        //         // for(var i=0;i<data.length;i++){
+        //         //     var item=data[i];
+        //         //     var doc=Kooboo.Table.getDoc(tableData,item);
+                    
+        //         //     tableData.docs.push(doc);
+        //         // }
+        //     }
+        // });
+    },
+    execApi:function(api,paras,callback){
+        var segs=api.split('.');
+        if(segs.length!=3)
+        console.log(api+" is error");
+
+        var model=eval(segs[0]+"."+segs[1]);
+        var method=segs[2];
+        var method= model[method].call(model,paras);
+        method.then(function(res){
             if(res.success){
                 var data=res.model;
-                var cols=tableData.cols;
-                for(var i=0;i<data.length;i++){
-                    var item=data[i];
-                    var doc=Kooboo.Table.getDoc(tableData,item);
-                    
-                    tableData.docs.push(doc);
-                }
+                callback(data);
             }
         });
+    },
+    setDocs:function(data,tableData){
+        var docs=[];
+        var cols=tableData.cols;
+        tableData.docs=[];
+        for(var i=0;i<data.length;i++){
+            var item=data[i];
+            var doc=Kooboo.Table.getDoc(tableData,item);
+            
+            tableData.docs.push(doc);
+        }
+        return docs;
     },
     copy:function(tableData,param,callback){
         var method=Kooboo.Table.getModel(tableData.modelName,"Copy",param);
@@ -98,16 +130,27 @@ Kooboo.Table={
     //     return model[method].call(model);
 
     // },
+
     getLinkUrl:function(data,col){
         var name=col.fieldName;
         var colData=col.data;
+        
         if(colData.url){
+            //this is a url from data
+            //todo add url type
+            if(data[colData.url]){
+                return data[colData.url]
+            }
             var urlData={};
             for(var i=0;i<colData.paras.length;i++){
                 var para=colData.paras[i];
                 urlData[para]=data[para];
             }
-            return Kooboo.UrlHelper.Get(colData.url,urlData);
+            var url= Kooboo.UrlHelper.Get(colData.url,urlData);
+            if(!url){
+                url="#"
+            }
+            return url;
         }
     },
     
@@ -118,7 +161,6 @@ Kooboo.Table={
             case Kooboo.Table.CellType.Array:
                 var obj=data[col.fieldName];
                 var arr=Kooboo.objToArr(obj);
-                debugger;
 
                 var tableArray=[];
                 if(arr && arr.length>0){
@@ -135,7 +177,10 @@ Kooboo.Table={
                                 type: tableData.modelName
                             },
                             onClick:function(rel){
-                                tableData.modalConfig=rel.data;
+                                tableData.modalConfig={
+                                    data:rel.data,
+                                    detailConfigs:col.data.config
+                                };
                                 tableData.isShowModal=true;
                             }
                         })
@@ -144,7 +189,17 @@ Kooboo.Table={
                 return tableArray;
             break;
             case Kooboo.Table.CellType.Badge:
-            
+                return {
+                    text: data[col.fieldName],
+                    class: data[col.fieldName] > 0 ? "blue" : "default",
+                    onClick:function(doc){
+                        tableData.modalConfig={
+                            data:{id:doc.id},
+                            detailConfigs:col.data.config
+                        };
+                        tableData.isShowModal=true;
+                    }
+                }
             break;
             case Kooboo.Table.CellType.Button:
                 return {
@@ -175,6 +230,9 @@ Kooboo.Table={
                 if(col.dataType==Kooboo.Table.CellDataType.Date){
                     var date=new Date(value);
                     value=date.toDefaultLangString();
+                }
+                if(!value){
+                    value="-"
                 }
                 return value;
             break;
