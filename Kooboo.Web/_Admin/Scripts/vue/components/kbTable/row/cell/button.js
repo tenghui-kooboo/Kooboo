@@ -11,9 +11,10 @@
                             href: this.data.url || '#',
                             target: this.data.inNewWindow ? '_blank' : '_self'
                         },
-                        domProps: {
-                            innerHTML: this.data.text
-                        },
+                        //this will cause element i don't render the second time.
+                        // domProps: {
+                        //     innerHTML: this.data.text
+                        // },
                         on: {
                             click: function(e) {
                                 e.stopPropagation();
