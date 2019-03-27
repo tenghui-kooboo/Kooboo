@@ -4,6 +4,7 @@
 </div>
 <div id="vue-container">
     <kb-breadcrumb>
+        <kb-breadcrumb-item :item="{ name: $t('Kooboo.text.common.Scripts') }"></kb-breadcrumb-item>
         <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
         <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
         <kb-breadcrumb-item item='SCIRPTS' :active='true'></kb-breadcrumb-item>
@@ -14,11 +15,17 @@
         "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
     ])
 
+    Object.defineProperty(Vue.prototype, '$t', {
+        get: function get() {
+            return function(key) {
+                return eval(key);
+            }
+        }
+    })
+
     var scriptsVM = new Vue({
         el: '#vue-container',
-        data: {
-
-        },
+        data: {},
         components: {
             'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
             'kb-breadcrumb-item': Kooboo.vue.component.kbBreadcrumbItem,

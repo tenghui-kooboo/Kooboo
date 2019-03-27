@@ -1,208 +1,233 @@
 <!-- #layout name=vue -->
 <div class="page-header">
-    <h1 class="title">Layouts</h1>
+  <h1 class="title">Forms</h1>
 </div>
 <div id="vue-container">
-    <kb-breadcrumb>
-        <kb-breadcrumb-item item='SITES'></kb-breadcrumb-item>
-        <kb-breadcrumb-item item='DASHBOARD'></kb-breadcrumb-item>
-        <kb-breadcrumb-item item='FORMS' :active='true'></kb-breadcrumb-item>
-    </kb-breadcrumb>
-    <div class="navbar navbar-default">
-        <div class="container-fluid">
-            <a class="btn green navbar-btn" :href="createFormUrl">Create a form</a>
-            <a class="btn green navbar-btn" :href="createKooFormUrl">Create Kform</a>
-            <a class="btn red navbar-btn" v-if='selectedDocs.length' @click='deleteTrigger = true'>Delete</a>
-        </div>
+  <kb-breadcrumb>
+    <kb-breadcrumb-item item="SITES"></kb-breadcrumb-item>
+    <kb-breadcrumb-item item="DASHBOARD"></kb-breadcrumb-item>
+    <kb-breadcrumb-item item="FORMS" :active="true"></kb-breadcrumb-item>
+  </kb-breadcrumb>
+  <div class="navbar navbar-default">
+    <div class="container-fluid">
+      <a class="btn green navbar-btn" :href="createFormUrl">Create a form</a>
+      <a class="btn green navbar-btn" :href="createKooFormUrl">Create Kform</a>
+      <a
+        class="btn red navbar-btn"
+        v-if="selectedDocs.length"
+        @click="deleteTrigger = true"
+        >Delete</a
+      >
     </div>
-    <kb-tab :tabs='tabs' @change='onTabChange'>
-        <template slot='panel' v-for='tab in tabs'>
-            <kb-tab-panel :show='curTab == tab.value'>
-                <kb-table :data='tableData[tab.value]' :delete-trigger='deleteTrigger' @select='onSelectedDocsChange' @delete-trigged='deleteTrigger = false'></kb-table>
-            </kb-tab-panel>
-        </template>
-    </kb-tab>
-    <kb-relation-modal :show='showRelationModal' :config='relactionConfig' @close='showRelationModal = false'></kb-relation-modal>
+  </div>
+  <kb-tab :tabs="tabs" @change="onTabChange" :test="Kooboo.text.common.OK">
+    <template slot="panel" v-for="tab in tabs">
+      <kb-tab-panel :show="curTab == tab.value">
+        <kb-table
+          :data="tableData[tab.value]"
+          :delete-trigger="deleteTrigger"
+          @select="onSelectedDocsChange"
+          @delete-trigged="deleteTrigger = false"
+        ></kb-table>
+      </kb-tab-panel>
+    </template>
+  </kb-tab>
+  <kb-relation-modal
+    :show="showRelationModal"
+    :config="relactionConfig"
+    @close="showRelationModal = false"
+  ></kb-relation-modal>
 </div>
 <script>
-    Kooboo.loadJS([
-        "/_Admin/Scripts/vue/components/kbTable/index.js",
-        "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
-        "/_Admin/Scripts/vue/components/kbRelationModal/index.js",
-        "/_Admin/Scripts/vue/components/kbTab/index.js"
-    ])
-
-    var layouts = new Vue({
-        el: '#vue-container',
-        data: {
-            tabs: [{
-                name: Kooboo.text.common.external,
-                value: 'External'
-            }, {
-                name: Kooboo.text.common.Embedded,
-                value: 'Embedded'
-            }],
-            curTab: '',
-            cachedData: {},
-            createFormUrl: Kooboo.Route.Form.DetailPage,
-            createKooFormUrl: Kooboo.Route.Form.KooFormPage,
-            tableData: {
-                External: {
-                    docs: [],
-                    cols: [],
-                    acts: [],
-                    selectable: true
-                },
-                Embedded: {
-                    docs: [],
-                    cols: [],
-                    acts: [],
-                    selectable: true
-                }
-            },
-            selectedDocs: [],
-            deleteTrigger: false,
-            showRelationModal: false,
-            relactionConfig: {}
+  Kooboo.loadJS([
+    "/_Admin/Scripts/vue/components/kbTable/index.js",
+    "/_Admin/Scripts/vue/components/kbBreadcrumb/index.js",
+    "/_Admin/Scripts/vue/components/kbRelationModal/index.js",
+    "/_Admin/Scripts/vue/components/kbTab/index.js"
+  ]);
+  var layouts = new Vue({
+    el: "#vue-container",
+    data: {
+      tabs: [
+        {
+          name: Kooboo.text.common.external,
+          value: "External"
         },
-        methods: {
-            onSelectedDocsChange: function(ids) {
-                this.selectedDocs = ids;
-            },
-            onDelete: function() {
-                this.deleteTrigger = true;
-            },
-            onCopyModalClose: function() {
-                this.modalConfig.copyLayoutName = '';
-                this.showCopyModal = false;
-            },
-            onTabChange: function(curTab, orig) {
-
-                if (orig) {
-                    this.tableData[orig].docs = [];
-                }
-
-                if (!this.cachedData[curTab]) {
-                    var self = this;
-                    Kooboo.Form['get' + curTab + 'List']().then(function(res) {
-                        if (res.success) {
-                            self.cachedData[curTab] = res.model;
-                            self.loadTableData(res.model, curTab);
-                        }
-                    })
-                } else {
-                    this.loadTableData(this.cachedData[curTab], curTab);
-                }
-            },
-            loadTableData: function(data, curTab) {
-                var self = this;
-                this.tableData[curTab] = {
-                    docs: data.map(function(form) {
-                        var date = new Date(form.lastModified);
-                        var editPage = (curTab.toLowerCase() == 'embedded') ?
-                            Kooboo.Route.Form.DetailPage :
-                            Kooboo.Route.Form.KooFormPage;
-
-                        return {
-                            id: form.id,
-                            name: form.name,
-                            date: date.toDefaultLangString(),
-                            data: {
-                                text: form.valueCount,
-                                class: 'blue',
-                                url: Kooboo.Route.Get(Kooboo.Route.Form.ValuePage, {
-                                    id: form.id
-                                }),
-                                inNewWindow: true
-                            },
-                            relations: Kooboo.objToArr(form.references).map(function(item) {
-                                return {
-                                    text: item.value + ' ' + Kooboo.text.component.table[item.key],
-                                    class: 'label label-sm kb-table-label-refer',
-                                    style: 'background-color: ' + Kooboo.getLabelColor(item.key),
-                                    data: {
-                                        id: form.id,
-                                        by: item.key,
-                                        type: 'form'
-                                    },
-                                    onClick: function(rel) {
-                                        self.relactionConfig = rel.data;
-                                        self.showRelationModal = true;
-                                    }
-                                }
-                            }),
-                            edit: {
-                                class: 'blue',
-                                text: Kooboo.text.common.edit,
-                                url: Kooboo.Route.Get(editPage, {
-                                    id: form.id
-                                })
-                            },
-                            setting: {
-                                class: 'blue',
-                                text: Kooboo.text.common.setting,
-                                onClick: function(doc) {
-                                    Kooboo.Form.getSetting({
-                                        id: doc.id
-                                    }).then(function(res) {
-                                        if (res.success) {
-                                            debugger
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    }),
-                    cols: [{
-                        displayName: Kooboo.text.common.name,
-                        fieldName: 'name',
-                        type: 'text'
-                    }, {
-                        displayName: Kooboo.text.common.data,
-                        fieldName: 'data',
-                        type: 'badge'
-                    }, {
-                        displayName: Kooboo.text.common.usedBy,
-                        fieldName: 'relations',
-                        type: 'array'
-                    }, {
-                        displayName: Kooboo.text.common.lastModified,
-                        fieldName: 'date',
-                        type: 'text'
-                    }],
-                    acts: [{
-                        fieldName: 'edit',
-                        type: 'button'
-                    }, {
-                        fieldName: 'setting',
-                        type: 'button'
-                    }],
-                    selectable: true,
-                    onDelete: function(cb) {
-                        if (confirm(Kooboo.text.confirm.deleteItems)) {
-                            Kooboo.Form.Deletes({
-                                ids: JSON.stringify(self.selectedDocs)
-                            }).then(function(res) {
-                                if (res.success) {
-                                    info.done(Kooboo.text.info.delete.success);
-                                    self.cachedData[self.curTab] = null;
-                                    self.onTabChange(self.curTab);
-                                    cb && cb();
-                                }
-                            })
-                        }
-                    }
-                }
-                this.curTab = curTab;
-            }
-        },
-        components: {
-            'kb-tab': Kooboo.vue.component.kbTab,
-            'kb-table': Kooboo.vue.component.kbTable,
-            'kb-tab-panel': Kooboo.vue.component.kbTabPanel,
-            'kb-breadcrumb': Kooboo.vue.component.kbBreadcrumb,
-            'kb-breadcrumb-item': Kooboo.vue.component.kbBreadcrumbItem,
-            'kb-relation-modal': Kooboo.vue.component.kbRelationModal,
+        {
+          name: Kooboo.text.common.Embedded,
+          value: "Embedded"
         }
-    })
+      ],
+      curTab: "",
+      cachedData: {},
+      createFormUrl: Kooboo.Route.Form.DetailPage,
+      createKooFormUrl: Kooboo.Route.Form.KooFormPage,
+      tableData: {
+        External: {
+          docs: [],
+          cols: [],
+          acts: [],
+          selectable: true
+        },
+        Embedded: {
+          docs: [],
+          cols: [],
+          acts: [],
+          selectable: true
+        }
+      },
+      selectedDocs: [],
+      deleteTrigger: false,
+      showRelationModal: false,
+      relactionConfig: {}
+    },
+    methods: {
+      onSelectedDocsChange: function(ids) {
+        this.selectedDocs = ids;
+      },
+      onDelete: function() {
+        this.deleteTrigger = true;
+      },
+      onCopyModalClose: function() {
+        this.modalConfig.copyLayoutName = "";
+        this.showCopyModal = false;
+      },
+      onTabChange: function(curTab, orig) {
+        if (orig) {
+          this.tableData[orig].docs = [];
+        }
+
+        if (!this.cachedData[curTab]) {
+          var self = this;
+          Kooboo.Form["get" + curTab + "List"]().then(function(res) {
+            if (res.success) {
+              self.cachedData[curTab] = res.model;
+              self.loadTableData(res.model, curTab);
+            }
+          });
+        } else {
+          this.loadTableData(this.cachedData[curTab], curTab);
+        }
+      },
+      loadTableData: function(data, curTab) {
+        var self = this;
+        this.tableData[curTab] = {
+          docs: data.map(function(form) {
+            var date = new Date(form.lastModified);
+            var editPage =
+              curTab.toLowerCase() == "embedded"
+                ? Kooboo.Route.Form.DetailPage
+                : Kooboo.Route.Form.KooFormPage;
+
+            return {
+              id: form.id,
+              name: form.name,
+              date: date.toDefaultLangString(),
+              data: {
+                text: form.valueCount,
+                class: "blue",
+                url: Kooboo.Route.Get(Kooboo.Route.Form.ValuePage, {
+                  id: form.id
+                }),
+                inNewWindow: true
+              },
+              relations: Kooboo.objToArr(form.references).map(function(item) {
+                return {
+                  text:
+                    item.value + " " + Kooboo.text.component.table[item.key],
+                  class: "label label-sm kb-table-label-refer",
+                  style: "background-color: " + Kooboo.getLabelColor(item.key),
+                  data: {
+                    id: form.id,
+                    by: item.key,
+                    type: "form"
+                  },
+                  onClick: function(rel) {
+                    self.relactionConfig = rel.data;
+                    self.showRelationModal = true;
+                  }
+                };
+              }),
+              edit: {
+                class: "blue",
+                text: Kooboo.text.common.edit,
+                url: Kooboo.Route.Get(editPage, {
+                  id: form.id
+                })
+              },
+              setting: {
+                class: "blue",
+                text: Kooboo.text.common.setting,
+                onClick: function(doc) {
+                  Kooboo.Form.getSetting({
+                    id: doc.id
+                  }).then(function(res) {
+                    if (res.success) {
+                      debugger;
+                    }
+                  });
+                }
+              }
+            };
+          }),
+          cols: [
+            {
+              displayName: Kooboo.text.common.name,
+              fieldName: "name",
+              type: "text"
+            },
+            {
+              displayName: Kooboo.text.common.data,
+              fieldName: "data",
+              type: "badge"
+            },
+            {
+              displayName: Kooboo.text.common.usedBy,
+              fieldName: "relations",
+              type: "array"
+            },
+            {
+              displayName: Kooboo.text.common.lastModified,
+              fieldName: "date",
+              type: "text"
+            }
+          ],
+          acts: [
+            {
+              fieldName: "edit",
+              type: "button"
+            },
+            {
+              fieldName: "setting",
+              type: "button"
+            }
+          ],
+          selectable: true,
+          onDelete: function(cb) {
+            if (confirm(Kooboo.text.confirm.deleteItems)) {
+              Kooboo.Form.Deletes({
+                ids: JSON.stringify(self.selectedDocs)
+              }).then(function(res) {
+                if (res.success) {
+                  info.done(Kooboo.text.info.delete.success);
+                  self.cachedData[self.curTab] = null;
+                  self.onTabChange(self.curTab);
+                  cb && cb();
+                }
+              });
+            }
+          }
+        };
+        this.curTab = curTab;
+      }
+    },
+    components: {
+      "kb-tab": Kooboo.vue.component.kbTab,
+      "kb-table": Kooboo.vue.component.kbTable,
+      "kb-tab-panel": Kooboo.vue.component.kbTabPanel,
+      "kb-breadcrumb": Kooboo.vue.component.kbBreadcrumb,
+      "kb-breadcrumb-item": Kooboo.vue.component.kbBreadcrumbItem,
+      "kb-relation-modal": Kooboo.vue.component.kbRelationModal
+    }
+  });
 </script>

@@ -1,7 +1,7 @@
 <div>
     <ul class="nav nav-tabs">
         <li v-for='tab in tabs' :class='{ active: tab.value == curTab }'>
-            <a href="javascript:;" @click='onClick(tab.value)'>{{ tab.name }}</a>
+            <a href="javascript:;" @click='onClick(tab.value)'>{{ tab.name }} <span>{{ test }}</span></a>
         </li>
     </ul>
     <div class="tab-content">
