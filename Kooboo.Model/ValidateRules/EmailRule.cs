@@ -36,7 +36,7 @@ namespace Kooboo.Model.ValidateRules
 
         public override string GetRule()
         {
-            return "{}";
+            return string.Format("{{type:\"regex\",regex:\"{0}\",message:\"{1}\"}}", Regex, Message);
         }
     }
 }

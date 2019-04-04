@@ -10,8 +10,6 @@ namespace Kooboo.Model.ValidateRules
     {
         public int MaxLength;
 
-        public string Trigger { get; set; } = "blur";
-
         public MaxLengthRule(int maxLength,string message)
         {
             MaxLength = maxLength;

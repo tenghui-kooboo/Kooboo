@@ -136,8 +136,10 @@ Kooboo.Table={
         var colData=col.data;
         
         if(colData.url){
+            
             //this is a url from data
             //todo add url type
+            debugger;
             if(data[colData.url]){
                 return data[colData.url]
             }
@@ -238,6 +240,65 @@ Kooboo.Table={
             break;
         }
     },
+    
+    getRelationUrl:function(data){
+        var id=data[objectId];
+        var type=data["by"];
+        switch (self.config.by) {
+            case "layout":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.Layout.DetailPage, {
+                    Id: id
+                });
+                break;
+            case "view":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.View.DetailPage, {
+                    Id: id
+                });
+                break;
+            case "page":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.Page.EditRedirector, {
+                    Id: id
+                });
+                break;
+            case "textcontent":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.TextContent.DetailPage, {
+                    Id: id
+                });
+                break;
+            case "style":
+            case "cssdeclaration":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.Style.DetailPage, {
+                    Id: id
+                });
+                break;
+            case "menu":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.Menu.DetailPage, {
+                    Id: id
+                });
+                break;
+            case "htmlblock":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.HtmlBlock.DetailPage, {
+                    Id: id
+                })
+                break;
+            case "form":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.Form.Redirector, {
+                    Id: id
+                })
+                break;
+            case "datamethodsetting":
+                editUrl = Kooboo.Route.Get(Kooboo.Route.DataSource.DataMethodSetting, {
+                    Id: id
+                })
+                break;
+            default:
+                editUrl = "";
+                /*  window.info.show("Unhandle relation type: " + self.by(), false);
+                console.warn("unhandle relation type:" + self.by());*/
+                break;
+        }
+        return url;
+    }
     // getValueByField:function(data,field){
     //     if(!field) return '';
     //     field=field[0].toLowerCase()+field.substring(1);

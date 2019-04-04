@@ -38,6 +38,7 @@
       <HintPath>..\..\..\..\KoobooLinuxMerge\src\Github\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,84 +48,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\ApiAttribute.cs" />
-    <Compile Include="Attributes\BaseComponentAttr\BaseAttribute.cs" />
-    <Compile Include="Attributes\BaseComponentAttr\CheckBoxAttribute.cs" />
-    <Compile Include="Attributes\BreadCrumbAttribute.cs" />
-    <Compile Include="Attributes\FormFieldAttribute.cs" />
-    <Compile Include="Attributes\ModalAttribute.cs" />
-    <Compile Include="Attributes\ModelNameAttribute.cs" />
-    <Compile Include="Attributes\NewModalAttribute.cs" />
-    <Compile Include="Attributes\TabAttribute.cs" />
-    <Compile Include="Attributes\Table\ColumnBadgeAttribute.cs" />
-    <Compile Include="Attributes\Table\ColumnIconAttribute.cs" />
-    <Compile Include="Attributes\Table\ColumnIconTextAttribute.cs" />
-    <Compile Include="Attributes\Table\ColumnLabelAttribute.cs" />
-    <Compile Include="Attributes\Table\ColumnSummaryAttribute.cs" />
-    <Compile Include="Attributes\Table\TableAttribute.cs" />
-    <Compile Include="Attributes\LinkAttribute.cs" />
-    <Compile Include="Attributes\Table\TableSelectableAttribute.cs" />
-    <Compile Include="Attributes\TitleAttribute.cs" />
-    <Compile Include="Components\BaseComponents\BaseComponent.cs" />
-    <Compile Include="Components\BreadCrumb\KBreadCrumb.cs" />
-    <Compile Include="Components\ComponentManager.cs" />
-    <Compile Include="Components\ComponentType.cs" />
-    <Compile Include="Components\BaseComponents\KBCheckBox.cs" />
-    <Compile Include="Components\BaseComponents\KBDateTime.cs" />
-    <Compile Include="Components\BaseComponents\KBInput.cs" />
-    <Compile Include="Components\BaseComponents\KBMediaFile.cs" />
-    <Compile Include="Components\BaseComponents\KBNumber.cs" />
-    <Compile Include="Components\BaseComponents\KBRadioBox.cs" />
-    <Compile Include="Components\BaseComponents\KBRichEditor.cs" />
-    <Compile Include="Components\BaseComponents\KBSelect.cs" />
-    <Compile Include="Components\BaseComponents\KBSwitch.cs" />
-    <Compile Include="Components\BaseComponents\KBTextArea.cs" />
-    <Compile Include="Components\Form\KBForm.cs" />
-    <Compile Include="Components\Table\ButtonActionManager.cs" />
-    <Compile Include="Components\Table\ButtonAction\ButtonActionType.cs" />
-    <Compile Include="Components\Table\ButtonAction\DefaultAction.cs" />
-    <Compile Include="Components\Table\ButtonAction\DropdownAction.cs" />
-    <Compile Include="Components\Table\ButtonAction\IAction.cs" />
-    <Compile Include="Components\Table\ButtonAction\LinkAction.cs" />
-    <Compile Include="Components\Table\ButtonAction\ModalAction.cs" />
-    <Compile Include="Components\Table\CellManager.cs" />
-    <Compile Include="Components\Table\Cell\ArrayCell.cs" />
-    <Compile Include="Components\Table\Cell\BadgeCell.cs" />
-    <Compile Include="Components\Table\Cell\ButtonCell.cs" />
-    <Compile Include="Components\Table\Cell\CellType.cs" />
-    <Compile Include="Components\Table\Cell\ICell.cs" />
-    <Compile Include="Components\Table\Cell\IconCell.cs" />
-    <Compile Include="Components\Table\Cell\IconTextCell.cs" />
-    <Compile Include="Components\Table\Cell\LabelCell.cs" />
-    <Compile Include="Components\Table\Cell\LinkCell.cs" />
-    <Compile Include="Components\Table\Cell\SummaryCell.cs" />
-    <Compile Include="Components\Table\Cell\TextCell.cs" />
-    <Compile Include="Components\Table\KBTable.cs" />
-    <Compile Include="Constant\KBColor.cs" />
-    <Compile Include="Interfaces\IComponent.cs" />
-    <Compile Include="Components\Tabs\KBTab.cs" />
-    <Compile Include="Helper\ApiHelper.cs" />
-    <Compile Include="Interfaces\IBaseComponent.cs" />
-    <Compile Include="Helper\ModelHelper.cs" />
-    <Compile Include="Helper\StringBuilderExtension.cs" />
-    <Compile Include="Helper\RuleHelper.cs" />
-    <Compile Include="KoobooModelManager.cs" />
-    <Compile Include="Helper\ModelCache.cs" />
-    <Compile Include="Setting\ViewsModel.cs" />
-    <Compile Include="VueModels\ModelFromHtml.cs" />
-    <Compile Include="VueModels\VueCreated.cs" />
-    <Compile Include="VueModels\VueModel.cs" />
-    <Compile Include="Render\KoobooVueRender.cs" />
-    <Compile Include="VueModels\VueField.cs" />
-    <Compile Include="VueModels\VueMethods.cs" />
     <Compile Include="Attributes\KoobooModel.cs" />
+    <Compile Include="KoobooModelManager.cs" />
+    <Compile Include="Render\Elements\DataParser.cs" />
+    <Compile Include="Render\Elements\MethodParser.cs" />
+    <Compile Include="Render\Elements\RootParser.cs" />
+    <Compile Include="Render\IJsBuilder.cs" />
+    <Compile Include="Render\IVirtualElementRenderer.cs" />
+    <Compile Include="Render\ApiAnalysize.cs" />
+    <Compile Include="Render\Model\ApiModel.cs" />
+    <Compile Include="Render\ViewParser.cs" />
+    <Compile Include="Render\ViewParserOptions.cs" />
+    <Compile Include="Render\VueJsBuilder.cs" />
+    <Compile Include="Render\VueJsBuilderExtensions.cs" />
+    <Compile Include="Render\Vue\Data.cs" />
+    <Compile Include="Render\Vue\El.cs" />
+    <Compile Include="Render\Vue\Hook.cs" />
+    <Compile Include="Render\Vue\IVueRenderer.cs" />
+    <Compile Include="Render\Vue\Method.cs" />
+    <Compile Include="Render\Vue\NameBody.cs" />
+    <Compile Include="Render\Vue\Validation.cs" />
+    <Compile Include="ValidateRules\BetweenRule.cs" />
+    <Compile Include="ValidateRules\IntegerRule.cs" />
+    <Compile Include="ValidateRules\IpAddressRule.cs" />
+    <Compile Include="ValidateRules\MinLengthRule.cs" />
+    <Compile Include="ValidateRules\NumericRule.cs" />
+    <Compile Include="ValidateRules\UniqueRule.cs" />
     <Compile Include="Setting\IKoobooModel.cs" />
-    <Compile Include="Setting\LayoutModel.cs" />
     <Compile Include="Setting\UserModelSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidateRules\EmailRule.cs" />
     <Compile Include="ValidateRules\MaxLengthRule.cs" />
-    <Compile Include="ValidateRules\RequireFieldRule.cs" />
     <Compile Include="ValidateRules\Rule.cs" />
     <Compile Include="ValidateRules\RegexRule.cs" />
     <Compile Include="ValidateRules\RequireRule.cs" />
@@ -145,6 +99,10 @@
     <ProjectReference Include="..\Kooboo.Lib\Kooboo.Lib.csproj">
       <Project>{d8996716-de67-48a3-93d5-b9ca1d2b69da}</Project>
       <Name>Kooboo.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kooboo.Sites\Kooboo.Sites.csproj">
+      <Project>{28102df1-17f6-439c-b79e-d89f4971e56b}</Project>
+      <Name>Kooboo.Sites</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

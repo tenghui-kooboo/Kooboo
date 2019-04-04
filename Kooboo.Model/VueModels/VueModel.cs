@@ -42,6 +42,7 @@ namespace Kooboo.Model
             var sb = new StringBuilder();
             sb.AppendTabs(tabCount, GetEl());
             sb.Append(GetData(tabCount));
+            sb.Append(GetValidateRules(tabCount));
             sb.Append(GetMethod(tabCount));
             sb.Append(GetCreated(tabCount));
             //sb.Append(GetComputed());
@@ -69,6 +70,28 @@ namespace Kooboo.Model
                 sb.Append(field.GetDataValue());
             }
             sb.AppendTabs(tabCount,"},");
+            return sb.ToString();
+        }
+
+        public string GetValidateRules(int tabCount)
+        {
+            var sb = new StringBuilder();
+            sb.AppendTabs(tabCount, "validations:{");
+
+            int newTabCount = tabCount + 1;
+            for (var i = 0; i < Data.Count; i++)
+            {
+                var field = Data[i];
+                if (field.ValidateRules.Count > 0)
+                {
+                    sb.AppendTabs(newTabCount, field.Name + ":{");
+                    sb.Append(field.GetRules());
+                    sb.AppendTabs(newTabCount,"},");
+                }
+                
+            }
+            sb.AppendTabs(tabCount, "},");
+
             return sb.ToString();
         }
 

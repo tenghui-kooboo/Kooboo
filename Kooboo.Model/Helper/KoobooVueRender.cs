@@ -34,8 +34,8 @@ namespace Kooboo.Model
             try
             {
                 var url = context.Request.Path;
-                if(url.StartsWith("/_Admin/Vue",StringComparison.OrdinalIgnoreCase))
-                //if(NeedGenerateJs(html))
+                if(url.StartsWith("/_Admin/Vue",StringComparison.OrdinalIgnoreCase)||
+                    url.StartsWith("/_Admin/account/Vue", StringComparison.OrdinalIgnoreCase))
                 {
                     var doc = DomParser.CreateDom(html);
                     var js = GetJs(doc,context);
@@ -53,7 +53,7 @@ namespace Kooboo.Model
             return html;
            
         }
-
+        [Obsolete]
         public bool NeedGenerateJs(string html)
         {
             var doc = DomParser.CreateDom(html);

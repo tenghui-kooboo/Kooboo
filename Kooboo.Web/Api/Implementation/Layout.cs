@@ -57,7 +57,7 @@ namespace Kooboo.Web.Api.Implementation
             return template.Replace("{{BaseUrl}}", baseurl);
         }
 
-        [LayoutModel]
+        
         public override List<object> List(ApiCall call)
         {
             List<LayoutItemViewModel> result = new List<LayoutItemViewModel>();

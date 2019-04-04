@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.ValidateRules
 {
-    public class RegexRule:Rule
+    public class UniqueRule:Rule
     {
-        public string Regex { get; set; }
-        public RegexRule(string regex,string message)
+        public UniqueRule(string message)
         {
-            Regex = regex;
             Message = message;
         }
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"regex\",regex:\"{0}\",message:\"{1}\"}}",Regex, Message);
+            return string.Format("{{type:\"unique\",message:\"{0}\"}}", Message);
         }
     }
 }

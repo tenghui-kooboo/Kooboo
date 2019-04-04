@@ -5,7 +5,7 @@
         <p><i class="fa fa-spinner fa-spin"></i> <span>Logging in...</span></p>
     </div>
 </div>
-<div class="container" vue-el=".container" vue-datafrom="Kooboo.User.Login">
+<div class="container" k-el=".container" k-datafrom="Kooboo.User.Login">
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <div class="block-small-form">
@@ -15,18 +15,18 @@
                 <div class="tab-content">
                     <div id="tab_account_login" class="tab-pane fade active in">
 
-                        <form @submit.prevent='login' vue-api="Kooboo.User.login" vue-callback="Kooboo.User.logincallback">
+                        <form @submit.prevent='login' k-api="Kooboo.User.login" k-callback="loginCallBack">
                             <div class="form-group" :class="{ 'has-error': $v.UserName.$error }">
                                 <label class="sr-only">Username</label>
                                 <input class="form-control" type="text" v-model='UserName' placeholder="Username" />
                                 <div v-if="$v.UserName.$error">
-                                    <span class="help-block" v-for='error in $v.UserName.$params.rule.errors' v-text='error'></span>
+                                    <span class="help-block"  v-for='error in $v.UserName.$params.rule.errors' v-text='error'></span>
                                 </div>
-                            </div>
+                            </div>                       
                             <div class="form-group" :class="{ 'has-error': $v.Password.$error }">
                                 <label class="sr-only">Password</label>
                                 <input class="form-control" type="password" v-model='Password' placeholder="Password" />
-                                <div v-show="$v.Password.$error">
+                                <div v-if="$v.Password.$error">
                                     <span class="help-block" v-for='error in $v.Password.$params.rule.errors' v-text='error'></span>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                 <a >Forgot password?</a>
                             </p>
                             <p>
-                                <span>Do not have an account?</span> <a >Create an account</a>
+                                <span >Do not have an account?</span> <a @click="test">Create an account</a>
                             </p>
                         </form>
                     </div>
@@ -54,54 +54,21 @@
 <script src="/_Admin/Scripts/vue/vuelidate.min.js"></script>
 <script src="/_Admin/Scripts/vue/validators.min.js"></script>
 <script src="/_Admin/Scripts/vue/validateHelper.js"></script>
+<script src="/_Admin/Scripts/vue/VueExtend.js"></script>
 <!-- <script src="/_Admin/Scripts/vue/directives/validate.js"></script> -->
 <script>
-    Kooboo.User.logincallback=function(res){
-        if(res.success){
-            location.href=res.model;
-        }
-    }
-</script>
-<script>
-        var vm=new Vue({
-           el:'.container',
-           data:{
-              
-            UserName:null,      
-            Password:null,      
-            Remember:false,      
-            Returnurl:null,   
-          },
-           validations:{
-              UserName:{
-                    rule:ruleValid([
-                        {type:"required",message:"username can't be empty"},
-                        {type:"maxLength",maxLength:10,message:"username max Length is 50"}])
-              },
-              Password:{
-                rule:ruleValid([
-                    {type:"required",message:"password can't be empty"}])
-                },
-           },
-           methods:{
-              login:function(){
-                 var self=this
-                 function isValid(){
-                     self.$v.UserName.$touch();
-                     self.$v.Password.$touch();
-                    return !self.$v.UserName.$invalid && !self.$v.Password.$invalid;
-                 }
-                 if(!isValid()){return ;}
-                 Kooboo.User.login({
-                    UserName:self.$data.UserName.value,
-                    Password:self.$data.Password.value,
-                    Remember:self.$data.Remember.value,
-                    Returnurl:self.$data.Returnurl.value,
-                 }).then(function(res){
-                    Kooboo.User.logincallback(res);
-                 })
-              }
-           },
-        })
+    Kooboo.Vue.extend({
+        methods:{
+            test:function(){
+                alert("test extend");
+            },
+            loginCallBack:function(res){
+                if(res.success){
+                    location.href=res.model;
+                }
+            }
+        },
         
-        </script>
+    })
+</script>
+

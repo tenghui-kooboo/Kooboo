@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Attributes
 {
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true)]
     public class LinkAttribute : Attribute
     {
         public string FieldName { get; set; }

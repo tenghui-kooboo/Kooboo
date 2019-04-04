@@ -51,16 +51,25 @@ namespace Kooboo.Model
                     sb.AppendTabs(tabCount, "var self=this");
                     sb.AppendTabs(tabCount, "function isValid(){");
 
-                    var validateBuilder = new StringBuilder();
-
+                    var touchBuilder = new StringBuilder();
                     var ruleFields = fields.FindAll(f => f.ValidateRules.Count > 0);
+                    foreach (var field in ruleFields)
+                    {
+                        touchBuilder.AppendFormat("self.$v.{0}.$touch();",field.Name);
+                    }
+                    if (touchBuilder.Length > 0)
+                    {
+                        sb.AppendTabs(tabCount + 1, touchBuilder.ToString());
+                    }
+
+                    var validateBuilder = new StringBuilder();
                     foreach (var field in ruleFields)
                     {
                         if (validateBuilder.Length > 0)
                         {
                             validateBuilder.Append("&&");
                         }
-                        validateBuilder.AppendFormat("self.$data.{0}.isValid", field.Name);
+                        validateBuilder.AppendFormat("!self.$v.{0}.$invalid", field.Name);
                     }
                     if (validateBuilder.Length > 0)
                     {
@@ -116,7 +125,7 @@ namespace Kooboo.Model
 
                 foreach (var field in fields)
                 {
-                    dataBuilder.AppendTabs(tabCount,string.Format("{0}:self.$data.{0}.value,", field.Name));
+                    dataBuilder.AppendTabs(tabCount,string.Format("{0}:self.$data.{0},", field.Name));
                 }
                 sb.Append(dataBuilder.ToString());
             }
