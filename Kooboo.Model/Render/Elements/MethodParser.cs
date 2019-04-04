@@ -24,7 +24,7 @@ namespace Kooboo.Model.Render.Elements
             js.Method(modelAy.ApiModel.Api, GetMethodBody(modelAy));
         }
 
-        public string GetMethodBody(ApiAnalysize modelAy)
+        private string GetMethodBody(ApiAnalysize modelAy)
         {
             var rules = modelAy.GetRules();
 
