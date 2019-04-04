@@ -7,27 +7,57 @@ using Kooboo.Api;
 using Kooboo.Model.Setting;
 using Kooboo.Model.ValidateRules;
 using System.Reflection;
-using Kooboo.Model.Render.Model;
+using Kooboo.Model.Render.API;
 
 namespace Kooboo.Model.Render
 {
     public class ApiAnalysize
     {
-        private KoobooSetting _setting;
+        private Type _koobooModelType;
         public ApiModel ApiModel;
-
         public string MethodCallBack { get; set; }
+
+        private static  List<IKApi> apiList { get; set; }
+
+        public static List<IKApi> ApiList
+        {
+            get
+            {
+                if (apiList == null)
+                {
+                    apiList = new List<IKApi>();
+                    foreach (var item in Lib.Reflection.AssemblyLoader.LoadTypeByInterface(typeof(IKApi)))
+                    {
+                        var instance = Activator.CreateInstance(item) as IKApi;
+
+                        if (instance != null)
+                        {
+                            apiList.Add(instance);
+                        }
+                    }
+                }
+
+                return apiList;
+            }
+        }
+        
+        
         public ApiAnalysize(string api,IApiProvider provider)
         {
-            ApiModel = new ApiModel(api, provider);
-            _setting = GetSetting();
+            var iapi = ApiList.Where(a => a.isMatch(api)).FirstOrDefault();
+            if (iapi == null)
+                throw new Exception(string.Format("api is wrong"));
+
+            ApiModel = iapi.Get(api,provider);
+            
+            _koobooModelType = GetKoobooModelType();
         }
         public Dictionary<string, string> GetDataList()
         {
             var dic = new Dictionary<string, string>();
-            if (_setting == null) return dic;
+            if (_koobooModelType == null) return dic;
 
-            var props = _setting.GetType().GetProperties();
+            var props = _koobooModelType.GetProperties();
             var attrPropers = typeof(Attribute).GetProperties();
 
             if (props != null)
@@ -53,8 +83,8 @@ namespace Kooboo.Model.Render
         public Dictionary<string, List<Rule>> GetRules()
         {
             var dic = new Dictionary<string, List<Rule>>();
-            if (_setting == null) return dic;
-            var props = _setting.GetType().GetProperties();
+            if (_koobooModelType == null) return dic;
+            var props = _koobooModelType.GetProperties();
             if (props != null)
             {
                 foreach (var prop in props)
@@ -71,11 +101,18 @@ namespace Kooboo.Model.Render
             return dic;
         }
 
-        private KoobooSetting GetSetting()
+        private Type GetKoobooModelType()
         {
             var methodInfo = ApiModel.GetMethodInfoByApi();
-            var setting = methodInfo.GetCustomAttributes(typeof(KoobooSetting), true);
-            return setting.ToList().Select(s => s as KoobooSetting).FirstOrDefault();
+            if (methodInfo == null)
+            {
+                throw new Exception(string.Format("method {0}. doesn't exist", ApiModel.Obj, ApiModel.Api));
+            }
+            var type = methodInfo.GetParameters().ToList()
+                .Where(p => typeof(IKoobooModel).IsAssignableFrom(p.ParameterType))
+                .Select(p=>p.ParameterType).FirstOrDefault() as Type;
+
+            return type;
         }
 
         public string GetMethodBody()
@@ -84,9 +121,9 @@ namespace Kooboo.Model.Render
 
             StringBuilder sb = new StringBuilder();
             //sb.Append($"{MethodName}:function(){{");
-            sb.AppendLine().Append("var self=this;");
+            sb.AppendLine().Append("    var self=this;");
             #region valid method
-            sb.AppendLine().Append("function isValid(){");
+            sb.AppendLine().Append("    function isValid(){");
 
             var triggerValid = new StringBuilder();
             var validCondition = new StringBuilder();
@@ -102,14 +139,14 @@ namespace Kooboo.Model.Render
                 validCondition.AppendFormat("!self.$v.{0}.$invalid", rule.Key);
                 index++;
             }
-            sb.AppendLine().Append(triggerValid.ToString());
-            sb.AppendLine().AppendFormat("return {0}", validCondition.ToString());
+            sb.AppendLine().Append("    "+triggerValid.ToString());
+            sb.AppendLine().AppendFormat("      return {0}", validCondition.ToString());
 
-            sb.AppendLine().Append("}");
-            sb.AppendLine().Append("if(!isValid()){return ;}");
+            sb.AppendLine().Append("    }");
+            sb.AppendLine().Append("    if(!isValid()){return ;}");
             #endregion
 
-            sb.AppendLine().AppendFormat("{0}({{",ApiModel.API);
+            sb.AppendLine().AppendFormat("      {0}({{",ApiModel.GetApi());
             var datalist = GetDataList();
             var i = 0;
             foreach(var item in datalist)
@@ -118,10 +155,10 @@ namespace Kooboo.Model.Render
                 {
                     sb.Append(",");
                 }
-                sb.AppendLine().AppendFormat("{0}:self.$data.{0}",item.Key);
+                sb.AppendLine().AppendFormat("      {0}:self.$data.{0}",item.Key);
                 i++;
             }
-            sb.AppendLine().Append($"}}).then(function(res){{ self.{MethodCallBack}(res);}})");
+            sb.AppendLine().Append($"   }}).then(function(res){{ self.{MethodCallBack}(res);}})");
 
             //sb.Append("}");
 

@@ -9,7 +9,7 @@ namespace Kooboo.Model.Render
 {
     public class ViewParseOptions
     {
-        public string AttributePrefix { get; set; } = "k-";
+        public string AttributePrefix { get; set; } = "kv-";
 
         public IApiProvider ApiProvider { get; set; }
         /// <summary>

@@ -48,15 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\KoobooModel.cs" />
     <Compile Include="KoobooModelManager.cs" />
+    <Compile Include="Render\API\IKApi.cs" />
+    <Compile Include="Render\API\ObjApi.cs" />
+    <Compile Include="Render\API\SlashApi.cs" />
+    <Compile Include="Render\API\SpotApi.cs" />
     <Compile Include="Render\Elements\DataParser.cs" />
     <Compile Include="Render\Elements\MethodParser.cs" />
     <Compile Include="Render\Elements\RootParser.cs" />
     <Compile Include="Render\IJsBuilder.cs" />
     <Compile Include="Render\IVirtualElementRenderer.cs" />
-    <Compile Include="Render\ApiAnalysize.cs" />
-    <Compile Include="Render\Model\ApiModel.cs" />
+    <Compile Include="Render\API\ApiAnalysize.cs" />
+    <Compile Include="Render\API\ApiModel.cs" />
     <Compile Include="Render\ViewParser.cs" />
     <Compile Include="Render\ViewParserOptions.cs" />
     <Compile Include="Render\VueJsBuilder.cs" />
@@ -105,6 +108,8 @@
       <Name>Kooboo.Sites</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Render\Model\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

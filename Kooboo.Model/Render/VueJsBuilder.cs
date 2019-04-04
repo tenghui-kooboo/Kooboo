@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using System.Linq;
 using Kooboo.Model.Render.Vue;
 
 namespace Kooboo.Model.Render
@@ -41,21 +41,33 @@ namespace Kooboo.Model.Render
         {
             var builder = new StringBuilder()
                 //.AppendLine("var app = new Vue({");
-                .AppendLine("Kooboo.Vue.extend({");
+                .AppendLine("Vue.kExtend({");
 
             int i = 0;
+
+            El el=null;
             foreach (var each in _items)
             {
                 if (i > 0)
                 {
                     builder.AppendLine(",");
                 }
+                if (each.Key == typeof(El))
+                {
+                   el = each.Value.FirstOrDefault() as El;
+
+                }
                 _renderers[each.Key].Render(builder, each.Value);
+                
                 i++;
+            }
+            if (el == null)
+            {
+                throw new Exception("el is necessary.");
             }
 
             builder.AppendLine().Append("})");
-            builder.AppendLine().Append("Kooboo.Vue.execute();");
+            builder.AppendLine().Append($"Kooboo.Vue.execute(\"{el.Name}\");");
             return builder.ToString();
         }
     }

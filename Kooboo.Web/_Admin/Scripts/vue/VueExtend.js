@@ -1,14 +1,25 @@
 Kooboo.Vue={
-    data:[],
-    extend:function(vueData){
-        this.data.push(vueData);
-    },
-    execute:function(){
+    data:{},
+    execute:function(el){
         var vueData={};
-        
-        for(var i=this.data.length-1;i>=0;i--){
-            $.extend(true,vueData,this.data[i]);
+        var models=this.data[el];
+        if(models){
+            for(var i=models.length-1;i>=0;i--){
+                $.extend(true,vueData,models[i]);
+            }
+            var app=new Vue(vueData);
         }
-        var app=new Vue(vueData);
+        
     }
+}
+
+Vue.kExtend=function(model){
+   if(model.el){
+    var models=Kooboo.Vue.data[model.el];
+    if(!models){
+        models=[];
+    }
+    models.push(model);
+    Kooboo.Vue.data[model.el]=models;
+   }
 }

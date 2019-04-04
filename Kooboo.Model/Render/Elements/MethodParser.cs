@@ -23,7 +23,7 @@ namespace Kooboo.Model.Render.Elements
             var modelAy = new ApiAnalysize(this.Api, options.ApiProvider);
             modelAy.MethodCallBack = Callback;
 
-            js.Method(modelAy.ApiModel.Method, modelAy.GetMethodBody());
+            js.Method(modelAy.ApiModel.Api, modelAy.GetMethodBody());
             
             
         }

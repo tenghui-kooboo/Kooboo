@@ -5,7 +5,7 @@
         <p><i class="fa fa-spinner fa-spin"></i> <span>Logging in...</span></p>
     </div>
 </div>
-<div class="container" k-el=".container" k-datafrom="Kooboo.User.Login">
+<div class="container" id="app" kv-el kv-datafrom="User.login">
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <div class="block-small-form">
@@ -15,7 +15,7 @@
                 <div class="tab-content">
                     <div id="tab_account_login" class="tab-pane fade active in">
 
-                        <form @submit.prevent='login' k-api="Kooboo.User.login" k-callback="loginCallBack">
+                        <form @submit.prevent='login' kv-api="User.login" kv-callback="loginCallBack">
                             <div class="form-group" :class="{ 'has-error': $v.UserName.$error }">
                                 <label class="sr-only">Username</label>
                                 <input class="form-control" type="text" v-model='UserName' placeholder="Username" />
@@ -50,14 +50,16 @@
         </div>
     </div>
 </div>
+
 <script src="/_Admin/Scripts/vue/vue.js"></script>
 <script src="/_Admin/Scripts/vue/vuelidate.min.js"></script>
 <script src="/_Admin/Scripts/vue/validators.min.js"></script>
 <script src="/_Admin/Scripts/vue/validateHelper.js"></script>
 <script src="/_Admin/Scripts/vue/VueExtend.js"></script>
-<!-- <script src="/_Admin/Scripts/vue/directives/validate.js"></script> -->
 <script>
-    Kooboo.Vue.extend({
+
+    Vue.kExtend({
+        el:"#app",
         methods:{
             test:function(){
                 alert("test extend");

@@ -15,7 +15,12 @@ namespace Kooboo.Model.Render.Elements
 
         public void Parse(Element el, IJsBuilder vue, ViewParseOptions options, Action visitChildren)
         {
-            vue.El(el.getAttribute(options.GetAttributeName(Name)));
+            var id = el.getAttribute("id");
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new Exception("root element id is necessary.");
+            }
+            vue.El($"#{id}");
 
             //visitChildren();
         }

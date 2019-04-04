@@ -36,11 +36,10 @@ namespace Kooboo.Web.Api.Implementation
                 return false;
             }
         }
-
-        [UserModelSetting]
-        public MetaResponse Login(string UserName, string Password, ApiCall apiCall)
+  
+        public MetaResponse Login(UserModelSetting userModel, ApiCall apiCall)
         {
-            var user = Kooboo.Data.GlobalDb.Users.Validate(UserName, Password);
+            var user = Kooboo.Data.GlobalDb.Users.Validate(userModel.UserName, userModel.Password);
 
             if (user != null)
             {
@@ -106,7 +105,7 @@ namespace Kooboo.Web.Api.Implementation
             noresponse.Messages.Add(Data.Language.Hardcoded.GetValue("User name or password not valid", apiCall.Context));
             return noresponse;
         }
-
+        
         public virtual string GetRegisterRedirectUrl(User user, string currentrequesturl)
         {
 
