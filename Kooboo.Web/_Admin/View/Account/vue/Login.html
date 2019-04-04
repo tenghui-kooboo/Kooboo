@@ -15,7 +15,7 @@
                 <div class="tab-content">
                     <div id="tab_account_login" class="tab-pane fade active in">
 
-                        <form @submit.prevent='login' kv-api="User.login" kv-callback="loginCallBack">
+                        <form @submit.prevent='login' kv-api="User.login" >
                             <div class="form-group" :class="{ 'has-error': $v.UserName.$error }">
                                 <label class="sr-only">Username</label>
                                 <input class="form-control" type="text" v-model='UserName' placeholder="Username" />

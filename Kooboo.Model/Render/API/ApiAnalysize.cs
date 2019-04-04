@@ -15,7 +15,6 @@ namespace Kooboo.Model.Render
     {
         private Type _koobooModelType;
         public ApiModel ApiModel;
-        public string MethodCallBack { get; set; }
 
         private static  List<IKApi> apiList { get; set; }
 
@@ -40,7 +39,6 @@ namespace Kooboo.Model.Render
                 return apiList;
             }
         }
-        
         
         public ApiAnalysize(string api,IApiProvider provider)
         {
@@ -115,55 +113,7 @@ namespace Kooboo.Model.Render
             return type;
         }
 
-        public string GetMethodBody()
-        {
-            var rules = GetRules();
-
-            StringBuilder sb = new StringBuilder();
-            //sb.Append($"{MethodName}:function(){{");
-            sb.AppendLine().Append("    var self=this;");
-            #region valid method
-            sb.AppendLine().Append("    function isValid(){");
-
-            var triggerValid = new StringBuilder();
-            var validCondition = new StringBuilder();
-            var index = 0;
-            foreach (var rule in rules)
-            {
-                if (index > 0)
-                {
-                    triggerValid.Append("||");
-                    validCondition.Append("&&");
-                }
-                triggerValid.AppendFormat("self.$v.{0}.$touch()", rule.Key);
-                validCondition.AppendFormat("!self.$v.{0}.$invalid", rule.Key);
-                index++;
-            }
-            sb.AppendLine().Append("    "+triggerValid.ToString());
-            sb.AppendLine().AppendFormat("      return {0}", validCondition.ToString());
-
-            sb.AppendLine().Append("    }");
-            sb.AppendLine().Append("    if(!isValid()){return ;}");
-            #endregion
-
-            sb.AppendLine().AppendFormat("      {0}({{",ApiModel.GetApi());
-            var datalist = GetDataList();
-            var i = 0;
-            foreach(var item in datalist)
-            {
-                if (i > 0)
-                {
-                    sb.Append(",");
-                }
-                sb.AppendLine().AppendFormat("      {0}:self.$data.{0}",item.Key);
-                i++;
-            }
-            sb.AppendLine().Append($"   }}).then(function(res){{ self.{MethodCallBack}(res);}})");
-
-            //sb.Append("}");
-
-            return sb.ToString();
-        }
+       
 
         
     }

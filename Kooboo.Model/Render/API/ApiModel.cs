@@ -15,7 +15,7 @@ namespace Kooboo.Model.Render.API
 
         public string Api { get; set; }
 
-        public string Method { get; set; }//get,post,upload
+        public string Method { get; set; } = "get";//get,post,upload
 
         public IApiProvider Provider;
 
