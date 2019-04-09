@@ -10,31 +10,12 @@ namespace Kooboo.Model
 {
     public class KoobooModelManager
     {
-
-        private static ViewParseOptions options;
-        public static void InitProvider(IApiProvider provider)
+        public static string Render(string html, ModelRenderContext context)
         {
-            options = new ViewParseOptions() { ApiProvider = provider };
-            foreach (var item in Lib.Reflection.AssemblyLoader.LoadTypeByInterface(typeof(IVirtualElementParser)))
-            {
-                var instance = Activator.CreateInstance(item) as IVirtualElementParser;
-
-                if (instance != null)
-                {
-                    options.ElementParsers.Add(instance.Name, instance);
-                }
-            }
-        }
-
-        public static string Render(string html,RenderContext context)
-        {
-            if (!IsNeedRender(context))
+            if (!IsNeedRender(context.HttpContext))
                 return html;
-            var jsBuilder = new VueJsBuilder();
-            new ViewParser(options).Parse(html, jsBuilder);
-            var js= jsBuilder.Build();
-            var script = string.Format("<script>{0}</script>", js);
-            html += script;
+
+            html = new ViewParser(ViewParseOptions.Instance).RenderRootView(html, context);
             
             return html;
         }
