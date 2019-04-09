@@ -22,7 +22,7 @@ namespace Kooboo.Model.Render
             return builder.AddItem(new Vue.SubmitData { Url = url, ModelName = modelName });
         }
 
-        public static IJsBuilder Validation(this IJsBuilder builder, string name, List<ValidateRules.Rule> rules)
+        public static IJsBuilder Validation(this IJsBuilder builder, string name, List<ValidationRules.ValidationRule> rules)
         {
             return builder.AddItem(new Vue.Validation { Name = name, Rules = rules });
         }
@@ -30,6 +30,11 @@ namespace Kooboo.Model.Render
         public static IJsBuilder El(this IJsBuilder builder, string name)
         {
             return builder.AddItem(new Vue.El { Name = name });
+        }
+
+        public static IJsBuilder Component(this IJsBuilder builder, string name, string js)
+        {
+            return builder.AddItem(new Vue.Component { Name = name, Js = js });
         }
     }
 }

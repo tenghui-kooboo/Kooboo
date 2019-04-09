@@ -12,11 +12,13 @@ namespace Kooboo.Model.Render
         public static ViewParseOptions Instance { get; } = new ViewParseOptions()
             .UseParser<Parsers.RootParser>()
             .UseParser<Parsers.LoadParser>()
-            .UseParser<Parsers.SubmitParser>();
+            .UseParser<Parsers.SubmitParser>()
+            .UseParser<Parsers.RefParser>()
+            .UseParser<Parsers.MetaParser>();
 
         public string AttributePrefix { get; set; } = "kv-";
 
-        public IApiProvider ApiProvider { get; set; }
+        public ApiMeta.IApiMetaProvider ApiMetaProvider { get; set; }
         /// <summary>
         /// Map from attribute name to corresponding renderer.
         /// </summary>

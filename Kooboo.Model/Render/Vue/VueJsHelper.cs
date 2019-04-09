@@ -10,8 +10,6 @@ namespace Kooboo.Model.Render.Vue
     {
         public static void Build(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options)
         {
-            builder.AppendLine("{").Indent();
-
             foreach (var group in items.GroupBy(o => o.GetType()))
             {
                 if (!options.Renderers.TryGetValue(group.Key, out IVueRenderer renderer))
@@ -19,8 +17,6 @@ namespace Kooboo.Model.Render.Vue
 
                 renderer.Render(builder, group, options);
             }
-
-            builder.Unindent().Append("}");
         }
     }
 }

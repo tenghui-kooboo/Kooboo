@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class Rule:Attribute
+    public class ValidationRule : Attribute
     {
         public virtual string Message { get; set; }
 

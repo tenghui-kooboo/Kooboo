@@ -95,6 +95,24 @@ namespace Kooboo.Model.Render.Vue
 
         public string Build()
         {
+            InnerBuild();
+
+            return _inner.ToString();
+        }
+
+        public string BuildWithBracket()
+        {
+            AppendLine("{").Indent();
+
+            InnerBuild();
+
+            Unindent().AppendLine().Append("}");
+
+            return _inner.ToString();
+        }
+
+        private void InnerBuild()
+        {
             int i = 0;
             foreach (var item in _items)
             {
@@ -115,8 +133,6 @@ namespace Kooboo.Model.Render.Vue
                 }
                 i++;
             }
-
-            return _inner.ToString();
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class RegexRule:Rule
+    public class RegexRule:ValidationRule
     {
         public string Regex { get; set; }
         public RegexRule(string regex,string message)

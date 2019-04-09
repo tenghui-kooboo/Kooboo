@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Kooboo.Dom;
 
 namespace Kooboo.Model.Render.Parsers
@@ -21,26 +20,26 @@ namespace Kooboo.Model.Render.Parsers
 
             // Get modelName
             var modelGenerated = context.TryGet<string>(SubmitParser.Data_ModelName, out string modelName);
-            modelName = modelName ??
-                el.getAttribute(context.Options.GetAttributeName(SubmitParser.ModelAttribute)) ?? 
-                ParserHelper.GetModelNameFromUrl(url);
+            modelName = modelName ?? el.getAttribute(context.Options.GetAttributeName(SubmitParser.ModelAttribute));
+            if (String.IsNullOrEmpty(modelName))
+            {
+                modelName = ParserHelper.GetModelNameFromUrl(url);
+            }
 
-            // Get meta from url
-            string[] paramNames = null;
-            Dictionary<string, Type> properties = null;
+            // Get meta
+            var meta = context.Options.ApiMetaProvider.GetMeta(url);
 
             // data model
             if (!modelGenerated)
             {
-                var json = String.Join(",", properties.Select(o => String.Format($"{o.Key}: {ParserHelper.GetDefaultValueFromType(o.Value)}")));
-                context.Js.Data(modelName, json);
+                context.Js.Data(modelName, ParserHelper.GetJsonFromModel(meta.Result));
             }
 
             // load js
-            var urlWithParams = ParserHelper.GenerateUrlFromApiParameters(url, paramNames);
+            var urlWithParams = ParserHelper.GenerateUrlFromApiParameters(url, meta.Parameters);
             context.Js.Load(urlWithParams, modelName);
 
-            visitChildren();
+            visitChildren?.Invoke();
         }
     }
 }

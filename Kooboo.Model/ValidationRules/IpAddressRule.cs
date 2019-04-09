@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class UniqueRule:Rule
+    public class IpAddressRule:ValidationRule
     {
-        public UniqueRule(string message)
+        public IpAddressRule(string message)
         {
             Message = message;
         }
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"unique\",message:\"{0}\"}}", Message);
+            return string.Format("{{type:\"ipAddress\",message:\"{0}\"}}", Message);
         }
     }
 }

@@ -50,11 +50,15 @@ namespace Kooboo.Model.Render.Vue
 
                 if (outer.Length > 0)
                 {
-                    outer.AppendLine();
+                    outer.AppendLine().AppendLine();
                 }
-                outer.AppendLine($"Vue.kExtend({builder.Build()})");
-                outer.AppendLine($"Vue.kExecute(\"{el.Name}\");");
+
+                outer.Append("Vue.kExtend(")
+                    .Append(builder.BuildWithBracket())
+                    .Append(")");
             }
+
+            outer.AppendLine().AppendLine().Append($"Vue.kExecute()");
 
             return outer.ToString();
         }

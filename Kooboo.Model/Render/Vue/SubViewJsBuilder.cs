@@ -32,10 +32,10 @@ namespace Kooboo.Model.Render.Vue
 
             VueJsHelper.Build(builder, _items, Options);
 
-            return builder.ToString();
+            return builder.BuildWithBracket();
         }
 
-        public string Build(string template)
+        public string BuildWithTemplate(string template)
         {
             var builder = new InnerJsBuilder(null);
             
@@ -43,7 +43,7 @@ namespace Kooboo.Model.Render.Vue
 
             builder.DirectRender(b => b.Append($"template: '{template}'"));
 
-            return builder.Build();
+            return builder.BuildWithBracket();
         }
     }
 }

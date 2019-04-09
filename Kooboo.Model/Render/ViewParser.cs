@@ -72,10 +72,8 @@ namespace Kooboo.Model.Render
 
     public static class ViewRendererExtensions
     {
-        public static string RenderRootView(this ViewParser renderer, string html, ModelRenderContext modelContext)
+        public static string RenderRootView(this ViewParser parser, string html, ModelRenderContext modelContext)
         {
-            var parser = new ViewParser(ViewParseOptions.Instance);
-
             var context = new ViewParseContext
             {
                 Dom = DomParser.CreateDom(html),
@@ -85,8 +83,9 @@ namespace Kooboo.Model.Render
 
             parser.Parse(context);
 
+            var root = context.Dom.body.childNodes.item[0];
             var result = new StringBuilder()
-                .AppendLine(context.Dom.OuterHtml)
+                .AppendLine(root.OuterHtml)
                 .AppendLine("<script>")
                 .AppendLine(context.Js.Build())
                 .AppendLine("</script>")
@@ -95,10 +94,8 @@ namespace Kooboo.Model.Render
             return result;
         }
 
-        public static string RenderSubView(this ViewParser renderer, string html)
+        public static string RenderSubView(this ViewParser parser, string html)
         {
-            var parser = new ViewParser(ViewParseOptions.Instance);
-
             var js = new Vue.SubViewJsBuilder(Vue.VueJsBuilderOptions.SubViewOptions);
             var context = new ViewParseContext
             {
@@ -109,7 +106,8 @@ namespace Kooboo.Model.Render
 
             parser.Parse(context);
 
-            return js.Build(context.Dom.OuterHtml);
+            var root = context.Dom.body.childNodes.item[0];
+            return js.BuildWithTemplate(root.OuterHtml);
         }
     }
 }

@@ -50,12 +50,17 @@
   <ItemGroup>
     <Compile Include="KoobooModelManager.cs" />
     <Compile Include="ModelRenderContext.cs" />
+    <Compile Include="Render\ApiMeta\ApiInfo.cs" />
+    <Compile Include="Render\ApiMeta\PropertyInfo.cs" />
+    <Compile Include="Render\ApiMeta\ModelInfo.cs" />
     <Compile Include="Render\API\IKApi.cs" />
     <Compile Include="Render\API\ObjApi.cs" />
     <Compile Include="Render\API\SlashApi.cs" />
     <Compile Include="Render\API\SpotApi.cs" />
-    <Compile Include="Render\Parsers\ParserHelper.cs" />
+    <Compile Include="Render\ApiMeta\IApiMetaProvider.cs" />
+    <Compile Include="Render\ParserHelper.cs" />
     <Compile Include="Render\Parsers\RefParser.cs" />
+    <Compile Include="Render\Parsers\MetaParser.cs" />
     <Compile Include="Render\Parsers\SubmitParser.cs" />
     <Compile Include="Render\Parsers\LoadParser.cs" />
     <Compile Include="Render\Parsers\RootParser.cs" />
@@ -71,6 +76,7 @@
     <Compile Include="Render\ViewParserException.cs" />
     <Compile Include="Render\ViewParserOptions.cs" />
     <Compile Include="Render\ViewProvider.cs" />
+    <Compile Include="Render\Vue\Elements\Component.cs" />
     <Compile Include="Render\Vue\InnerJsBuilder_Renderers.cs" />
     <Compile Include="Render\Vue\InnerJsBuilder.cs" />
     <Compile Include="Render\Vue\SubViewJsBuilder.cs" />
@@ -85,20 +91,20 @@
     <Compile Include="Render\Vue\VueJsBuilderOptions.cs" />
     <Compile Include="Render\Vue\VueJsHelper.cs" />
     <Compile Include="Render\Vue\VueKeywords.cs" />
-    <Compile Include="ValidateRules\BetweenRule.cs" />
-    <Compile Include="ValidateRules\IntegerRule.cs" />
-    <Compile Include="ValidateRules\IpAddressRule.cs" />
-    <Compile Include="ValidateRules\MinLengthRule.cs" />
-    <Compile Include="ValidateRules\NumericRule.cs" />
-    <Compile Include="ValidateRules\UniqueRule.cs" />
+    <Compile Include="ValidationRules\BetweenRule.cs" />
+    <Compile Include="ValidationRules\IntegerRule.cs" />
+    <Compile Include="ValidationRules\IpAddressRule.cs" />
+    <Compile Include="ValidationRules\MinLengthRule.cs" />
+    <Compile Include="ValidationRules\NumericRule.cs" />
+    <Compile Include="ValidationRules\UniqueRule.cs" />
     <Compile Include="Setting\IKoobooModel.cs" />
     <Compile Include="Setting\UserModelSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValidateRules\EmailRule.cs" />
-    <Compile Include="ValidateRules\MaxLengthRule.cs" />
-    <Compile Include="ValidateRules\Rule.cs" />
-    <Compile Include="ValidateRules\RegexRule.cs" />
-    <Compile Include="ValidateRules\RequireRule.cs" />
+    <Compile Include="ValidationRules\EmailRule.cs" />
+    <Compile Include="ValidationRules\MaxLengthRule.cs" />
+    <Compile Include="ValidationRules\ValidationRule.cs" />
+    <Compile Include="ValidationRules\RegexRule.cs" />
+    <Compile Include="ValidationRules\RequireRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kooboo.Api\Kooboo.Api.csproj">

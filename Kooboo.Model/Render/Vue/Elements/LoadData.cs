@@ -22,6 +22,7 @@ namespace Kooboo.Model.Render.Vue
     partial class LoadData
     {
         public const string Keyword_ApiGet = "api.get";
+        public const string Keyword_ParameterBind = "ParameterBinder.bind";
 
         public class RootViewRenderer : IVueRenderer
         {
@@ -46,7 +47,7 @@ namespace Kooboo.Model.Render.Vue
 
                     RenderApiGets(b, items, options);
 
-                    b.Unindent().AppendLine("}");
+                    b.AppendLine().Unindent().AppendLine("}");
                 });
             }
         }
@@ -54,9 +55,19 @@ namespace Kooboo.Model.Render.Vue
         public static void RenderApiGets(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options)
         {
             builder.AppendLine("const vm = this");
+            builder.AppendLine("var url = ''").AppendLine();
+            int i = 0;
             foreach (LoadData item in items)
             {
-                builder.AppendLine($"{Keyword_ApiGet}('{item.Url}').then(function(d) {{ vm.{item.ModelName} = d }})");
+                if (i > 0)
+                {
+                    builder.AppendLine().AppendLine();
+                }
+
+                builder.AppendLine($"url = {Keyword_ParameterBind}('{item.Url}')");
+                builder.Append($"{Keyword_ApiGet}(url).then(function(d) {{ vm.{item.ModelName} = d }})");
+
+                i++;
             }
         }
     }

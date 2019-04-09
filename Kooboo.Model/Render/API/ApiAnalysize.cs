@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kooboo.Api;
 using Kooboo.Model.Setting;
-using Kooboo.Model.ValidateRules;
+using Kooboo.Model.ValidationRules;
 using System.Reflection;
 using Kooboo.Model.Render.API;
 
@@ -78,20 +78,20 @@ namespace Kooboo.Model.Render
             return dic;
         }
 
-        public Dictionary<string, List<Rule>> GetRules()
+        public Dictionary<string, List<ValidationRule>> GetRules()
         {
-            var dic = new Dictionary<string, List<Rule>>();
+            var dic = new Dictionary<string, List<ValidationRule>>();
             if (_koobooModelType == null) return dic;
             var props = _koobooModelType.GetProperties();
             if (props != null)
             {
                 foreach (var prop in props)
                 {
-                    var rules = prop.GetCustomAttributes(typeof(Rule));
+                    var rules = prop.GetCustomAttributes(typeof(ValidationRule));
                     if (rules != null && rules.Count() > 0)
                     {
-                        var validateRules = rules.ToList().Select(r => r as Rule).ToList();
-                        dic.Add(prop.Name, validateRules);
+                        var ValidationRules = rules.ToList().Select(r => r as ValidationRule).ToList();
+                        dic.Add(prop.Name, ValidationRules);
                     }
                 }
             }

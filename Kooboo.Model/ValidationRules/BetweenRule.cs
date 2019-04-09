@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class BetweenRule:Rule
+    public class BetweenRule:ValidationRule
     {
         public int From;
         public int To;

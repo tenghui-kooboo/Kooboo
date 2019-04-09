@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class MaxLengthRule:Rule
+    public class MaxLengthRule:ValidationRule
     {
         public int MaxLength;
 

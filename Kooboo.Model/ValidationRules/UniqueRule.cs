@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class RequireRule:Rule
+    public class UniqueRule : ValidationRule
     {
-        public RequireRule(string message)
+        public UniqueRule(string message)
         {
             Message = message;
         }
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"required\",message:\"{0}\"}}",Message);
+            return string.Format("{{type:\"unique\",message:\"{0}\"}}", Message);
         }
     }
 }

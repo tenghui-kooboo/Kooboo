@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kooboo.Model.ValidateRules;
+using Kooboo.Model.ValidationRules;
 
 namespace Kooboo.Model.Render.Vue
 {
@@ -11,7 +11,7 @@ namespace Kooboo.Model.Render.Vue
     {
         public string Name { get; set; }
 
-        public List<Rule> Rules { get; set; }
+        public List<ValidationRule> Rules { get; set; }
     }
 
     partial class Validation
@@ -24,21 +24,21 @@ namespace Kooboo.Model.Render.Vue
                 {
                     builder.Validations(b =>
                     {
-                        b.AppendLine($"{item.Name}: {{").Indent();
-                        b.AppendLine("rule:ruleValid([").Indent();
+                        b.AppendLine($"{ParserHelper.ToJsName(item.Name)}: {{").Indent();
+                        b.AppendLine("rule: ruleValid([").Indent();
 
                         int i = 0;
                         foreach (var rule in item.Rules)
                         {
                             if (i > 0)
                             {
-                                b.Append(",");
+                                b.AppendLine(",");
                             }
                             b.Append(rule.GetRule());
                             i++;
                         }
 
-                        b.Unindent().AppendLine("])");
+                        b.AppendLine().Unindent().AppendLine("])");
                         b.Unindent().Append("}");
                     });
                 }

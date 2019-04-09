@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Kooboo.Dom;
 
 namespace Kooboo.Model.Render.Parsers
@@ -19,18 +18,22 @@ namespace Kooboo.Model.Render.Parsers
 
         public void Parse(Element el, TagParseContext context, Action visitChildren)
         {
+            // Get url, modelName
             var url = el.getAttribute(context.Options.GetAttributeName(Name));
-            var modelName = el.getAttribute(context.Options.GetAttributeName(ModelAttribute)) ?? ParserHelper.GetModelNameFromUrl(url);
+            var modelName = el.getAttribute(context.Options.GetAttributeName(ModelAttribute));
+            if (String.IsNullOrEmpty(modelName))
+            {
+                modelName = ParserHelper.GetModelNameFromUrl(url);
+            }
+
             context.Set(Data_Url, url);
             context.Set(Data_ModelName, modelName);
 
-            // Get meta from url
-            string[] paramNames = null;
-            Dictionary<string, Type> properties = null;
-            Dictionary<string, List<ValidateRules.Rule>> rules = null;
+            // Get meta
+            var meta = context.Options.ApiMetaProvider.GetMeta(url);
 
             // action attribute
-            var urlWithParams = ParserHelper.GenerateUrlFromApiParameters(url, paramNames);
+            var urlWithParams = ParserHelper.GenerateUrlFromApiParameters(url, meta.Parameters);
             el.setAttribute("action", urlWithParams);
 
             // method attributes
@@ -43,19 +46,21 @@ namespace Kooboo.Model.Render.Parsers
             el.setAttribute("@submit.native", $"{Vue.SubmitData.Keyword_Submit}_{modelName}");
 
             // data model
-            var json = String.Join(",", properties.Select(o => String.Format($"{o.Key}: {ParserHelper.GetDefaultValueFromType(o.Value)}")));
-            context.Js.Data(modelName, json);
+            context.Js.Data(modelName, ParserHelper.GetJsonFromModel(meta.Model));
 
             // submit method
             context.Js.Submit(urlWithParams, modelName);
 
             // validations
-            foreach (var rule in rules)
+            foreach (var prop in meta.Model.Properties)
             {
-                context.Js.Validation(rule.Key, rule.Value);
+                if (prop.Rules.Any())
+                {
+                    context.Js.Validation(prop.Name, prop.Rules);
+                }
             }
 
-            visitChildren();
+            visitChildren?.Invoke();
         }
     }
 }

@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidateRules
+namespace Kooboo.Model.ValidationRules
 {
-    public class IntegerRule:Rule
+    public class RequiredRule : ValidationRule
     {
-        public IntegerRule(string message)
+        public RequiredRule(string message)
         {
             Message = message;
         }
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"integer\",message:\"{0}\"}}", Message);
+            return string.Format("{{ type: \"required\", message: \"{0}\" }}", Message);
         }
     }
 }

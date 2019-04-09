@@ -24,9 +24,10 @@ namespace Kooboo.Model.Render.Vue
                 {
                     builder.Methods(b =>
                     {
-                        b.AppendLine($"{Keyword_Submit}_{item.ModelName}: function()").Indent();
+                        b.AppendLine($"{Keyword_Submit}_{item.ModelName}: function() {{").Indent();
 
-                        b.AppendLine($"{Keyword_ApiPost}('{item.Url}', this.{item.ModelName})");
+                        b.AppendLine($"const url = {LoadData.Keyword_ParameterBind}('{item.Url}')");
+                        b.AppendLine($"{Keyword_ApiPost}(url, this.{item.ModelName})");
 
                         b.Unindent().Append("}");
                     });
