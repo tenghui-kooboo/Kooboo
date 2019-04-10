@@ -24,9 +24,7 @@ namespace Kooboo.Model.Render.Vue
                 {
                     builder.Validations(b =>
                     {
-                        b.AppendLine($"{ParserHelper.ToJsName(item.Name)}: {{").Indent();
-                        b.AppendLine("rule: ruleValid([").Indent();
-
+                        b.AppendLine($"{ParserHelper.ToJsName(item.Name)}: [").Indent();
                         int i = 0;
                         foreach (var rule in item.Rules)
                         {
@@ -38,8 +36,7 @@ namespace Kooboo.Model.Render.Vue
                             i++;
                         }
 
-                        b.AppendLine().Unindent().AppendLine("])");
-                        b.Unindent().Append("}");
+                        b.AppendLine().Unindent().Append("]");
                     });
                 }
             }
