@@ -58,6 +58,9 @@
     <Compile Include="Render\API\SlashApi.cs" />
     <Compile Include="Render\API\SpotApi.cs" />
     <Compile Include="Render\ApiMeta\IApiMetaProvider.cs" />
+    <Compile Include="Render\OutputHtml\NamespaceNames.cs" />
+    <Compile Include="Render\OutputHtml\OutputHtml.cs" />
+    <Compile Include="Render\OutputHtml\Symbols.cs" />
     <Compile Include="Render\ParserHelper.cs" />
     <Compile Include="Render\Parsers\RefParser.cs" />
     <Compile Include="Render\Parsers\MetaParser.cs" />

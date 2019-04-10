@@ -83,9 +83,8 @@ namespace Kooboo.Model.Render
 
             parser.Parse(context);
 
-            var root = context.Dom.body.childNodes.item[0];
             var result = new StringBuilder()
-                .AppendLine(root.OuterHtml)
+                .AppendLine(ParserHelper.ToHtml(context.Dom.body.childNodes.item))
                 .AppendLine("<script>")
                 .AppendLine(context.Js.Build())
                 .AppendLine("</script>")
@@ -106,8 +105,7 @@ namespace Kooboo.Model.Render
 
             parser.Parse(context);
 
-            var root = context.Dom.body.childNodes.item[0];
-            return js.BuildWithTemplate(root.OuterHtml);
+            return js.BuildWithTemplate(ParserHelper.ToHtml(context.Dom.body.childNodes.item));
         }
     }
 }

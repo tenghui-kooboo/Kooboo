@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
+using Kooboo.Dom;
 
 namespace Kooboo.Model.Render
 {
@@ -54,6 +58,11 @@ namespace Kooboo.Model.Render
 
             var query = String.Join("&", parameters.Select(o => ToJsName(o.Name)).Select(o => $"{o}={{{o}}}"));
             return $"{url}?{query}";
+        }
+
+        public static string ToHtml(IEnumerable<Node> nodes)
+        {
+            return new OutputHtml.OutputHtml(nodes).ToString();
         }
     }
 }
