@@ -6,6 +6,6 @@ namespace Kooboo.Model.Render.Vue
 {
     public interface IVueRenderer
     {
-        void Render(StringBuilder builder, IEnumerable<object> items);
+        void Render(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options);
     }
 }

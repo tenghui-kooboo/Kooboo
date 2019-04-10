@@ -17,14 +17,14 @@ namespace Kooboo.Model.Render
 
         public ViewParseOptions Options { get; }
 
-        public void Parse(Document dom, IJsBuilder js)
+        public void Parse(ViewParseContext context)
         {
-            VisitNode(dom, js);
+            VisitNode(context.Dom, context);
         }
 
-        private void VisitNode(Node node, IJsBuilder js)
+        private void VisitNode(Node node, ViewParseContext context)
         {
-            if (!TryRenderNode(node, js, VisitChildern))
+            if (!TryRenderNode(node, context, VisitChildern))
             {
                 VisitChildern();
             }
@@ -33,39 +33,81 @@ namespace Kooboo.Model.Render
             {
                 foreach (var child in node.childNodes.item)
                 {
-                    VisitNode(child, js);
+                    VisitNode(child, context);
                 }
             }
         }
 
-        private bool TryRenderNode(Node node, IJsBuilder js, Action visitChildren)
+        private bool TryRenderNode(Node node, ViewParseContext context, Action visitChildren)
         {
             var el = node as Element;
             if (el == null)
                 return false;
 
-            foreach (var attr in el.attributes)
+            var potentialAttrs = el.attributes.Where(o => o.name.StartsWith(Options.AttributePrefix)).ToArray();
+            var parsers = potentialAttrs
+                .Select(o => Options.ElementParsers.TryGetValue(Options.GetVirtualElementName(o.name), out IVirtualElementParser parser) ? parser : null)
+                .Where(o => o != null)
+                .ToArray();
+
+            if (!parsers.Any())
+                return false;
+
+            var tagContext = new TagParseContext(context, Options);
+
+            foreach (var parser in parsers.OrderByDescending(o => o.Priority))
             {
-                // Attribute not start with prefix
-                if (!attr.name.StartsWith(Options.AttributePrefix))
-                    continue;
-
-                // Not found handler for the attribute
-                if (!Options.ElementParsers.TryGetValue(Options.GetVirtualElementName(attr.name), out IVirtualElementParser elRenderer))
-                    continue;
-
-                elRenderer.Parse(el, js, Options, visitChildren);
+                parser.Parse(el, tagContext, visitChildren);
             }
 
-            return false;
+            // Remove kv- attributes
+            foreach (var each in potentialAttrs)
+            {
+                el.removeAttribute(each.name);
+            }
+
+            return true;
         }
     }
 
     public static class ViewRendererExtensions
     {
-        public static void Parse(this ViewParser renderer, string html, IJsBuilder js)
+        public static string RenderRootView(this ViewParser parser, string html, ModelRenderContext modelContext)
         {
-            renderer.Parse(DomParser.CreateDom(html), js);
+            var context = new ViewParseContext
+            {
+                Dom = DomParser.CreateDom(html),
+                Js = new Vue.RootViewJsBuilder(Vue.VueJsBuilderOptions.RootViewOptions),
+                ViewProvider = new ViewProvider(modelContext)
+            };
+
+            parser.Parse(context);
+
+            var root = context.Dom.body.childNodes.item[0];
+            var result = new StringBuilder()
+                .AppendLine(root.OuterHtml)
+                .AppendLine("<script>")
+                .AppendLine(context.Js.Build())
+                .AppendLine("</script>")
+                .ToString();
+
+            return result;
+        }
+
+        public static string RenderSubView(this ViewParser parser, string html)
+        {
+            var js = new Vue.SubViewJsBuilder(Vue.VueJsBuilderOptions.SubViewOptions);
+            var context = new ViewParseContext
+            {
+                Dom = DomParser.CreateDom(html),
+                Js = js,
+                ViewProvider = null
+            };
+
+            parser.Parse(context);
+
+            var root = context.Dom.body.childNodes.item[0];
+            return js.BuildWithTemplate(root.OuterHtml);
         }
     }
 }
