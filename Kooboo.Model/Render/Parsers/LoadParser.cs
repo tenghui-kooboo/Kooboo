@@ -33,6 +33,11 @@ namespace Kooboo.Model.Render.Parsers
             if (!modelGenerated)
             {
                 context.Js.Data(modelName, ParserHelper.GetJsonFromModel(meta.Result));
+                // sub view props
+                if (context.ViewContext.ViewType == ViewType.Sub)
+                {
+                    context.Js.Data(LogicKeywords.PropsData, null);
+                }
             }
 
             // load js

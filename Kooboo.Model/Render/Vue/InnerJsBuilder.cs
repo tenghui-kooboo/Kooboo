@@ -24,7 +24,7 @@ namespace Kooboo.Model.Render.Vue
             _inner = new StringBuilder();
         }
 
-        public VueType VueType { get; set; } = VueType.Instance;
+        public ViewType ViewType { get; set; } = ViewType.Root;
 
         public InnerJsBuilder AddItem(string key, Action<InnerJsBuilder> render)
         {
@@ -136,12 +136,5 @@ namespace Kooboo.Model.Render.Vue
                 i++;
             }
         }
-    }
-
-    public enum VueType
-    {
-        Instance,
-
-        Component
     }
 }

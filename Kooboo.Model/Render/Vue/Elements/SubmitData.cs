@@ -15,6 +15,7 @@ namespace Kooboo.Model.Render.Vue
     {
         public const string Keyword_Submit = "submit";
         public const string Keyword_ApiPost = "api.post";
+        public const string Keyword_Validate = "api.post";
 
         public class Renderer : IVueRenderer
         {
@@ -24,10 +25,14 @@ namespace Kooboo.Model.Render.Vue
                 {
                     builder.Methods(b =>
                     {
-                        b.AppendLine($"{Keyword_Submit}_{item.ModelName}: function() {{").Indent();
+                        b.AppendLine($"{Keyword_Submit}_{item.ModelName}: function(e) {{").Indent();
 
-                        b.AppendLine($"const url = {LoadData.Keyword_ParameterBind}('{item.Url}')");
+                        b.AppendLine($"const vm = this");
+                        b.AppendLine($"e.target.validate(function(valid) {{").Indent();
+                        b.AppendLine($"if (!valid) return");
+                        b.AppendLine($"const url = {LoadData.Keyword_ParameterBind}('{item.Url}', vm)");
                         b.AppendLine($"{Keyword_ApiPost}(url, this.{item.ModelName})");
+                        b.Unindent().AppendLine($"}})");
 
                         b.Unindent().Append("}");
                     });

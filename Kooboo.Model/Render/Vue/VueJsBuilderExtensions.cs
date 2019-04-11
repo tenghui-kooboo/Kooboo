@@ -12,6 +12,11 @@ namespace Kooboo.Model.Render
             return builder.AddItem(new Vue.LoadData { Url = url, ModelName = modelName });
         }
 
+        public static IJsBuilder Load(this IJsBuilder builder)
+        {
+            return builder.AddItem(new Vue.LoadData());
+        }
+
         public static IJsBuilder Data(this IJsBuilder builder, string name, string json)
         {
             return builder.AddItem(new Vue.Data { Name = name, Json = json });

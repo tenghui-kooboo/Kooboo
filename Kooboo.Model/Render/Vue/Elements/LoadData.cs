@@ -28,7 +28,9 @@ namespace Kooboo.Model.Render.Vue
         {
             public void Render(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options)
             {
-                builder.Created(b => RenderApiGets(b, items, options));
+                var notNullItems = items.Cast<LoadData>().Where(o => !String.IsNullOrEmpty(o.ModelName)).ToArray();
+
+                builder.Created(b => RenderApiGets(b, notNullItems, options));
             }
         }
 
@@ -42,28 +44,38 @@ namespace Kooboo.Model.Render.Vue
             {
                 builder.Methods(b =>
                 {
-                    b.AppendLine($"{Keyword_Show}: function() {{").Indent();
+                    b.AppendLine($"{Keyword_Show}: function({VueKeywords.Props}) {{").Indent();
 
-                    RenderApiGets(b, items, options);
+                    b.Append($"this.{VueKeywords.Props} = {VueKeywords.Props}");
+
+                    var notNullItems = items.Cast<LoadData>().Where(o => !String.IsNullOrEmpty(o.ModelName)).ToArray();
+                    if (notNullItems.Any())
+                    {
+                        b.AppendLine();
+                        RenderApiGets(b, notNullItems, options);
+                    }
 
                     b.AppendLine().Unindent().Append("}");
                 });
             }
         }
 
-        public static void RenderApiGets(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options)
+        public static void RenderApiGets(InnerJsBuilder builder, IEnumerable<LoadData> items, VueJsBuilderOptions options)
         {
             builder.AppendLine("const vm = this");
             builder.AppendLine("var url = ''").AppendLine();
             int i = 0;
-            foreach (LoadData item in items)
+            foreach (var item in items)
             {
+                if (String.IsNullOrEmpty(item.ModelName))
+                    continue;
+
                 if (i > 0)
                 {
                     builder.AppendLine().AppendLine();
                 }
 
-                builder.AppendLine($"url = {Keyword_ParameterBind}('{item.Url}')");
+                builder.AppendLine($"url = {Keyword_ParameterBind}('{item.Url}', vm)");
                 builder.Append($"{Keyword_ApiGet}(url).then(function(d) {{ vm.{item.ModelName} = d }})");
 
                 i++;

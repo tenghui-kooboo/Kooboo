@@ -8,6 +8,8 @@ namespace Kooboo.Model.Render.Vue
 {
     public class VueKeywords
     {
+        public const string Props = "props";
+
         public const string Created = "created";
 
         public const string _DirectRender = "directRender";

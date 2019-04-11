@@ -48,6 +48,12 @@ namespace Kooboo.Model.Render.Parsers
             // data model
             context.Js.Data(modelName, ParserHelper.GetJsonFromModel(meta.Model));
 
+            // sub view
+            if (context.ViewContext.ViewType == ViewType.Sub)
+            {
+                context.Js.Data(LogicKeywords.PropsData, null).Load();
+            }
+
             // submit method
             context.Js.Submit(urlWithParams, modelName);
 

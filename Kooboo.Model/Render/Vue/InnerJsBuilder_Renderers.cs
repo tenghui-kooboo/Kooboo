@@ -29,7 +29,7 @@ namespace Kooboo.Model.Render.Vue
 
         public static void RenderData(InnerJsBuilder builder, List<Action<InnerJsBuilder>> innerRender)
         {
-            if (builder.VueType == VueType.Instance)
+            if (builder.ViewType == ViewType.Root)
             {
                 builder.AppendLine("data: {").Indent();
             }
@@ -41,7 +41,7 @@ namespace Kooboo.Model.Render.Vue
 
             RenderProperties(builder, innerRender);
 
-            if (builder.VueType == VueType.Instance)
+            if (builder.ViewType == ViewType.Root)
             {
                 builder.AppendLine()
                     .Unindent().Append("}");

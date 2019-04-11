@@ -93,14 +93,16 @@ namespace Kooboo.Model.Render
             return result;
         }
 
-        public static string RenderSubView(this ViewParser parser, string html)
+        public static string RenderSubView(this ViewParser parser, string html, string[] parameters)
         {
             var js = new Vue.SubViewJsBuilder(Vue.VueJsBuilderOptions.SubViewOptions);
             var context = new ViewParseContext
             {
                 Dom = DomParser.CreateDom(html),
                 Js = js,
-                ViewProvider = null
+                ViewProvider = null,
+                ViewType = ViewType.Sub,
+                Parameters = parameters
             };
 
             parser.Parse(context);

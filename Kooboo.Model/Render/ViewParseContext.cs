@@ -16,5 +16,16 @@ namespace Kooboo.Model.Render
         public IJsBuilder Js { get; set; }
 
         public Document Dom { get; set; }
+
+        public ViewType ViewType { get; set; } = ViewType.Root;
+
+        public string[] Parameters { get; set; }
+    }
+
+    public enum ViewType
+    {
+        Root,
+        
+        Sub
     }
 }
