@@ -24,6 +24,8 @@ namespace Kooboo.Model.Render.Vue
             _inner = new StringBuilder();
         }
 
+        public VueType VueType { get; set; } = VueType.Instance;
+
         public InnerJsBuilder AddItem(string key, Action<InnerJsBuilder> render)
         {
             if (!key.StartsWith(DirectRenderPrefix))
@@ -134,5 +136,12 @@ namespace Kooboo.Model.Render.Vue
                 i++;
             }
         }
+    }
+
+    public enum VueType
+    {
+        Instance,
+
+        Component
     }
 }

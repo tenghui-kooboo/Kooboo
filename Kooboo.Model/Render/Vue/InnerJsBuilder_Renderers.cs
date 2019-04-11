@@ -29,14 +29,29 @@ namespace Kooboo.Model.Render.Vue
 
         public static void RenderData(InnerJsBuilder builder, List<Action<InnerJsBuilder>> innerRender)
         {
-            builder.AppendLine("data: function() {").Indent()
-                .AppendLine("return {").Indent();
+            if (builder.VueType == VueType.Instance)
+            {
+                builder.AppendLine("data: {").Indent();
+            }
+            else
+            {
+                builder.AppendLine("data: function() {").Indent()
+                    .AppendLine("return {").Indent();
+            }
 
             RenderProperties(builder, innerRender);
 
-            builder.AppendLine()
-                .Unindent().AppendLine("}")
-                .Unindent().Append("}");
+            if (builder.VueType == VueType.Instance)
+            {
+                builder.AppendLine()
+                    .Unindent().Append("}");
+            }
+            else
+            {
+                builder.AppendLine()
+                    .Unindent().AppendLine("}")
+                    .Unindent().Append("}");
+            }
         }
 
         public static void RenderComponents(InnerJsBuilder builder, List<Action<InnerJsBuilder>> innerRender)

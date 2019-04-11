@@ -37,7 +37,7 @@ namespace Kooboo.Model.Render.Vue
 
         public string BuildWithTemplate(string template)
         {
-            var builder = new InnerJsBuilder(null);
+            var builder = new InnerJsBuilder(null) { VueType = VueType.Component };
             
             VueJsHelper.Build(builder, _items, Options);
 

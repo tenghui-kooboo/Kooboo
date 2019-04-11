@@ -42,12 +42,11 @@ namespace Kooboo.Model.Render.Vue
             {
                 builder.Methods(b =>
                 {
-                    var paraNames = items.Cast<LoadData>().SelectMany(o => o.Url.TrimStart('{').TrimEnd('}')).Distinct();
-                    b.AppendLine($"{Keyword_Show}: function({String.Join(",", paraNames)})").Indent();
+                    b.AppendLine($"{Keyword_Show}: function() {{").Indent();
 
                     RenderApiGets(b, items, options);
 
-                    b.AppendLine().Unindent().AppendLine("}");
+                    b.AppendLine().Unindent().Append("}");
                 });
             }
         }
