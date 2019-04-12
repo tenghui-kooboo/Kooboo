@@ -33,7 +33,10 @@ Kooboo.Vue={
             for(var i=models.length-1;i>=0;i--){
                 $.extend(true,vueData,models[i]);
             }
-            $.extend(true,vueData,mergeHooks);
+            if(mergeHooks&&Object.keys(mergeHooks).length>0){
+                $.extend(true,vueData,mergeHooks);
+            }
+            
             if(Vue.resetValid){
                 Vue.resetValid(vueData)
             }
