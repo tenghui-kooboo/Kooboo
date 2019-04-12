@@ -50,7 +50,24 @@ function getValidationVueData(){
   valid=rule("");
   expect(valid).to.be(false);
 
-
-
-
 } 
+
+
+function getMergeHooks(){
+  var a=0;
+  var models=[{
+    created:function(){
+      a++;
+    }
+  },{
+    created:function(){
+      a++;
+    }
+  }];
+  debugger;
+  var mergeHooks=Kooboo.Vue.getMergeHooks(models);
+  expect(mergeHooks["created"] instanceof Function).to.be(true);
+
+  mergeHooks["created"]();
+  expect(a).to.be(2);
+}
