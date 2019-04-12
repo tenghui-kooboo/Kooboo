@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.ValidationRules
 {
-    public class UniqueRule : ValidationRule
+    public class SameAsRule:ValidationRule
     {
-        public string Api { get; set; }
-        public UniqueRule(string api,string message)
+        private string _field;
+        public SameAsRule(string field,string message)
         {
-            Api = api;
+            _field = field;
             Message = message;
         }
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"unique\",api:{1},message:\"{0}\"}}", Message,Api);
+            return string.Format("{{type:\"sameAs\",field:{1},message:\"{0}\"}}", Message,_field);
         }
+
+
     }
 }

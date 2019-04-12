@@ -100,6 +100,7 @@
     <Compile Include="ValidationRules\IpAddressRule.cs" />
     <Compile Include="ValidationRules\MinLengthRule.cs" />
     <Compile Include="ValidationRules\NumericRule.cs" />
+    <Compile Include="ValidationRules\SameAsRule.cs" />
     <Compile Include="ValidationRules\UniqueRule.cs" />
     <Compile Include="Setting\IKoobooModel.cs" />
     <Compile Include="Setting\UserModelSetting.cs" />
