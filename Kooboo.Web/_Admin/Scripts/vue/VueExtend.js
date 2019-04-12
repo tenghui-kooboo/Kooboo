@@ -7,6 +7,9 @@ Kooboo.Vue={
             for(var i=models.length-1;i>=0;i--){
                 $.extend(true,vueData,models[i]);
             }
+            if(Vue.resetValid){
+                Vue.resetValid(vueData)
+            }
             var app=new Vue(vueData);
         }
         
