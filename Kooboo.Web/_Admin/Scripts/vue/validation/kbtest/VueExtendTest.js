@@ -33,8 +33,8 @@ function getValidationVueData(){
   //username
   var data=Kooboo.Vue.getVueData(data);
   expect(data.validations.userName instanceof Array).not.to.be(true);
-  expect(data.validations.userName.multiRule instanceof Function).to.be(true);
-  var rule=data.validations.userName.multiRule;
+  expect(data.validations.userName.rules instanceof Function).to.be(true);
+  var rule=data.validations.userName.rules;
 
   var valid=rule("ss");
   expect(valid).to.be(true);
@@ -42,8 +42,8 @@ function getValidationVueData(){
   expect(valid).to.be(false);
 
   expect(data.validations.password instanceof Array).not.to.be(true);
-  expect(data.validations.password.multiRule instanceof Function).to.be(true);
-  var rule=data.validations.password.multiRule;
+  expect(data.validations.password.rules instanceof Function).to.be(true);
+  var rule=data.validations.password.rules;
 
   var valid=rule("ssss");
   expect(valid).to.be(true);
@@ -64,7 +64,6 @@ function getMergeHooks(){
       a++;
     }
   }];
-  debugger;
   var mergeHooks=Kooboo.Vue.getMergeHooks(models);
   expect(mergeHooks["created"] instanceof Function).to.be(true);
 
