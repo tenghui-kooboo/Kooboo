@@ -4,8 +4,9 @@ var helpers=validators.helpers;
 Vue.resetValid=function(vueData){
     if(vueData.validations && 
         Object.keys(vueData.validations).length>0){
-        vueData.validations=window.validators.resetValidations(vueData.validations);
+        vueData.validations=window.validators.Extend.resetValidations(vueData.validations);
     }
+    return vueData;
 }
 validators.Extend={
     validRule:function(rules,value){
@@ -46,13 +47,6 @@ validators.Extend={
         }
         return isValid;
     },
-    // getValidator:function(ruleType){
-    //     var validator=validators[ruleType];
-    //     if(!validator){
-    //         validator= validators.helpers[ruleType]
-    //     }
-    //     return validator;
-    // },
     getValidatorParams:function(rule){
         var validatorParamsKeys={
             regex:["regex"],
