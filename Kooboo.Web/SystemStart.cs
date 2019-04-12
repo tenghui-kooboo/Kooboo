@@ -49,7 +49,6 @@ namespace Kooboo.Web
             StartNewWebServer(port);
 
             var api= Middleware.Where(m => m is ApiMiddleware).Select(m => (m as ApiMiddleware).ApiProvider).FirstOrDefault();
-            Kooboo.Model.KoobooModelManager.InitProvider(api);
           
             foreach (var item in Kooboo.Data.GlobalDb.Bindings.All())
             {
