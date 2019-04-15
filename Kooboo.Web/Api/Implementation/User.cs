@@ -106,6 +106,7 @@ namespace Kooboo.Web.Api.Implementation
                 {
                     redirct = Lib.Helper.UrlHelper.AppendQueryString(redirct, "remember", "yes");
                 }
+                //response.RedirectUrl = redirct;
                 response.Model = redirct;
                 // resposne redirect url. for online and local version...  
                 return response;

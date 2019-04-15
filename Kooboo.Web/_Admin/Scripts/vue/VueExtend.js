@@ -101,9 +101,9 @@ Vue.prototype.$parameterBinder=function(){
             parts=url.split("?");
             var keyValue={"siteId":"siteId"};//default add siteid
             if(parts.length>1){
-                var queryStringPart=parts[1].split("&");
-                for(var i=0;i<queryStringPart.length;i++){
-                    var part=queryStringPart[i];
+                var queryStringParts=parts[1].split("&");
+                for(var i=0;i<queryStringParts.length;i++){
+                    var part=queryStringParts[i];
                     var itemParts=part.split("=");
                     if(itemParts.length==2){
                         var key=itemParts[0];
