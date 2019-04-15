@@ -26,7 +26,10 @@ function getValidatorParams(){
     var rule={type:'sameAs',field:"password"}
     params=validators.Extend.getValidatorParams(rule);
     expect(params.length).to.be(1);
-    expect(params[0]).to.be("password");
+    expect(params[0] instanceof Function).to.be(true);
+    var getCompareValue=params[0];
+    var compareValue=getCompareValue({$data:{password:'pass',username:'user'}})
+    expect(compareValue).to.be("pass");
 
     var rule={type:'required'}
     params=validators.Extend.getValidatorParams(rule);
@@ -37,7 +40,20 @@ function getValidatorParams(){
     //todo implemetation
     //expect(params.length).to.be(1);
 }
-
+function getCompareValue(){
+  var data={
+    $data:{
+      username:'user',
+      user:{
+        password:"pass"
+      }
+    }
+  };
+  var value=validators.Extend.getCompareValue(data,"username");
+  expect(value).to.be("user");
+  value=validators.Extend.getCompareValue(data,"password");
+  expect(value).to.be("pass");
+}
 function validateRule(){
   //required
   var rules=[{type:'required'}];

@@ -125,22 +125,22 @@ namespace Kooboo.Web.Api.Implementation
 
         }
 
-        public virtual MetaResponse Register(string UserName, string Password, string email, ApiCall apiCall)
+        public virtual MetaResponse Register(Kooboo.Model.Setting.RegisterModel register, ApiCall apiCall)
         {
-            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
+            if (string.IsNullOrEmpty(register.UserName) || string.IsNullOrEmpty(register.Password))
             {
                 throw new Exception(Data.Language.Hardcoded.GetValue("Username or password not provided", apiCall.Context));
             }
-            UserName = Lib.Helper.StringHelper.ToValidUserNames(UserName);
-            var currentuser = Kooboo.Data.GlobalDb.Users.Get(UserName);
+            register.UserName = Lib.Helper.StringHelper.ToValidUserNames(register.UserName);
+            var currentuser = Kooboo.Data.GlobalDb.Users.Get(register.UserName);
             if (currentuser != null)
             {
                 throw new Exception(Data.Language.Hardcoded.GetValue("user exists", apiCall.Context));
             }
             var user = new User();
-            user.UserName = UserName;
-            user.Password = Password;
-            user.EmailAddress = email;
+            user.UserName = register.UserName;
+            user.Password = register.Password;
+            user.EmailAddress = register.Email;
             string acceptlang = apiCall.Context.Request.Headers["Accept-Language"];
             user.Language = Kooboo.Data.Language.LanguageSetting.GetByAcceptLangHeader(acceptlang);
 

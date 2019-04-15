@@ -118,15 +118,40 @@ Vue.prototype.$parameterBinder=function(){
             return keyValue;
         },
         getQueryStringValue:function(model,key){
-            if(model[key]){
-                return model[key]
+            var value=this.getValuebyModel(model,key);
+            if(value){
+                return value
             }
-            var value=this.getQueryString(key);
+            value=this.getQueryString(key);
             if(value){
                 return value
             }
                 
             return "";
+        },
+        getValuebyModel:function(model,findKey){
+            function getValue(data,field){
+                var value="";
+                if(!data[field]){
+                    var keys=Object.keys(data);
+                    for(var i=0;i<keys.length;i++){
+                        var key=keys[i];
+                        if(data[key] instanceof Object){
+                            value=getValue(data[key],field);
+                            if(value){
+                                break;
+                            }
+                        }
+                       
+                    }
+                }
+                else{
+                    value=data[field];
+                }
+               
+                return value;
+            }
+            return getValue(model,findKey);
         },
         //code from kooboobase
         getQueryString:function(name, source) {

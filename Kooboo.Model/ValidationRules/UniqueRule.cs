@@ -17,7 +17,7 @@ namespace Kooboo.Model.ValidationRules
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"unique\",api:{1},message:\"{0}\"}}", Message,Api);
+            return string.Format("{{type:\"unique\",api:\"{1}\",message:\"{0}\"}}", Message,Api);
         }
     }
 }

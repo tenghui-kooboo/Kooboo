@@ -18,17 +18,18 @@ var loading = {
 };
 
 api = {
-  get: function (url) {
+  get: function (url,hideLoading,useSync) {
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
     var self = this;
-    loading.start();
-    return DataCache.getData(apiObj.obj, apiObj.method, apiObj.data, true)//defautl sync
+    self.startLoading(hideLoading);
+
+    return DataCache.getData(apiObj.obj, apiObj.method, apiObj.data, useSync)
       .fail(function (fail) {
         self.handleRequestError(fail);
       })
       .always(function () {
-        loading.stop();
+        self.stopLoading(hideLoading);
       })
       .done(function (res) {
         if (!res.success) {
@@ -36,31 +37,30 @@ api = {
         }
       });
   },
-  post: function (url, model) {
+  post: function (url, model,hideLoading,useSync) {
 
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
     var self = this;
-    loading.start();
+    self.startLoading(hideLoading);
 
     if (model instanceof Object) {
       model = JSON.stringify(model);
     }
     model = encodeURIComponent(model);
     //extendParams??
-    return DataCache.postData(apiObj.obj, apiObj.method, model, {}, true)
+    return DataCache.postData(apiObj.obj, apiObj.method, model, {}, useSync)
       .fail(function (fail) {
         self.handleRequestError(fail);
       })
       .always(function () {
-        loading.stop();
+        self.stopLoading(hideLoading);
       })
       .done(function (res) {
         // clean cache...
         if (!res.success) {
           Kooboo.handleFailMessages(res.messages);
         } else {
-          
           // if(res.model&& res.model.redirectUrl){
           //   window.location.href=res.model.redirectUrl;
           if(res.model){
@@ -139,6 +139,14 @@ api = {
         }
     }
     return data;
+  },
+  startLoading:function(hideLoading){
+    var hideLoading = !!hideLoading && true;
+      hideLoading && $(".page-loading").hide();
+      !hideLoading && loading.start();
+  },
+  stopLoading:function(hideLoading){
+    !hideLoading && loading.stop();
   },
   handleRequestError: function () {
     window.info.fail(
