@@ -36,50 +36,50 @@ namespace Kooboo.Web.Api.Implementation
             }
         }
 
-        public MetaResponse Login(string UserName, string Password, ApiCall apiCall)
+        public MetaResponse Login(Kooboo.Model.Setting.UserModelSetting userModel, ApiCall apiCall)
         {
 
-            if (!Kooboo.Data.Service.UserLoginProtection.CanTryLogin(UserName, apiCall.Context.Request.IP))
+            if (!Kooboo.Data.Service.UserLoginProtection.CanTryLogin(userModel.UserName, apiCall.Context.Request.IP))
             {
-                throw new Exception(Data.Language.Hardcoded.GetValue("user or ip temporarily lockout", apiCall.Context)); 
+                throw new Exception(Data.Language.Hardcoded.GetValue("user or ip temporarily lockout", apiCall.Context));
             }
 
-            var user = Kooboo.Data.GlobalDb.Users.Validate(UserName, Password);
+            var user = Kooboo.Data.GlobalDb.Users.Validate(userModel.UserName,userModel.Password);
 
             if (user == null)
             {
-                Data.Service.UserLoginProtection.AddLoginFail(UserName, apiCall.Context.Request.IP); 
+                Data.Service.UserLoginProtection.AddLoginFail(userModel.UserName, apiCall.Context.Request.IP);
             }
 
             if (user != null)
             {
-                string remember = apiCall.GetValue("remember");
+                string remember =userModel.Remember.ToString();
 
                 bool samesite = false;
-                string type = apiCall.GetValue("type"); 
-                if (type !=null && type == "site")
+                string type = apiCall.GetValue("type");
+                if (type != null && type == "site")
                 {
-                    samesite = true; 
+                    samesite = true;
                 }
 
 #if DEBUG
                 {
-                samesite = true; 
+                    samesite = true;
                 }
 #endif 
 
-                string returnUrl = apiCall.GetValue("returnurl");
+                string returnUrl = userModel.Returnurl;
                 if (returnUrl != null)
                 {
                     returnUrl = System.Web.HttpUtility.UrlDecode(returnUrl);
-                    returnUrl = System.Web.HttpUtility.UrlDecode(returnUrl); 
+                    returnUrl = System.Web.HttpUtility.UrlDecode(returnUrl);
                     // the redirect from access token. 
                     if (returnUrl != null && returnUrl.ToLower().Contains("accesstoken"))
                     {
-                        returnUrl = null; 
+                        returnUrl = null;
                     }
                     else
-                    { 
+                    {
                         var lower = returnUrl.ToLower();
 
                         if (lower == "/_admin" || lower == "/_admin/" || lower == "\\_admin" || lower == "\\_admin\\")
@@ -98,14 +98,14 @@ namespace Kooboo.Web.Api.Implementation
                 int days = isRemember ? 60 : 0;
                 var response = new MetaResponse();
 
-                response.Success = true; 
+                response.Success = true;
 
                 string redirct = Kooboo.Web.Service.UserService.GetLoginRedirectUrl(apiCall.Context, user, apiCall.Context.Request.Url, returnUrl, samesite);
 
                 if (isRemember)
                 {
                     redirct = Lib.Helper.UrlHelper.AppendQueryString(redirct, "remember", "yes");
-                }      
+                }
                 response.Model = redirct;
                 // resposne redirect url. for online and local version...  
                 return response;
