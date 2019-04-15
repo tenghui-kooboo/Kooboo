@@ -60,7 +60,7 @@ api = {
         if (!res.success) {
           Kooboo.handleFailMessages(res.messages);
         } else {
-          //debugger;
+          
           // if(res.model&& res.model.redirectUrl){
           //   window.location.href=res.model.redirectUrl;
           if(res.model){
@@ -93,7 +93,14 @@ api = {
   },
 
   getMeta: function (modelName) {
-
+    var url="/meta/get?modelname="+modelName;
+    var meta={};
+    self.get(url).then(function(res){
+      if(res.model){
+        meta=res.model;
+      }
+    })
+    return meta;
   },
   getApi: function (url) {
     var slashParts = url.split("/");
