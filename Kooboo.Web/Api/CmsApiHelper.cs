@@ -119,7 +119,6 @@ namespace Kooboo.Web.Api
             return null;
         }
 
-        [Obsolete]
         // Get the default API provider. 
         public static IApiProvider GetApiProvider()
         {
