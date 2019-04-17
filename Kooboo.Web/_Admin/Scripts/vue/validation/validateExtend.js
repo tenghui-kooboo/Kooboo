@@ -36,35 +36,24 @@ validators.Extend = {
 
         var validator = validators[rule.type];
         if (validator) {
-            var params = validators.Extend.getValidatorParams(rule,vm);
+            var params = validators.Extend.getValidatorParams(rule);
             if (params.length > 0) {
                 isValid = validator.apply(this, params)(value,vm);
             } else {
                 isValid = validator(value);
             }
-
-        }else if(rule.type=="unique"){
-            function isUnique(rule){
-                var url=vm.$parameterBinder().bind(rule.api);
-                var result=false;
-                api.get(url,true,true).then(function(res){
-                    result=res.success;
-                });
-                return result;
-            }
-            return isUnique(rule)
-        }else {
+        }
+        else {
             console.log("valid" + rule.type + "doesn't exist");
             return false;
         }
         return isValid;
     },
-    getValidatorParams: function (rule,vm) {
+    getValidatorParams: function (rule) {
         if(rule.type=="sameAs"){
             var field=rule["field"];
             function equalTo(vm){
                 return vm.$parameterBinder().getValuebyModel(vm.$data,field);
-                //return validators.Extend.getCompareValue(vm,field);
             }
             return [equalTo];
         }
@@ -74,6 +63,7 @@ validators.Extend = {
             minLength: ["minLength"],
             maxLength: ["maxLength"],
             between: ["from", "to"],
+            unique:["api"],
             //sameAs: ["field"]
         };
         var keys = [];
@@ -85,31 +75,6 @@ validators.Extend = {
             params.push(rule[para]);
         })
         return params;
-    },
-    //for sameAs compare
-    getCompareValue:function(vm,sameAsfield){
-        function getValue(data,field){
-            var value="";
-            if(!data[field]){
-                var keys=Object.keys(data);
-                for(var i=0;i<keys.length;i++){
-                    var key=keys[i];
-                    if(data[key] instanceof Object){
-                        value=getValue(data[key],field);
-                        if(value){
-                            break;
-                        }
-                    }
-                   
-                }
-            }
-            else{
-                value=data[field];
-            }
-           
-            return value;
-        }
-        return getValue(vm.$data,sameAsfield);
     },
     extendValidations: function (validations) {
         function getValidation(validation){
@@ -139,6 +104,8 @@ validators.rules = function (rules) {
     };
     return helpers.withParams(param, function (value) {
         var vm=this;
+        //console.log(param.rules);
+        //console.log(1);
         var result = validators.Extend.validateRule(rules, value,vm);
         //param.errors=param.errors.concat(result.errors);
         //todo check,param.errors=param.errors.concat(result.errors); 
@@ -156,11 +123,16 @@ validators.regex = function (regex) {
         return validators.helpers.regex("regex", new RegExp(regex))(value);
     }
 }
-// validators.unique = function (urlvalue) {
-//     return function (value) {
-//         //url=//parameterbinder.bind(url);
-//         //todo need wrap ajaxpost
-//         //api post
-//         //return 
-//     }
-// }
+
+validators.unique = function (apiurl) {
+    return function (value,vm) {
+        if(!value) return true;
+
+        var url=vm.$parameterBinder().bind(apiurl);
+        var result=false;
+        api.get(url,true,true).then(function(res){
+            result=res.success;
+        });
+        return result;
+    }
+}

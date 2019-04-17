@@ -37,7 +37,7 @@
                     <div class="form-group" :class="{ 'has-error': $v.user.confirmPassword.$error }">
                         <label class="sr-only">Password</label>
                         <input class="form-control" type="password" v-model='user.confirmPassword' placeholder="confirmPassword" />
-                        <div v-if="$v.user.password.$error">
+                        <div v-if="$v.user.confirmPassword.$error">
                             <span class="help-block"  v-for='error in $v.user.confirmPassword.$params.rules.errors' v-text='error'></span>
                         </div>
                     </div>
