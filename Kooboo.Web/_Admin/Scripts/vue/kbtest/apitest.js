@@ -16,7 +16,7 @@ function getAPI(){
   expect(apiObj).not.to.be(undefined);
   expect(apiObj.obj).to.be("user");
   expect(apiObj.method).to.be("get");
-  debugger;
+  
   expect(apiObj.data.id).to.be("1");
   expect(apiObj.data.data).to.be("d");
 

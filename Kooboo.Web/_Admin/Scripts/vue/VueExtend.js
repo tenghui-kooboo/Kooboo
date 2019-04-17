@@ -99,7 +99,7 @@ Vue.prototype.$parameterBinder=function(){
         },
         getUrlKeyValue:function(url){
             parts=url.split("?");
-            var keyValue={"siteId":"siteId"};//default add siteid
+            var keyValue={"siteId":"{siteId}"};//default add siteid
             if(parts.length>1){
                 var queryStringParts=parts[1].split("&");
                 for(var i=0;i<queryStringParts.length;i++){
@@ -107,17 +107,21 @@ Vue.prototype.$parameterBinder=function(){
                     var itemParts=part.split("=");
                     if(itemParts.length==2){
                         var key=itemParts[0];
-                        var valuePlaceholder=itemParts[1];
-                        if(valuePlaceholder){
-                            valuePlaceholder= valuePlaceholder.replace("{","").replace("}","").trim();
-                            keyValue[key]=valuePlaceholder;
-                        }
+                        var value=itemParts[1];
+                        keyValue[key]=value;
                     }
                 }
             }
             return keyValue;
         },
-        getQueryStringValue:function(model,key){
+        isValuePlaceHolder:function(value){
+            return value.indexOf("{")>-1 && value.indexOf("}")>-1;
+        },
+        getQueryStringValue:function(model,value){
+            if(!this.isValuePlaceHolder(value)){
+                return value;
+            }
+            var key=value.replace("{","").replace("}","").trim();
             var value=this.getValuebyModel(model,key);
             if(value){
                 return value

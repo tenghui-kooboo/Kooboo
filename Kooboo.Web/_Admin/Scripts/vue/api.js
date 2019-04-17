@@ -18,7 +18,7 @@ var loading = {
 };
 
 api = {
-  get: function (url,hideLoading,useSync) {
+  get: function (url,useSync,hideLoading) {
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
     var self = this;
@@ -37,7 +37,7 @@ api = {
         }
       });
   },
-  post: function (url, model,hideLoading,useSync) {
+  post: function (url, model,useSync,hideLoading) {
 
     var apiObj = this.getApi(url);
     if (!apiObj) return null;

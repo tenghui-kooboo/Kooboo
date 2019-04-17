@@ -76,10 +76,18 @@ function parameterBind_getKeyValue(){
   var url="aa?id={idx}&data={datax}"
   
   var keyvalue= vue.$parameterBinder().getUrlKeyValue(url);
+
   expect(Object.keys(keyvalue).length).to.be(3);
-  expect(keyvalue["id"]).to.be("idx");
-  expect(keyvalue["data"]).to.be("datax");
-  expect(keyvalue["siteId"]).to.be("siteId");
+  expect(keyvalue["id"]).to.be("{idx}");
+  expect(keyvalue["data"]).to.be("{datax}");
+  expect(keyvalue["siteId"]).to.be("{siteId}");
+
+  var url="aa?id=1&data={datax}";
+  keyvalue= vue.$parameterBinder().getUrlKeyValue(url);
+  expect(Object.keys(keyvalue).length).to.be(3);
+  expect(keyvalue["id"]).to.be("1");
+  expect(keyvalue["data"]).to.be("{datax}");
+  expect(keyvalue["siteId"]).to.be("{siteId}");
 }
 
 function parameterBind_bind(){
@@ -92,4 +100,14 @@ function parameterBind_bind(){
   var url="aa?id={idx}&data={datax}"
   var url=vue.$parameterBinder().bind(url);
   expect(url).to.be("aa?siteId=&id=1&data=aa");
+
+  vue=new Vue({
+    data:{
+      idx:"1",
+      datax:"aa"
+    }
+  });
+  url="aa?id=id&data={datax}"
+  var url=vue.$parameterBinder().bind(url);
+  expect(url).to.be("aa?siteId=&id=id&data=aa");
 }
