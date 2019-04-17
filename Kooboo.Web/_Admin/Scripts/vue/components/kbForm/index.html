@@ -1,0 +1,13 @@
+<div class="form" :class="layout">
+  <kb-form-item
+    v-for="(item, idx) in meta.items"
+    :key="idx"
+    :label="item.label"
+    :value="item.value"
+    :tooltip="item.tooltip"
+    :controlType="item.type"
+    :externalClass="item.class"
+    :placeholder="item.placeholder"
+    :horizontal="meta.layout=='horizontal'"
+  ></kb-form-item>
+</div>

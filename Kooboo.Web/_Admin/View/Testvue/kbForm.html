@@ -1,0 +1,44 @@
+<!-- #layout name=vue -->
+
+<div class="page-header">
+  <h1 class="title">KB FORM</h1>
+</div>
+
+<div id="app-vue">
+  <kb-form :meta="formData"></kb-form>
+</div>
+
+<script>
+  Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbForm/index.js"]);
+  var vm = new Vue({
+    el: "#app-vue",
+    data: {
+      formData: {
+        layout: "horizontal",
+        items: [
+          {
+            type: "textbox",
+            label: "tb",
+            name: "tb",
+            value: "init value",
+            placeholder: "input here",
+            class: "input-small",
+            tooltip: ""
+          },
+          {
+            type: "textarea",
+            label: "path",
+            name: "path",
+            value: "",
+            placeholder: "input here",
+            class: "",
+            tooltip: ""
+          }
+        ]
+      }
+    },
+    components: {
+      "kb-form": Kooboo.vue.component.kbForm
+    }
+  });
+</script>
