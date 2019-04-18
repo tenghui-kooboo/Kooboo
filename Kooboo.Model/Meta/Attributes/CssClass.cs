@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Data.Definition.KModel.Attributes
+namespace Kooboo.Model.Meta.Attributes
 { 
     [AttributeUsage(AttributeTargets.Property)]
     public class CssClass : Attribute, IMetaAttribute
@@ -11,7 +11,7 @@ namespace Kooboo.Data.Definition.KModel.Attributes
 
         public bool IsHeader => false; 
 
-        public string PropertyName => "Class";
+        public string PropertyName => "class";
 
         public CssClass(string classname)
         {

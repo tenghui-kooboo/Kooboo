@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Data.Definition.KModel
+namespace Kooboo.Model.Meta.Definition
 {
-  public   class KMeta
+  public   class KTable
     {
         public List<Column> Columns { get; set; } = new List<Column>(); 
 
+    }
+
+    public class KTableMeta : IKMeta
+    {
+        public IKMeta Menus { get; set; }
+
+        public KTable Table { get; set; }
     }
 
   //  var meta = {

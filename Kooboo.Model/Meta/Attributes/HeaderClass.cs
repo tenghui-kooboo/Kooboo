@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Data.Definition.KModel.Attributes
+namespace Kooboo.Model.Meta.Attributes
 {
      
     [AttributeUsage(AttributeTargets.Property)]

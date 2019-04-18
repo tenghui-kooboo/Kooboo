@@ -10,6 +10,10 @@ namespace Kooboo.Model.Setting
 {
     public class UserModelSetting: IKoobooModel
     {
+        public ModelType ModelType { get; set; }
+
+        public string ModelName => "Register";
+
         [RequiredRule("username can't be empty")]
         [MaxLengthRule(50,"username max Length is {0}")]
         [MinLengthRule(3,"username min length is {0}")]

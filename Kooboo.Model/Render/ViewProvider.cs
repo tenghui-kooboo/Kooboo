@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Kooboo.Sites.Render.Commands;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Render
 {
@@ -12,6 +13,13 @@ namespace Kooboo.Model.Render
     {
         private ModelRenderContext _context;
 
+        public RenderContext RenderContext
+        {
+            get
+            {
+                return _context.HttpContext;
+            }
+        }
         public ViewProvider(ModelRenderContext context)
         {
             _context = context;

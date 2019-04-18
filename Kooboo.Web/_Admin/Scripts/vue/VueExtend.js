@@ -17,8 +17,10 @@ Kooboo.Vue={
             if(models.length>0 &&hookFuncs.length>0){
                 //mergeHooks[hook]=hookFuncs;
                 mergeHooks[hook]=function(){
+                    var vm=this;
                     hookFuncs.forEach(function(hookFunc){
-                        hookFunc();
+                        debugger;
+                        hookFunc.call(vm);
                     });
                 }
             }

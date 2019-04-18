@@ -1,7 +1,7 @@
-(function() {
+(function () {
     var template = Kooboo.getTemplate("/_Admin/Scripts/components/kbTable.html");
     ko.components.register("kb-table", {
-        viewModel: function(params) {
+        viewModel: function (params) {
             var self = this;
 
             this.kbType = ko.observable(params.kbType);
@@ -22,7 +22,7 @@
              */
 
             self.columns = ko.observableArray(params.columns);
-            self.columns.subscribe(function(newCol) {
+            self.columns.subscribe(function (newCol) {
                 self.allSelected(false);
             })
 
@@ -32,16 +32,16 @@
             // display documents
             var list = [];
 
-            _.forEach(params.docs, function(doc) {
+            _.forEach(params.docs, function (doc) {
                 list.push(new docModel(doc));
             });
             self.docs = ko.observableArray(list);
 
             // status: if all the docs is selected
             self.allSelected = ko.pureComputed({
-                read: function() {
+                read: function () {
 
-                    var selectableDocs = _.filter(self.docs(), function(doc) {
+                    var selectableDocs = _.filter(self.docs(), function (doc) {
                         return !doc.unselectable();
                     })
 
@@ -51,16 +51,16 @@
 
                     return self.selectedDocs().length === selectableDocs.length;
                 },
-                write: function(value) {
+                write: function (value) {
 
                     if (typeof value === "boolean") {
                         self.selectedDocs.removeAll();
 
-                        var selectableDocs = _.filter(self.docs(), function(doc) {
+                        var selectableDocs = _.filter(self.docs(), function (doc) {
                             return !doc.unselectable();
                         })
 
-                        _.forEach(selectableDocs, function(doc) {
+                        _.forEach(selectableDocs, function (doc) {
                             doc.selected(value);
                             value && self.selectedDocs.push(doc);
                         })
@@ -69,8 +69,8 @@
                 owner: this
             });
 
-            self.enableAllSelected = ko.pureComputed(function() {
-                var unselectableCount = _.filter(self.docs(), function(doc) {
+            self.enableAllSelected = ko.pureComputed(function () {
+                var unselectableCount = _.filter(self.docs(), function (doc) {
                     return doc.unselectable();
                 }).length;
                 return self.docs().length && (self.docs().length !== unselectableCount)
@@ -78,14 +78,14 @@
 
             // Array: a storage of all the selected docs.
             self.selectedDocs = ko.observableArray();
-            self.selectedDocs.subscribe(function(selected) {
+            self.selectedDocs.subscribe(function (selected) {
                 Kooboo.EventBus.publish("ko/table/delete/show", selected.length > 0);
                 // publish another event for customizing
                 Kooboo.EventBus.publish("ko/table/docs/selected", selected);
             });
 
             // function: toggle selecte the current doc.
-            self.onSelectCurrentDoc = function(doc) {
+            self.onSelectCurrentDoc = function (doc) {
 
                 if (!self.unselectable() && !doc.unselectable()) {
                     doc.selected(!doc.selected());
@@ -104,24 +104,24 @@
 
             self.unselectable = ko.observable(!!params.unselectable);
 
-            self.deleteSelected = function() {
+            self.deleteSelected = function () {
                 if (self.kbType()) {
                     var confirmStr = self.isSelectedDocsContainsRef() ? Kooboo.text.confirm.deleteItemsWithRef : Kooboo.text.confirm.deleteItems;
                     if (confirm(confirmStr)) {
                         var ids = self.getSelectedId();
                         Kooboo[self.kbType()].Deletes({
                             ids: JSON.stringify(ids)
-                        }).then(function(res) {
+                        }).then(function (res) {
 
                             if (res.success) {
-                                _.forEach(ids, function(id) {
-                                    var doc = _.findLast(self.docs(), function(doc) {
+                                _.forEach(ids, function (id) {
+                                    var doc = _.findLast(self.docs(), function (doc) {
                                         return doc.id() === id;
                                     });
 
                                     self.docs.remove(doc);
 
-                                    var _idx = _.findIndex(params.docs, function(d) {
+                                    var _idx = _.findIndex(params.docs, function (d) {
                                         return d.id == doc.id()
                                     });
                                     params.docs.splice(_idx, 1);
@@ -142,14 +142,14 @@
                 }
             }
 
-            self.getSelectedId = function() {
-                return _.map(self.selectedDocs(), function(selected) {
+            self.getSelectedId = function () {
+                return _.map(self.selectedDocs(), function (selected) {
                     return selected.id();
                 });
             }
 
-            self.isSelectedDocsContainsRef = function() {
-                var find = _.find(self.selectedDocs(), function(doc) {
+            self.isSelectedDocsContainsRef = function () {
+                var find = _.find(self.selectedDocs(), function (doc) {
                     return doc.relations && Object.keys(doc.relations).length;
                 })
 
@@ -157,7 +157,7 @@
             }
 
             // handle outer operations
-            self.linkTo = function(href, newWindow) {
+            self.linkTo = function (href, newWindow) {
 
                 if (!newWindow) {
                     location.href = href
@@ -166,11 +166,11 @@
                 }
             }
 
-            self.communicate = function(command, args) {
+            self.communicate = function (command, args) {
                 Kooboo.EventBus.publish(command(), args);
             }
 
-            self.afterTableRendered = function() {
+            self.afterTableRendered = function () {
                 Kooboo.EventBus.publish("kb/table/rendered");
             }
 
@@ -178,7 +178,7 @@
 
             Kooboo.EventBus.unsubscribe("ko/table/on/delete");
 
-            Kooboo.EventBus.subscribe("ko/table/on/delete", function(para) {
+            Kooboo.EventBus.subscribe("ko/table/on/delete", function (para) {
                 if (params.onDelete) {
                     params.onDelete(ko.mapping.toJS(self.selectedDocs()));
                 } else {
@@ -189,7 +189,7 @@
         template: template
     });
 
-    var docModel = function(doc) {
+    var docModel = function (doc) {
 
         var self = this;
 
@@ -202,7 +202,7 @@
 
         self.selected = ko.observable(false);
 
-        self.onSelect = function(doc) {
+        self.onSelect = function (doc) {
             doc.selected(!doc.selected());
             return true;
         }

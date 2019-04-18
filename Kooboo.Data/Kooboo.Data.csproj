@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Definition\KMetaProvider.cs" />
     <Compile Remove="GeoLocation\LocationWatcher.cs" />
   </ItemGroup>
 
@@ -48,6 +49,10 @@
     <ProjectReference Include="..\Kooboo.HttpServer\src\Kooboo.HttpServer\Kooboo.HttpServer.csproj" />
     <ProjectReference Include="..\Kooboo.IndexedDB\Kooboo.IndexedDB.csproj" />
     <ProjectReference Include="..\Kooboo.Lib\Kooboo.Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Definition\KModel\" />
   </ItemGroup>
 
 </Project>

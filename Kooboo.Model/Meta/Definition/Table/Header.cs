@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Data.Definition.KModel
+namespace Kooboo.Model.Meta.Definition
 {
   public class Header
     {

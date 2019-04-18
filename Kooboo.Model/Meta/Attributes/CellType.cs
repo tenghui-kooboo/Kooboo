@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Kooboo.Model.Meta.Definition;
 
-namespace Kooboo.Data.Definition.KModel.Attributes
+namespace Kooboo.Model.Meta.Attributes
 {
   
     [AttributeUsage(AttributeTargets.Property)]

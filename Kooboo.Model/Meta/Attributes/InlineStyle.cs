@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Data.Definition.KModel.Attributes
+namespace Kooboo.Model.Meta.Attributes
 {
    
     [AttributeUsage(AttributeTargets.Property)]
@@ -12,7 +12,7 @@ namespace Kooboo.Data.Definition.KModel.Attributes
 
         public bool IsHeader => false;
 
-        public string PropertyName => "Style";
+        public string PropertyName => "style";
 
         public InlineStyle(string inlineStyle)
         {

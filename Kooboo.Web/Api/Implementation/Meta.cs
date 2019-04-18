@@ -33,7 +33,7 @@ namespace Kooboo.Web.Api.Implementation
 
         public object Get(string modelName)
         {
-            return null;
+            return Kooboo.Model.KoobooModelManager.GetMeta(modelName);
         }
     }
 }

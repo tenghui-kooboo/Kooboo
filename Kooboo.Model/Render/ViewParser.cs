@@ -78,7 +78,8 @@ namespace Kooboo.Model.Render
             {
                 Dom = DomParser.CreateDom(html),
                 Js = new Vue.RootViewJsBuilder(Vue.VueJsBuilderOptions.RootViewOptions),
-                ViewProvider = new ViewProvider(modelContext)
+                ViewProvider = new ViewProvider(modelContext),
+                Context=modelContext.HttpContext
             };
 
             parser.Parse(context);

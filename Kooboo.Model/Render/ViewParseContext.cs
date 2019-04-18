@@ -20,6 +20,8 @@ namespace Kooboo.Model.Render
         public ViewType ViewType { get; set; } = ViewType.Root;
 
         public string[] Parameters { get; set; }
+
+        public RenderContext Context { get; set; }
     }
 
     public enum ViewType

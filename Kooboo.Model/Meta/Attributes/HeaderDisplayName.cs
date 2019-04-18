@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Data.Definition.KModel.Attributes
+namespace Kooboo.Model.Meta.Attributes
 {
     
     [AttributeUsage(AttributeTargets.Property)]
@@ -12,7 +12,7 @@ namespace Kooboo.Data.Definition.KModel.Attributes
 
         public bool IsHeader => true;
 
-        public string PropertyName => "Name";
+        public string PropertyName => "displayName";
 
         public HeaderDisplayName(string name)
         {

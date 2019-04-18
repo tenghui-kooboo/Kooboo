@@ -7,6 +7,10 @@ namespace Kooboo.Model.Setting
 {
     public class RegisterModel: IKoobooModel
     {
+        public ModelType ModelType { get; set; }
+
+        public string ModelName => "Register";
+
         [RequiredRule("username can't be empty")]
         [UniqueRule("/user/IsUniqueName?name={userName}", "username is not unique")]
         public string UserName { get; set; }
@@ -22,6 +26,6 @@ namespace Kooboo.Model.Setting
         [UniqueRule("/user/IsUniqueEmail?email={email}","email is not unique")]
         public string Email { get; set; }
 
-
+        
     }
 }
