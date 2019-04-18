@@ -1,0 +1,3 @@
+- 有relation的情况删除confirm会有不同的消息
+- modal
+- event

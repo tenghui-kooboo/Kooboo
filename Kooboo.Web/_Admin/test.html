@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kooboo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="theme-color" content="#0087c2">
+  <link href="Styles/styles.css" rel="stylesheet" />
+  <link href="Styles/custom.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+</head>
+<body tal-placeholder="main">
+  <div class="main-container">
+    <div id="main">
+      <div class="page-header">
+        <h1 class="title">Pages</h1>
+      </div>
+      <div id="app">
+      </div>
+    </div>
+  </div>
+  <script src="Scripts/KoobooBase.js"></script>
+  <script src="Scripts/kooboo/text.js"></script>
+  <script src="Scripts/vue/vue.js"></script>
+  <script src="Scripts/vue/VueExtend.js"></script>
+  <script src="Scripts/vue/api.js"></script>
+  <script src="Scripts/vue/validation/vuelidate.min.js"></script>
+  <script src="Scripts/vue/validation/validators.min.js"></script>
+  <script src="Scripts/vue/validation/validateExtend.js"></script>
+
+  <script src="Scripts/vue/components/kbTable.js"></script>
+  <script src="Scripts/vue/components/kbTable/window_test_data.js"></script>
+  <script>
+    
+new Vue({
+  el: '#app',
+  data: {
+    meta: window.data.meta,
+    data: window.data.data
+  },
+  template: '<kb-table :meta="meta" :data="data" list-name="pages"></kb-table>'
+})
+  </script>
+</body>
+</html>
