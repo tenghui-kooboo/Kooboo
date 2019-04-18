@@ -6,16 +6,42 @@
 
 <div class="col-md-8 col-md-offset-2">
   <div id="app-vue">
-    <kb-form :meta="formData"></kb-form>
+    <button class="btn btn-primary" @click="onShow">show</button>
+
+    <kb-modal
+      :show="showModal"
+      :config="{title:'hello',
+      showCloseBtn:true,
+      closeBtnText:'取消',
+      btns:[{
+      class:'btn-primary',
+      text:'保存',
+      onClick:function(){}
+    }]}"
+    @close='showModal = false'
+    >
+      <div slot="body">
+        <kb-form :meta="formData"></kb-form>
+      </div>
+    </kb-modal>
   </div>
 </div>
 
 <script>
-  Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbForm/index.js"]);
+  Kooboo.loadJS([
+    "/_Admin/Scripts/vue/components/kbModal/index.js",
+    "/_Admin/Scripts/vue/components/kbForm/index.js"
+  ]);
 
   var vm = new Vue({
     el: "#app-vue",
+    methods: {
+      onShow() {
+        this.showModal = true;
+      }
+    },
     data: {
+      showModal: false,
       formData: {
         layout: "horizontal",
         items: [
@@ -126,7 +152,8 @@
       }
     },
     components: {
-      "kb-form": Kooboo.vue.component.kbForm
+      "kb-form": Kooboo.vue.component.kbForm,
+      "kb-modal": Kooboo.vue.component.kbModal
     }
   });
 </script>
