@@ -100,7 +100,7 @@ Vue.prototype.$parameterBinder=function(){
         },
         getUrlKeyValue:function(url){
             parts=url.split("?");
-            var keyValue={siteId:"{siteId}"};//default add siteid
+            var keyValue={};//default add siteid
             if(parts.length>1){
                 var queryStringParts=parts[1].split("&");
                 for(var i=0;i<queryStringParts.length;i++){
@@ -113,7 +113,21 @@ Vue.prototype.$parameterBinder=function(){
                     }
                 }
             }
+            if(!this.isContainSiteId(keyValue)){
+                keyValue["siteId"]="{siteId}"
+            }
             return keyValue;
+        },
+        isContainSiteId:function(keyValue){
+            var keys=Object.keys(keyValue);
+            var exist=false;
+            for(var i=0;i<keys.length;i++){
+                if(keys[i].toLowerCase()=="siteid"){
+                    exist=true;
+                    break;
+                }
+            }
+            return exist;
         },
         isValuePlaceHolder:function(value){
             return value.indexOf("{")>-1 && value.indexOf("}")>-1;
