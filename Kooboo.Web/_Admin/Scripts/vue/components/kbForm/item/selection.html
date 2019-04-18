@@ -1,0 +1,5 @@
+<select class="form-control" v-model="fieldValue">
+  <option :value="opt.value" v-for="opt in options">{{
+    opt.displayName
+  }}</option>
+</select>

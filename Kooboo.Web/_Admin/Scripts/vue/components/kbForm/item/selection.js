@@ -1,19 +1,20 @@
 (function() {
-  Kooboo.vue.component.kbFormItemTextbox = Vue.component(
-    "kb-form-item-textbox",
+  Kooboo.vue.component.kbFormItemSelection = Vue.component(
+    "kb-form-item-selection",
     {
       props: {
         value: String,
+        options: Array,
         placeholder: String
       },
       data() {
         return { fieldValue: "" };
       },
-      created() {
+      mounted() {
         this.fieldValue = this.value;
       },
       template: Kooboo.getTemplate(
-        "/_Admin/Scripts/vue/components/kbForm/item/textbox.html"
+        "/_Admin/Scripts/vue/components/kbForm/item/selection.html"
       )
     }
   );
