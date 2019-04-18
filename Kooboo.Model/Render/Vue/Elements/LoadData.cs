@@ -76,7 +76,7 @@ namespace Kooboo.Model.Render.Vue
                 }
 
                 builder.AppendLine($"url = vm.{Keyword_ParameterBind}('{item.Url}')");
-                builder.Append($"{Keyword_ApiGet}(url).then(function(d) {{ vm.{item.ModelName} = d }})");
+                builder.Append($"{Keyword_ApiGet}(url).then(function(d) {{ vm.{item.ModelName} = d.model }})");
 
                 i++;
             }

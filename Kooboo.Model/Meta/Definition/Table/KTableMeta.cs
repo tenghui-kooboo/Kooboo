@@ -12,7 +12,7 @@ namespace Kooboo.Model.Meta.Definition
 
     public class KTableMeta : IKMeta
     {
-        public IKMeta Menus { get; set; }
+        public List<Dictionary<string, string>> Menus { get; set; }
 
         public KTable Table { get; set; }
     }

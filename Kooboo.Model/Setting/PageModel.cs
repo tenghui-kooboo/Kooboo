@@ -20,7 +20,7 @@ namespace Kooboo.Model.Setting
 
         [HeaderDisplayName("Linked")]
         [HeaderClass("")]
-        [CellType(EnumCellType.Badage)]
+        [CellType(EnumCellType.Badge)]
         [CssClass("badge badge-primary")]
         public string Linked { get; set; }
 
@@ -28,6 +28,7 @@ namespace Kooboo.Model.Setting
         [HeaderClass("")]
         [CellType(EnumCellType.Label)]
         [LabelClass("label label-sm", "label-success", "label-info")]
+        [LabelText("online.yes", "online.no")]
         public string Online { get; set; }
 
         [HeaderDisplayName("References")]
@@ -45,20 +46,20 @@ namespace Kooboo.Model.Setting
         [HeaderDisplayName("Preview")]
         [HeaderClass("")]
         [CellType(EnumCellType.Link)]
-        [ActionType(EnumActionType.Open)]
+        [ActionType(EnumActionType.NewWindow)]
         public string Preview { get; set; }
 
         [CellType(EnumCellType.Button)]
         [CssClass("btn btn-sm blue")]
         [InnerText("Inline edit")]
-        [ActionType(EnumActionType.Open)]
+        [ActionType(EnumActionType.NewWindow)]
         [Url("/page/details?id={id}")]
         public string Setting { get; set; }
 
         [CellType(EnumCellType.Button)]
         [CssClass("btn btn-sm blue")]
         [InnerText("Inline edit")]
-        [ActionType(EnumActionType.Open)]
+        [ActionType(EnumActionType.NewWindow)]
         public string InlineUrl { get; set; }
 
         [CellType(EnumCellType.Button)]
@@ -75,36 +76,36 @@ namespace Kooboo.Model.Setting
 
         public string ModelName => "PageMenu";
 
-        [MenuBtnType(EnumMenuBtnType.Btn)]
+        [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("New Layout")]
         [CssClass("btn green navbar-btn")]
-        [ActionType(Meta.Definition.EnumActionType.Open)]
+        [ActionType(Meta.Definition.EnumActionType.NewWindow)]
         [Url("/_Admin/Page/EditPage")]
         public string Create { get; set; }
 
-        [MenuBtnType(EnumMenuBtnType.Btn)]
+        [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("New rich text page")]
         [CssClass("btn green navbar-btn")]
-        [ActionType(Meta.Definition.EnumActionType.Open)]
+        [ActionType(Meta.Definition.EnumActionType.NewWindow)]
         [Url("/_Admin/Page/EditRichText")]
         public string NewRichPage { get; set; }
 
         [MenuBtnType(EnumMenuBtnType.Dropdown)]
         [DisplayName("New layout page")]
         [CssClass("btn green navbar-btn")]
-        [ActionType(Meta.Definition.EnumActionType.Open)]
+        [ActionType(Meta.Definition.EnumActionType.NewWindow)]
         [Url("/_Admin/Page/EditLayout")]
         [DropDownOption("layouts","name")]
         public string NewLayoutPage { get; set; }
 
-        [MenuBtnType(EnumMenuBtnType.Btn)]
+        [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("Copy")]
         [CssClass("btn green navbar-btn")]
         [ActionType(Meta.Definition.EnumActionType.Popup)]
         [Url("Detail?modelname=pageCopyForm&id={id}")]
         public string Copy { get; set; }
 
-        [MenuBtnType(EnumMenuBtnType.Btn)]
+        [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("Delete")]
         [CssClass("btn red navbar-btn")]
         [ActionType(Meta.Definition.EnumActionType.Event)]

@@ -1,10 +1,9 @@
 <!-- #layout name=blank -->
 <div class="page-header">
   <h1 class="title">Pages</h1>
-  
 </div>
 <div id="app" kv-el>
-  <kb-table kv-meta="Page" :data="data" list-name="pages"></kb-table>
+  <kb-table kv-meta="Page" list-name="pages"></kb-table>
 </div>
 <script src="/_Admin/Scripts/vue/vue.js"></script>
 <script src="/_Admin/Scripts/vue/VueExtend.js"></script>
@@ -13,11 +12,3 @@
 <script src="/_Admin/Scripts/vue/validation/validators.min.js"></script>
 <script src="/_Admin/Scripts/vue/validation/validateExtend.js"></script>
 <script src="/_Admin/Scripts/vue/components/kbTable.js"></script>
-<script>
-  Vue.kExtend({
-    el:"#app",
-    components:[
-      KoobooTable
-    ]
-  })
-  </script>

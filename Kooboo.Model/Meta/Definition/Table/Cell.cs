@@ -15,6 +15,9 @@ namespace Kooboo.Model.Meta.Definition
 
         public string Class { get; set; }
 
+        //for label
+        public string Text { get; set; }
+
         //summary cell
         List<string> Data { get; set; }
 
@@ -59,7 +62,7 @@ namespace Kooboo.Model.Meta.Definition
     {
         Text = 0, 
         Link = 1,
-        Badage=2,
+        Badge=2,
         Label=7,
         Array=3,
         Icon=4,
@@ -70,10 +73,11 @@ namespace Kooboo.Model.Meta.Definition
 
     public enum EnumActionType
     {
-        Open = 0,
+        NewWindow = 0,
         Redirect = 1,
         Popup=2,
-        Event=3
+        Event=3,
+        Post=4,
         //Ajax = 2
     } 
 }

@@ -26,7 +26,8 @@ namespace Kooboo.Model.Meta.Attributes
 
     public enum EnumMenuBtnType
     {
-        Btn=0,
-        Dropdown=1
+        Button=0,
+        Dropdown=1,
+        Icon=2
     }
 }

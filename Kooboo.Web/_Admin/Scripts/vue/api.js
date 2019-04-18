@@ -18,13 +18,13 @@ var loading = {
 };
 
 api = {
-  get: function (url,useSync,hideLoading) {
+  get: function (url,hideLoading) {
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
     var self = this;
     self.startLoading(hideLoading);
 
-    return DataCache.getData(apiObj.obj, apiObj.method, apiObj.data, useSync)
+    return DataCache.getData(apiObj.obj, apiObj.method, apiObj.data, true)
       .fail(function (fail) {
         self.handleRequestError(fail);
       })
@@ -37,8 +37,26 @@ api = {
         }
       });
   },
-  post: function (url, model,useSync,hideLoading) {
+  // getAsync:function(url,useSnyc,hideLoading){
+  //   var apiObj = this.getApi(url);
+  //   if (!apiObj) return null;
+  //   var self = this;
+  //   self.startLoading(hideLoading);
 
+  //   return DataCache.getData(apiObj.obj, apiObj.method, apiObj.data, useSnyc)
+  //     .fail(function (fail) {
+  //       self.handleRequestError(fail);
+  //     })
+  //     .always(function () {
+  //       self.stopLoading(hideLoading);
+  //     })
+  //     .done(function (res) {
+  //       if (!res.success) {
+  //         Kooboo.handleFailMessages(res.messages);
+  //       }
+  //     });
+  // },
+  post: function (url, model,hideLoading) {
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
     var self = this;
@@ -48,8 +66,7 @@ api = {
       model = JSON.stringify(model);
     }
     model = encodeURIComponent(model);
-    //extendParams??
-    return DataCache.postData(apiObj.obj, apiObj.method, model, {}, useSync)
+    return DataCache.postData(apiObj.obj, apiObj.method, model, {}, true)
       .fail(function (fail) {
         self.handleRequestError(fail);
       })

@@ -19,7 +19,6 @@ Kooboo.Vue={
                 mergeHooks[hook]=function(){
                     var vm=this;
                     hookFuncs.forEach(function(hookFunc){
-                        debugger;
                         hookFunc.call(vm);
                     });
                 }
@@ -101,7 +100,7 @@ Vue.prototype.$parameterBinder=function(){
         },
         getUrlKeyValue:function(url){
             parts=url.split("?");
-            var keyValue={"siteId":"{siteId}"};//default add siteid
+            var keyValue={};//default add siteid
             if(parts.length>1){
                 var queryStringParts=parts[1].split("&");
                 for(var i=0;i<queryStringParts.length;i++){

@@ -4,11 +4,17 @@ using System.Text;
 using System.Reflection;
 using Kooboo.Model.Meta.Attributes;
 using System.Linq;
-
+using Kooboo.Model.Meta.Definition;
 namespace Kooboo.Model.Meta
 {
     public class MetaParserHelper
     {
+        public static List<Dictionary<string,string>> GetMenu(IKoobooModel model)
+        {
+            var properties = model.GetType().GetProperties().ToList();
+            return GetMeta(properties, typeof(MenuBtn));
+             
+        }
         public static List<Dictionary<string,string>> GetMeta(List<PropertyInfo> properties,Type modelType)
         {
             var list = new List<Dictionary<string, string>>();

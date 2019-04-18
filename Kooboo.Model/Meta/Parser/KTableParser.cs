@@ -32,8 +32,7 @@ namespace Kooboo.Model.Meta.Parser
             {
                 var menuModel = relation.MenuModel;
                 var instance = Activator.CreateInstance(menuModel) as IKoobooModel;
-                var menuMeta = MetaManager.GetMeta(instance);
-                meta.Menus = menuMeta;
+                meta.Menus = MetaParserHelper.GetMenu(instance);
             }
 
             return meta;

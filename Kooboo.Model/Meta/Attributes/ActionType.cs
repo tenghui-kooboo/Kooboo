@@ -21,7 +21,7 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string Value()
         {
-            return this.actionType.ToString(); 
+            return MetaHelper.ToCamalCaseName(this.actionType.ToString()); 
         }
     }
 }
