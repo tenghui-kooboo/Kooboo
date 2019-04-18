@@ -9,6 +9,6 @@ namespace Kooboo.Model.Meta.Attributes
         bool IsHeader { get; }
         string PropertyName { get; }
 
-        string Value();
+        object Value();
     }
 }

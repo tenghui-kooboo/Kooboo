@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
             Tooltip = tooltip;
         }
 
-        public string Value()
+        public object Value()
         {
             return Tooltip;
         }

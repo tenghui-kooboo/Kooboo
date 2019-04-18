@@ -9,20 +9,20 @@ namespace Kooboo.Model.Meta
 {
     public class MetaParserHelper
     {
-        public static List<Dictionary<string,string>> GetMenu(IKoobooModel model)
+        public static List<Dictionary<string,object>> GetMenu(IKoobooModel model)
         {
             var properties = model.GetType().GetProperties().ToList();
             return GetMeta(properties, typeof(MenuBtn));
              
         }
-        public static List<Dictionary<string,string>> GetMeta(List<PropertyInfo> properties,Type modelType)
+        public static List<Dictionary<string,object>> GetMeta(List<PropertyInfo> properties,Type modelType)
         {
-            var list = new List<Dictionary<string, string>>();
+            var list = new List<Dictionary<string, object>>();
 
             var modelProperties = modelType.GetProperties();
             foreach (var prop in properties)
             {
-                var dic = new Dictionary<string, string>();
+                var dic = new Dictionary<string, object>();
                 var attrs = prop.GetCustomAttributes().ToList()
                     .Where(a=>a is IMetaAttribute)
                     .Select(a => a as IMetaAttribute).ToList();

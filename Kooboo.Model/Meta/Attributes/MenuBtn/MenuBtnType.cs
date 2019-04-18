@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Kooboo.Model.Meta.Definition;
 
 namespace Kooboo.Model.Meta.Attributes
 {
@@ -18,9 +19,9 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string PropertyName => "type";
 
-        public string Value()
+        public object Value()
         {
-            return MenuBtnType.ToString();
+            return MetaHelper.ToCamalCaseName(MenuBtnType.ToString());
         }
     }
 

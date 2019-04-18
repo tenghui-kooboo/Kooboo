@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
             Layout = layout;
         }
 
-        public string Value()
+        public object Value()
         {
             return Layout.ToString();
         }

@@ -17,7 +17,7 @@ namespace Kooboo.Model.Meta.Attributes
             Class = iconClass;
         }
 
-        public string Value()
+        public object Value()
         {
             return Class;
         }

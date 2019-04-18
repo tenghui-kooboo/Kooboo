@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
             Text = text;
         }
 
-        public string Value()
+        public object Value()
         {
             return Text.ToString();
         }

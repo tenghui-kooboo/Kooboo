@@ -18,7 +18,7 @@ namespace Kooboo.Model.Meta.Attributes
             Title = title;
         }
 
-        public string Value()
+        public object Value()
         {
             return Title;
         }

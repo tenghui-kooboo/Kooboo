@@ -19,20 +19,16 @@ namespace Kooboo.Model.Meta.Attributes
             this.Data = data;
         }
 
-        public string Value()
+        public object Value()
         {
             var sb = new StringBuilder();
-            sb.Append("[");
+            var list = new List<string>();
             for(var i = 0; i < Data.Length; i++)
             {
-                if (i > 0)
-                {
-                    sb.Append(",");
-                }
-                sb.AppendFormat("\"{0}\"", Data[i]);
+                list.Add(Data[i]);
+                
             }
-            sb.Append("]");
-            return sb.ToString();
+            return list;
         }
     }
 }

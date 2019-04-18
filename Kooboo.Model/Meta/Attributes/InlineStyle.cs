@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
             this.inline = inlineStyle; 
         }
 
-        public string Value()
+        public object Value()
         {
             return this.inline; 
         }

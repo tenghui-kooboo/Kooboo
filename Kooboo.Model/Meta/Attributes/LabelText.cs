@@ -20,9 +20,12 @@ namespace Kooboo.Model.Meta.Attributes
             FalseText = falseText;
         }
 
-        public string Value()
+        public object Value()
         {
-            return $"{{true:\"{TrueText}\",false:\"{FalseText}\"}}";
+            var dic = new Dictionary<bool, string>();
+            dic.Add(true, TrueText);
+            dic.Add(false, FalseText);
+            return dic;
         }
     }
 }

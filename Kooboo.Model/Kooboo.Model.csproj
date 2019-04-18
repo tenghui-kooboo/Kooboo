@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Meta\Attributes\CellCondition.cs" />
     <Compile Remove="Setting\LayoutModel.cs" />
     <Compile Remove="Setting\LayoutNewModel.cs" />
     <Compile Remove="Setting\RuleSetting.cs" />

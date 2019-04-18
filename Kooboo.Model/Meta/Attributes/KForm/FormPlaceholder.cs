@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
             Placeholder = placeholder;
         }
 
-        public string Value()
+        public object Value()
         {
             return Placeholder;
         }

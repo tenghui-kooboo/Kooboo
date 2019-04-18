@@ -18,7 +18,7 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string PropertyName => "displayName";
 
-        public string Value()
+        public object Value()
         {
             return DisplayName.ToString();
         }

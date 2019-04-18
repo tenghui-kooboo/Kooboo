@@ -60,9 +60,9 @@ namespace Kooboo.Model.Meta.Parser
             return column;
         }
 
-        private Dictionary<string,string> GetHeader(List<IMetaAttribute> attributes)
+        private Dictionary<string,object> GetHeader(List<IMetaAttribute> attributes)
         {
-            var dic = new Dictionary<string, string>();
+            var dic = new Dictionary<string, object>();
             var properties = typeof(Header).GetProperties();
             foreach(var property in properties)
             {
@@ -75,9 +75,9 @@ namespace Kooboo.Model.Meta.Parser
             return dic;
         }
 
-        private Dictionary<string,string> GetCell(List<IMetaAttribute> attributes)
+        private Dictionary<string,object> GetCell(List<IMetaAttribute> attributes)
         {
-            var dic = new Dictionary<string, string>();
+            var dic = new Dictionary<string, object>();
             var properties = typeof(Cell).GetProperties();
             foreach (var property in properties)
             {

@@ -18,7 +18,7 @@ namespace Kooboo.Model.Meta.Attributes.MenuBtn
 
         public string PropertyName => "align";
 
-        public string Value()
+        public object Value()
         {
             return Align;
         }

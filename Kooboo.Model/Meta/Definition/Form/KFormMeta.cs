@@ -13,7 +13,7 @@ namespace Kooboo.Model.Meta.Definition
         [JsonConverter(typeof(StringEnumConverter))]
         public FormLayout Layout { get; set; }
 
-        public List<Dictionary<string,string>> Items { get; set; }
+        public List<Dictionary<string,object>> Items { get; set; }
 
         //{
         //  title:"title",

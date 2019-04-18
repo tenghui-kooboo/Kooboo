@@ -18,7 +18,7 @@ namespace Kooboo.Model.Meta.Attributes
             FormType = formType;
         }
 
-        public string Value()
+        public object Value()
         {
             return MetaHelper.ToCamalCaseName(FormType.ToString());
         }

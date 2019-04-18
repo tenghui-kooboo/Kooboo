@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string PropertyName => "Action";
 
-        public string Value()
+        public object Value()
         {
             return MetaHelper.ToCamalCaseName(this.actionType.ToString()); 
         }

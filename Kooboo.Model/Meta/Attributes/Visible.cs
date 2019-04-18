@@ -21,9 +21,13 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string PropertyName => "displayName";
 
-        public string Value()
+        public object Value()
         {
-            return $"{{compare:\"{CompareOperation.ToString()}\",value:{CompareValue}}}";
+            var dic = new Dictionary<string, object>();
+            dic.Add("compare", CompareOperation.ToString());
+            dic.Add("value", CompareValue);
+
+            return dic;
         }
     }
 

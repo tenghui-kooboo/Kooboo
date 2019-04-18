@@ -20,7 +20,7 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string PropertyName => "Action";
 
-        public string Value()
+        public object Value()
         {
             return $"{{data:\"{Data}\",displayName:{DisplayName}}}";
         }

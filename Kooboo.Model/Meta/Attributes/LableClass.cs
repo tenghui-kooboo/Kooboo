@@ -22,9 +22,16 @@ namespace Kooboo.Model.Meta.Attributes
             FalseClass = falseClass;
         }
 
-        public string Value()
+        public object Value()
         {
-            return $"[\"{ClassName}\",{{true:\"{TrueClass}\",false:\"{FalseClass}\"}}]";
+            var list = new List<object>();
+            list.Add(ClassName);
+            var dic = new Dictionary<bool, string>();
+            dic.Add(true, TrueClass);
+            dic.Add(false, FalseClass);
+            list.Add(dic);
+
+            return list;
         }
     }
 }

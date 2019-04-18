@@ -20,7 +20,7 @@ namespace Kooboo.Model.Meta.Attributes
             this.Type = type; 
         }
 
-        public string Value()
+        public object Value()
         {
             return  MetaHelper.ToCamalCaseName(this.Type.ToString()); 
         }

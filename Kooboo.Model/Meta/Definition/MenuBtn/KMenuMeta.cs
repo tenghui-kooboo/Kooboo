@@ -6,7 +6,7 @@ namespace Kooboo.Model.Meta.Definition
 {
     public class KMenuMeta:IKMeta
     {
-        public List<Dictionary<string,string>> MenuBtns { get; set; }
+        public List<Dictionary<string,object>> MenuBtns { get; set; }
         
     }
 

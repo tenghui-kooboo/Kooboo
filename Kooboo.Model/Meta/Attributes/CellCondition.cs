@@ -29,17 +29,22 @@ namespace Kooboo.Model.Meta.Attributes
             FalseClass = FalseClass;
         }
 
-        public string Value()
+        public object Value()
         {
             var visibleStr = Visible.ToString();
             visibleStr = Char.ToLower(visibleStr[0]) + visibleStr.Substring(1);
+            
             if (!string.IsNullOrEmpty(TrueClass) || !string.IsNullOrEmpty(FalseClass))
             {
+                var dic = new Dictionary<string, string>();
+                dic.Add("class")
                 return $"{{class:{{true:{TrueClass},false:{FalseClass}}},visible:{visibleStr}}}";
             }
             else
             {
-                return $"{{ visible:{visibleStr}}}";
+                var dic = new Dictionary<string, bool>();
+                dic.Add("visible", Visible);
+                return dic;
             }
             
         }

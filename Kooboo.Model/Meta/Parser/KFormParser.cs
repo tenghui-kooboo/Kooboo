@@ -20,7 +20,7 @@ namespace Kooboo.Model.Meta.Parser
                 .Select(a => a as IMetaAttribute).ToList();
 
             var title = attrs.Find(a => a is TitleAttribute);
-            form.Title = title.Value();
+            form.Title = title.Value().ToString();
 
             var layout = attrs.Find(a => a is FormLayoutAttribute) as FormLayoutAttribute;
             form.Layout = layout.Layout;

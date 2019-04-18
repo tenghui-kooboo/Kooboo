@@ -18,7 +18,7 @@ namespace Kooboo.Model.Meta.Attributes
             Text = innerText;
         }
 
-        public string Value()
+        public object Value()
         {
             return Text;
         }

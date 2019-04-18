@@ -19,7 +19,7 @@ namespace Kooboo.Model.Meta.Attributes
             this.name = name;
         }
 
-        public string Value()
+        public object Value()
         {
             return this.name;
         }

@@ -8,15 +8,15 @@ namespace Kooboo.Model.Meta.Definition
     { 
         public Column()
         {
-            this.Header = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            this.Cell = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase); 
+            this.Header = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            this.Cell = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase); 
         }
 
         public string Name { get; set; }
 
-        public Dictionary<string, string> Header { get; set; }
+        public Dictionary<string, object> Header { get; set; }
 
-        public Dictionary<string,string> Cell { get; set; }  
+        public Dictionary<string,object> Cell { get; set; }  
     }
      
 
