@@ -110,4 +110,26 @@ function parameterBind_bind(){
   url="aa?id=id&data={datax}"
   var url=vue.$parameterBinder().bind(url);
   expect(url).to.be("aa?siteId=&id=id&data=aa");
+
+  vue=new Vue({
+    data:{
+      idx:"1",
+     
+    }
+  });
+  var model={
+    datax:"aa"
+  }
+
+  url="aa?id=id&data={datax}"
+  var url=vue.$parameterBinder().bind(url,model);
+  expect(url).to.be("aa?siteId=&id=id&data=aa");
+
+  var model={
+    idx:"2",
+    datax:"aa"
+  }
+  url="aa?id={idx}&data={datax}"
+  var url=vue.$parameterBinder().bind(url,model);
+  expect(url).to.be("aa?siteId=&id=2&data=aa");
 }

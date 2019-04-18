@@ -27,8 +27,8 @@ namespace Kooboo.Model.Setting
         [HeaderDisplayName("Online")]
         [HeaderClass("")]
         [CellType(EnumCellType.Label)]
-        [LabelClass("label label-sm", "label-success", "label-info")]
-        [LabelText("online.yes", "online.no")]
+        [LabelClass("","label-success", "label-info")]
+        [LabelText("{online.yes}", "{online.no}")]
         public string Online { get; set; }
 
         [HeaderDisplayName("References")]
@@ -46,13 +46,13 @@ namespace Kooboo.Model.Setting
         [HeaderClass("")]
         [CellType(EnumCellType.Link)]
         [ActionType(EnumActionType.NewWindow)]
-        public string Preview { get; set; }
+        public string PreviewUrl { get; set; }
 
         [CellType(EnumCellType.Button)]
         [CssClass("blue")]
-        [InnerText("Inline edit")]
-        [ActionType(EnumActionType.NewWindow)]
-        [Url("/page/details?id={id}")]
+        [InnerText("Setting")]
+        [ActionType(EnumActionType.Redirect)]
+        [Url("/_Admin/Page/EditRedirector?id={id}")]
         public string Setting { get; set; }
 
         [CellType(EnumCellType.Button)]
@@ -61,12 +61,12 @@ namespace Kooboo.Model.Setting
         [ActionType(EnumActionType.NewWindow)]
         public string InlineUrl { get; set; }
 
-        [CellType(EnumCellType.Button)]
-        [CssClass("btn btn-default")]
-        [IConClass("fa-qrcode")]
+        [CellType(EnumCellType.Icon)]
+        [IConClass("qrcode")]
         [ActionType(EnumActionType.Event)]
-        [Url("delete")]
+        [Url("openQrcode")]
         public string QrCode { get; set; }
+
     }
 
     public class PageMenuModel:IKoobooModel,IKMenu
@@ -76,35 +76,57 @@ namespace Kooboo.Model.Setting
         public string ModelName => "PageMenu";
 
         [MenuBtnType(EnumMenuBtnType.Button)]
-        [DisplayName("New Layout")]
+        [DisplayName("New Page")]
+        [CssClass("green")]
         [ActionType(Meta.Definition.EnumActionType.NewWindow)]
         [Url("/_Admin/Page/EditPage")]
         public string Create { get; set; }
 
         [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("New rich text page")]
+        [CssClass("green")]
         [ActionType(Meta.Definition.EnumActionType.NewWindow)]
         [Url("/_Admin/Page/EditRichText")]
         public string NewRichPage { get; set; }
 
         [MenuBtnType(EnumMenuBtnType.Dropdown)]
         [DisplayName("New layout page")]
+        [CssClass("green")]
         [ActionType(Meta.Definition.EnumActionType.NewWindow)]
         [Url("/_Admin/Page/EditLayout")]
         [DropDownOption("layouts","name")]
         public string NewLayoutPage { get; set; }
 
         [MenuBtnType(EnumMenuBtnType.Button)]
+        [DisplayName("Import")]
+        [CssClass("green")]
+        [ActionType(Meta.Definition.EnumActionType.Popup)]
+        [Url("details?modelname=xx")]
+        public string Import { get; set; }
+
+        [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("Copy")]
+        [CssClass("green")]
         [ActionType(Meta.Definition.EnumActionType.Popup)]
         [Url("Detail?modelname=pageCopyForm&id={id}")]
+        [Visible(CompareOperation.Equal, 1)]
         public string Copy { get; set; }
 
         [MenuBtnType(EnumMenuBtnType.Button)]
         [DisplayName("Delete")]
-        [ActionType(Meta.Definition.EnumActionType.Event)]
-        [Url("delete")]
+        [CssClass("red")]
+        [ActionType(Meta.Definition.EnumActionType.Post)]
+        [Url("/page/delete")]
+        [Visible(CompareOperation.EqualOrGreaterThan, 1)]
         public string Delete { get; set; }
+
+        [MenuBtnType(EnumMenuBtnType.Icon)]
+        [DisplayName("Route Setting")]
+        [CssClass("nav-btn pull-right")]
+        [IConClass("gear")]
+        [ActionType(Meta.Definition.EnumActionType.Popup)]
+        [Url("routeSetting")]
+        public string RouteSetting { get; set; }
     }
 
     public class PageCopyForm : IKoobooModel

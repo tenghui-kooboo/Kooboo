@@ -18,11 +18,14 @@ namespace Kooboo.Model.Meta.Attributes
 
         public bool IsHeader => false;
 
-        public string PropertyName => "Action";
+        public string PropertyName => "Options";
 
         public object Value()
         {
-            return $"{{data:\"{Data}\",displayName:{DisplayName}}}";
+            var dic = new Dictionary<string, string>();
+            dic.Add("data", Data);
+            dic.Add("displayName", DisplayName);
+            return dic;
         }
     }
 }

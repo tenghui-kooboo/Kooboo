@@ -74,8 +74,8 @@ Vue.kExecute=function(){
 Vue.prototype.$parameterBinder=function(){
     var self=this;
     var ParameterBinder={
-        bind:function(url){
-            var model=self.$data;
+        bind:function(url,model){
+            model=$.extend(true,{},self.$data,model);
             if(!url) return "";
             var keyValue=this.getUrlKeyValue(url);
             url=this.getUrl(url,keyValue,model);
@@ -100,7 +100,7 @@ Vue.prototype.$parameterBinder=function(){
         },
         getUrlKeyValue:function(url){
             parts=url.split("?");
-            var keyValue={};//default add siteid
+            var keyValue={siteId:"{siteId}"};//default add siteid
             if(parts.length>1){
                 var queryStringParts=parts[1].split("&");
                 for(var i=0;i<queryStringParts.length;i++){

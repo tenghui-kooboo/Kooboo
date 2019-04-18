@@ -16,7 +16,7 @@ namespace Kooboo.Model.Meta.Definition
 
         public string Url { get; set; }
 
-        public bool Visible { get; set; }
+        public string Visible { get; set; }
 
         public VisibleCondition VisibleCondition { get; set; }
 
@@ -24,6 +24,9 @@ namespace Kooboo.Model.Meta.Definition
         public string DataUrl { get; set; }
 
         public List<ModelOptions> Options { get; set; }
+
+        public string IconClass { get; set; }
+
     }
 
     public class VisibleCondition

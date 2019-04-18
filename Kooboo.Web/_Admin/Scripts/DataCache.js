@@ -44,7 +44,7 @@
         },
 
         postData: function(objectName, method, data, extendParams, useSync) {
-            var url = this._getUrl(objectName, method, extendParams);
+            var url = this._getUrl(objectName, method,data, extendParams);
             // TODO: remove all data for now. should be: 
             // when delete= remove all data, when update = search and update one item in cache.
             this.removeRelatedData(objectName, method, data);
@@ -55,7 +55,7 @@
         uploadData: function(objectName, method, data, progressor) {
             this.removeRelatedData(objectName, method);
             return $.ajax({
-                url: this._getUrl(objectName, method),
+                url: this._getUrl(objectName, method,data),
                 type: "POST",
                 data: data,
                 cache: false,
@@ -76,7 +76,7 @@
         requestData: function(objectName, method, paradata, useSync, type) {
             if (!type) type = "GET";
             return $.ajax({
-                url: this._getUrl(objectName, method),
+                url: this._getUrl(objectName, method,paradata),
                 type: type,
                 data: paradata,
                 async: !useSync
@@ -190,7 +190,11 @@
             return key;
         },
 
-        _getUrl: function(objectName, method, otherParams) {
+        _getUrl: function(objectName, method, data,otherParams) {
+            if(data && data["siteId"]){
+                delete data["siteId"];
+                //hardcode
+            }
             var url = "/_api/" + objectName + "/" + method + (this.getSiteId() ? "?SiteId=" + this.getSiteId() : "");
             if (otherParams) {
                 Object.keys(otherParams).forEach(function(key) {

@@ -13,7 +13,6 @@ namespace Kooboo.Model.Meta
         {
             Parsers.Add(ModelType.KForm,new KFormParser());
             Parsers.Add(ModelType.KTable,new KTableParser());
-            Parsers.Add(ModelType.KMenu, new KMenuBtnParser());
 
         }
         public static IMetaParser<IKoobooModel> GetParser(ModelType type)
