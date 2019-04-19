@@ -16,7 +16,6 @@ namespace Kooboo.Model.Meta.Attributes
         public bool ShowCloseBtn { get; set; }
         public string CloseBtnText { get; set; }
 
-
         public Popup(string title, bool showCloseBtn, string closeBtnText,params PopupButton[] buttons)
         {
             Title = title;
@@ -35,13 +34,21 @@ namespace Kooboo.Model.Meta.Attributes
         }
     }
 
-    public class PopupButton:Attribute
+    [AttributeUsage(AttributeTargets.Property)]
+    public class PopupButton:Attribute, IMetaAttribute
     {
         public string ClassName { get; set; }
 
         public string Text { get; set; }
 
         public EnumPopupBtnType Type { get; set; }
+
+        public PopupButton(string className,string text, EnumPopupBtnType type)
+        {
+            ClassName = className;
+            Text = text;
+            Type = type;
+        }
     }
 
 

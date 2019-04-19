@@ -109,6 +109,7 @@ namespace Kooboo.Model.Setting
         [CssClass("green")]
         [ActionType(Meta.Definition.EnumActionType.Popup)]
         [Url("Detail?modelname=pageCopyForm&id={id}")]
+        [Popup("Copy",true,"Cance",)]
         [Visible(CompareOperation.Equal, 1)]
         public string Copy { get; set; }
 

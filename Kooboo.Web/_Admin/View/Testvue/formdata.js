@@ -1,7 +1,7 @@
 formmeta={
   sumbitUrl:"/user/post",
   method:"POST",
-  loadUrl:"",
+  loaddataUrl:"",
   layout: "horizontal",
   items: [
     {
