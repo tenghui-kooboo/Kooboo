@@ -22,7 +22,7 @@ namespace Kooboo.Model.Meta.Definition
         List<string> Data { get; set; }
 
         //Badage 
-        public CellCondition Condition { get; set; }
+        //public CellCondition Condition { get; set; }
 
         //btn icon
         public string IconClass { get; set; }
@@ -32,6 +32,8 @@ namespace Kooboo.Model.Meta.Definition
         public EnumActionType Action { get; set; } 
 
         public string Url { get; set; }
+
+        public string Popup { get; set; }
         //    cell: {
         //    type: "link",//cell type
         //    style: "",//cell style
@@ -52,12 +54,12 @@ namespace Kooboo.Model.Meta.Definition
         //},
     }
 
-    public class CellCondition
-    {
-        public Dictionary<bool,string> Class { get; set; }
+    //public class CellCondition
+    //{
+    //    public Dictionary<bool,string> Class { get; set; }
 
-        public bool Visible { get; set; }
-    }
+    //    public bool Visible { get; set; }
+    //}
     public enum EnumCellType
     {
         Text = 0, 

@@ -5,7 +5,7 @@ using Kooboo.Model.Meta.Definition;
 
 namespace Kooboo.Model.Meta.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class FormLayoutAttribute : Attribute, IMetaAttribute
     {
         public string PropertyName => "layout";

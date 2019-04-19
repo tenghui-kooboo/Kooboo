@@ -32,7 +32,8 @@ namespace Kooboo.Model.Render.Vue
                 .UseRenderer<Validation, Validation.Renderer>()
                 .UseRenderer<LoadData, LoadData.RootViewRenderer>()
                 .UseRenderer<El, El.Renderer>()
-                .UseRenderer<SubmitData, SubmitData.Renderer>();
+                .UseRenderer<SubmitData, SubmitData.Renderer>()
+                .UseRenderer<Component, Component.Renderer>();
 
             SubViewOptions = new VueJsBuilderOptions()
                 .UseRenderer<Data, Data.Renderer>()

@@ -36,6 +36,7 @@ export default {
           api.post(this.bindUrl(this.meta.url, this.row))
           break;
         default:
+          this.$root.$refs["popup"].show();
           // Todo: modal
           break;
       }

@@ -13,6 +13,7 @@
         return { options: [], fieldValue: "" };
       },
       mounted() {
+        debugger;
         var self = this;
         if (this.optionConfig.default) {
           this.options.push(this.optionConfig.default);

@@ -7,7 +7,7 @@ namespace Kooboo.Model.Meta.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class FormTypeAttribute : Attribute, IMetaAttribute
     {
-        public string PropertyName => "layout";
+        public string PropertyName => "type";
 
         public bool IsHeader => false;
 

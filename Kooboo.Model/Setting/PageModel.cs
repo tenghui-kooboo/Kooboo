@@ -6,7 +6,7 @@ using Kooboo.Model.Meta.Definition;
 
 namespace Kooboo.Model.Setting
 {
-    [Relation(typeof(PageMenuModel),"/page/all")]
+    [Relation(typeof(PageMenuModel),"/page/all","")]
     public class PageModel : IKoobooModel
     {
         public ModelType ModelType { get; set; }
@@ -108,8 +108,7 @@ namespace Kooboo.Model.Setting
         [DisplayName("Copy")]
         [CssClass("green")]
         [ActionType(Meta.Definition.EnumActionType.Popup)]
-        [Url("Detail?modelname=pageCopyForm&id={id}")]
-        [Popup("Copy",true,"Cance",)]
+        [Url("popup?modelname=pageCopyForm&id={id}")]
         [Visible(CompareOperation.Equal, 1)]
         public string Copy { get; set; }
 
@@ -126,10 +125,12 @@ namespace Kooboo.Model.Setting
         [CssClass("nav-btn pull-right")]
         [IConClass("gear")]
         [ActionType(Meta.Definition.EnumActionType.Popup)]
-        [Url("routeSetting")]
+        [Url("popup?modelname=routeSettingForm")]
         public string RouteSetting { get; set; }
     }
 
+    [Relation(typeof(CopyPopup),"","")]
+    [FormLayout(FormLayout.Horizontal)]
     public class PageCopyForm : IKoobooModel
     {
         public ModelType ModelType=>ModelType.KForm;
@@ -144,6 +145,80 @@ namespace Kooboo.Model.Setting
         [FormLabel("Url")]
         [FormPlaceholder("")]
         public string Url { get; set; }
+
     }
+
+    public class CopyPopup : IPopup
+    {
+        public string Title { get; set; } = "Copy";
+
+        public bool ShowCancelBtn { get; set; } = true;
+
+        public string CancelBtnText { get; set; } = "cancel";
+
+        private List<PopupButton> buttons = new List<PopupButton>();
+
+        public List<PopupButton> Buttons
+        {
+            get
+            {
+                buttons.Add(new PopupButton() { Class = "btn-primary", Text = "save", Type = EnumPopupButtonType.Submit });
+                return buttons;
+            }
+        }
+    }
+
+    public class RouteSettingPopup : IPopup
+    {
+        public string Title { get; set; } = "RouteSetting";
+
+        public bool ShowCancelBtn { get; set; } = true;
+
+        public string CancelBtnText { get; set; } = "cancel";
+
+        private List<PopupButton> buttons = new List<PopupButton>();
+
+        public List<PopupButton> Buttons
+        {
+            get
+            {
+                buttons.Add(new PopupButton() { Class = "btn-primary", Text = "save", Type = EnumPopupButtonType.Submit });
+                return buttons;
+            }
+        }
+    }
+
+    [Relation(typeof(RouteSettingPopup), "", "")]
+    [FormLayout(FormLayout.Horizontal)]
+    public class RouteSettingForm : IKoobooModel
+    {
+        public ModelType ModelType => ModelType.KForm;
+
+        public string ModelName => "routeSettingForm";
+
+        [FormType(EnumFormType.selection)]
+        [FormLabel("Home page")]
+        [FormPlaceholder("")]
+        //[FormOption("path","id",null)]
+        [FormOption("path", "id")]
+        public string defaultPage{ get; set; }
+        [FormType(EnumFormType.selection)]
+        [FormLabel("404 page")]
+        [FormPlaceholder("")]
+        [FormOption("path", "id")]
+        //[FormOption("path", "id",new DefaultOption("System default", Guid.Empty.ToString()))]
+        public string notFoundPage{ get; set; }
+
+        [FormType(EnumFormType.selection)]
+        [FormLabel("Error page")]
+        [FormPlaceholder("")]
+        //[FormOption("path", "id")]
+        [FormOption("path", "id")]
+        public string errorPage{ get; set; }
+
+
+    }
+
+    //public class
 
 }

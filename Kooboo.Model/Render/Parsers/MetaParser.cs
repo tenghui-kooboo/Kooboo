@@ -14,6 +14,24 @@ namespace Kooboo.Model.Render.Parsers
 
         public void Parse(Element el, TagParseContext context, Action visitChildren)
         {
+            if (context.ViewContext.ViewType == ViewType.Sub)
+            {
+                var dataName = "data";
+                var metaName = "meta";
+                //el.setAttribute($":{metaName}", $"{metaName}");
+                //el.setAttribute($":{dataName}", $"{dataName}");
+                
+
+                context.Js.Data("showModal", "false");
+                context.Js.Data(dataName, "{}");
+                context.Js.Data(metaName, "{popup:{},form:{}}");
+                context.Js.Data("extra", "[]");
+                //only use to trigger load function
+                context.Js.Load("", "data");
+                visitChildren?.Invoke();
+                return;
+            }
+
             var modelName = GetModelName(el, context);
 
             var model = KoobooModelManager.GetMetaModel(modelName);
@@ -24,10 +42,11 @@ namespace Kooboo.Model.Render.Parsers
 
             var metaKey = string.Format("{0}_{1}", modelName, Name);
 
-            el.setAttribute(":meta", metaKey);
-            context.Js.Data(metaKey, "{}");
-            string url = $"/meta/get?modelname={modelName}";
-            context.Js.Load(url, metaKey);
+            //el.setAttribute(":meta", metaKey);
+            //context.Js.Data(metaKey, "{}");
+            //string url = $"/meta/get?modelname={modelName}";
+            //context.Js.Load(url, metaKey);
+            SetLoadMeta(el,context,modelName,metaKey);
 
             var dataapi = GetDataApi(model);
             el.setAttribute(":data", modelName);
@@ -41,6 +60,14 @@ namespace Kooboo.Model.Render.Parsers
 
         }
 
+        private void SetLoadMeta(Element el,TagParseContext context,string modelName,string metaKey)
+        {
+            el.setAttribute(":meta", metaKey);
+            context.Js.Data(metaKey, "{}");
+            string url = $"/meta/get?modelname={modelName}";
+            context.Js.Load(url, metaKey);
+        }
+
         private bool IsDynamicMeta(string modelName)
         {
             return modelName.IndexOf("{") > -1 && modelName.IndexOf("}") > -1;
@@ -51,7 +78,8 @@ namespace Kooboo.Model.Render.Parsers
             if (IsDynamicMeta(modelName))
             {
                 modelName = modelName.Replace("{", "").Replace("}", "").Trim();
-                modelName = context.ViewContext.Context.Request.Get(modelName);
+                if(context.ViewContext.Context!=null)
+                    modelName = context.ViewContext.Context.Request.Get(modelName);
             }
 
             return modelName;
@@ -63,7 +91,7 @@ namespace Kooboo.Model.Render.Parsers
                             .Select(a => a as RelationAttribute).FirstOrDefault();
             if (relation != null)
             {
-                return relation.Api;
+                return relation.LoadDataApi;
             }
             return string.Empty;
 

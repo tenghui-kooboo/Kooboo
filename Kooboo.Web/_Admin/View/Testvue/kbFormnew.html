@@ -36,20 +36,17 @@
       },
     },
     
-    template: `<kb-modal 
-            :show="showModal"
-            :config="modalconfig"
-            @close='showModal = false'
-          >
-            <div slot="body">
-              <kb-form :meta="formmeta"></kb-form>
-            </div>
-          </kb-modal>`
+    template: `<kb-modal :show="showModal" :config="meta.popup" @close='showModal = false'>
+      <div slot="body">
+        <kb-form :meta="meta.form" :data="data" ref="form"></kb-form>
+      </div>
+    </kb-modal>`
   }
   var vm = new Vue({
     el: "#app-vue",
     methods: {
-      onShow() {
+      onShow(keyvalue,context,row,selectids) {
+        api.get
         this.$refs["popup"].show();
       }
     },

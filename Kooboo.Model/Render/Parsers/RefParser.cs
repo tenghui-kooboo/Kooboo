@@ -20,6 +20,7 @@ namespace Kooboo.Model.Render.Parsers
             if (!ViewName.TryParse(viewUrl, out ViewName viewName))
                 throw new ViewParseException($"Invalid view name in kv-ref {viewUrl}");
 
+            el.setAttribute("ref", viewUrl);
             var html = context.ViewContext.ViewProvider.GetView(viewName.Name);
 
             var parser = new ViewParser(context.Options);

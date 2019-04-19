@@ -6,6 +6,7 @@ using System.Linq;
 using Kooboo.Model.Meta.Attributes;
 using Kooboo.Model.Meta;
 using Kooboo.Model.Meta.Definition;
+using Kooboo.Model.Setting;
 
 namespace Kooboo.Model.Meta.Parser
 {
@@ -14,21 +15,30 @@ namespace Kooboo.Model.Meta.Parser
 
         public IKMeta Parse(IKoobooModel type)
         {
-            var form = new KFormMeta();
+            var meta = new KFormMeta();
             var attrs = type.GetType().GetCustomAttributes().ToList()
-                .Where(a=>a is IMetaAttribute)
-                .Select(a => a as IMetaAttribute).ToList();
+                .Where(a=>a is Attribute)
+                .Select(a => a as Attribute).ToList();
 
-            var title = attrs.Find(a => a is TitleAttribute);
-            form.Title = title.Value().ToString();
-
+            var form = new KForm();
             var layout = attrs.Find(a => a is FormLayoutAttribute) as FormLayoutAttribute;
-            form.Layout = layout.Layout;
+            if (layout != null)
+                form.Layout = layout.Layout;
 
             var properties = type.GetType().GetProperties().ToList();
             form.Items = MetaParserHelper.GetMeta(properties, typeof(FormItem));
 
-            return form;
+            var relation = attrs.Find(a => a is RelationAttribute) as RelationAttribute;
+            if (relation != null)
+            {
+                meta.Popup = Activator.CreateInstance(relation.Model) as IPopup;
+                form.SubmitApi = relation.SubmitApi;
+                form.LoadApi = relation.LoadDataApi;
+
+                meta.Form = form;
+            }
+
+            return meta;
         }
     }
 }

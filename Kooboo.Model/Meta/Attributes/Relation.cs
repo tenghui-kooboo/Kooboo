@@ -11,14 +11,17 @@ namespace Kooboo.Model.Meta.Attributes
 
         public string PropertyName => "relation";
 
-        public Type MenuModel { get; set; }
+        public Type Model { get; set; }
 
-        public string Api { get; set; }
+        public string LoadDataApi { get; set; }
 
-        public RelationAttribute(Type menuModel,string api)
+        public string SubmitApi { get; set; }
+
+        public RelationAttribute(Type model,string apiOrModel,string submitApi)
         {
-            MenuModel = menuModel;
-            Api = api;
+            Model = model;
+            LoadDataApi = apiOrModel;
+            SubmitApi = submitApi;
         }
     }
 }

@@ -9,7 +9,7 @@
                 <slot name='body'></slot>
             </div>
             <div class="modal-footer">
-                <button v-for='btn in config.btns' class="btn" :class='btn.class' @click='btn.onClick'>{{ btn.text }}</button>
+                <button v-for='btn in config.buttons' class="btn" :class='btn.class' @click='onclick(btn)'>{{ btn.text }}</button>
                 <button class="btn gray" @click='onClose' v-if='config.showCloseBtn'>{{ config.closeBtnText }}</button>
             </div>
         </div>

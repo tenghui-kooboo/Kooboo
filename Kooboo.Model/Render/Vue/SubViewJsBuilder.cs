@@ -41,7 +41,7 @@ namespace Kooboo.Model.Render.Vue
             
             VueJsHelper.Build(builder, _items, Options);
 
-            builder.DirectRender(b => b.Append($"template: '{template}'"));
+            builder.DirectRender(b => b.Append($"template: `{template}`"));
 
             return builder.BuildWithBracket();
         }

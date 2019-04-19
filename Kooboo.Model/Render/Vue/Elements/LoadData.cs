@@ -38,22 +38,28 @@ namespace Kooboo.Model.Render.Vue
         {
             public const string Keyword_Show = "show";
 
+            public const string Keyword_Context = "context";
+
             private Regex ParameterRegex = new Regex("\\{[^\\}]+\\}");
 
             public void Render(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options)
             {
                 builder.Methods(b =>
                 {
-                    b.AppendLine($"{Keyword_Show}: function({VueKeywords.Props}) {{").Indent();
+                    //b.AppendLine($"{Keyword_Show}: function({VueKeywords.Props}) {{").Indent();
 
-                    b.Append($"this.{VueKeywords.Props} = {VueKeywords.Props}");
+                    b.AppendLine($"{Keyword_Show}: function({Keyword_Context}) {{").Indent();
 
-                    var notNullItems = items.Cast<LoadData>().Where(o => !String.IsNullOrEmpty(o.ModelName)).ToArray();
-                    if (notNullItems.Any())
-                    {
-                        b.AppendLine();
-                        RenderApiGets(b, notNullItems, options);
-                    }
+                    b.AppendLine($"Vue.showMeta(this,{Keyword_Context})");
+                    b.AppendLine($"this.showModal=true");
+                    //b.Append($"this.{VueKeywords.Props} = {VueKeywords.Props}");
+
+                    //var notNullItems = items.Cast<LoadData>().Where(o => !String.IsNullOrEmpty(o.ModelName)).ToArray();
+                    //if (notNullItems.Any())
+                    //{
+                    //    b.AppendLine();
+                    //    RenderApiGets(b, notNullItems, options);
+                    //}
 
                     b.AppendLine().Unindent().Append("}");
                 });

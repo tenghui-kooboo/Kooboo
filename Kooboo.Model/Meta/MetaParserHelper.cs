@@ -26,7 +26,9 @@ namespace Kooboo.Model.Meta
                 var attrs = prop.GetCustomAttributes().ToList()
                     .Where(a=>a is IMetaAttribute)
                     .Select(a => a as IMetaAttribute).ToList();
-                if(attrs.Count>0)
+
+                
+                if (attrs.Count>0)
                 {
                     foreach (var itemPropery in modelProperties)
                     {
@@ -39,7 +41,13 @@ namespace Kooboo.Model.Meta
                     }
                     list.Add(dic);
                 }
-                
+
+                var exist = attrs.Exists(a => a.PropertyName.Equals("name", StringComparison.OrdinalIgnoreCase));
+                if (!exist)
+                {
+                    dic["name"] = MetaHelper.ToCamalCaseName(prop.Name);
+                }
+
 
             }
             return list;

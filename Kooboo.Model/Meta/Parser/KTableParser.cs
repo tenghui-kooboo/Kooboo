@@ -30,7 +30,7 @@ namespace Kooboo.Model.Meta.Parser
                             .Select(a=>a as RelationAttribute).FirstOrDefault();
             if (relation != null)
             {
-                var menuModel = relation.MenuModel;
+                var menuModel = relation.Model;
                 var instance = Activator.CreateInstance(menuModel) as IKoobooModel;
                 meta.Menu = MetaParserHelper.GetMenu(instance);
             }

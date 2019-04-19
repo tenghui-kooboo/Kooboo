@@ -1,4 +1,4 @@
-(function() {
+(function () {
   Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbForm/item.js"]);
 
   Kooboo.vue.component.kbForm = Vue.component("kb-form", {
@@ -17,6 +17,15 @@
           default:
             return "";
         }
+      }
+    },
+    methods: {
+      validate() {
+        debugger;
+      },
+      submit() {
+        debugger;
+        return api.post(this.meta.submitApi);
       }
     },
     components: {

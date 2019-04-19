@@ -16,6 +16,8 @@ namespace Kooboo.Model.Meta.Definition
 
         public string Url { get; set; }
 
+        public string Popup { get; set; }
+
         public string Visible { get; set; }
 
         public VisibleCondition VisibleCondition { get; set; }

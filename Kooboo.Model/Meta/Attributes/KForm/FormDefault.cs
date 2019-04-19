@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Model.Meta.Attributes
+namespace Kooboo.Model.Meta.Attributes.KForm
 {
-    public class FormOptions
+    class FormDefault
     {
     }
 }

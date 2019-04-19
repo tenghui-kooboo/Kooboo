@@ -33,6 +33,8 @@ namespace Kooboo.Model.Meta.Definition
 
         public string Accept { get; set; }
 
+        public string OptionConfig { get; set; }
+
         //   {
         //  type: "textbox",//component type
         //  label: "path",//component label
