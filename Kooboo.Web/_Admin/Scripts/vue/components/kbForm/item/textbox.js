@@ -3,14 +3,15 @@
     "kb-form-item-textbox",
     {
       props: {
-        value: String,
+        data: Object,
+        name: String,
         placeholder: String
       },
       data() {
         return { fieldValue: "" };
       },
       created() {
-        this.fieldValue = this.value;
+        this.fieldValue = this.data[this.name];
       },
       template: Kooboo.getTemplate(
         "/_Admin/Scripts/vue/components/kbForm/item/textbox.html"

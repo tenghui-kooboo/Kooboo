@@ -12,13 +12,15 @@
   Kooboo.vue.component.kbFormItem = Vue.component("kb-form-item", {
     props: {
       label: String,
-      value: String,
       tooltip: String,
-      options: Array,
+      optionConfig: Object,
       externalClass: String,
       placeholder: String,
       controlType: String,
-      horizontal: Boolean
+      horizontal: Boolean,
+      data: Object,
+      extra: Array,
+      name: String
     },
     data() {
       return {};

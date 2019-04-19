@@ -1,0 +1,146 @@
+<!-- #layout name=vue -->
+
+<div class="page-header">
+  <h1 class="title">KB FORM</h1>
+</div>
+
+<div class="col-md-8 col-md-offset-2">
+  <div id="app-vue">
+    <button class="btn btn-primary" @click="onShow">show</button>
+
+    <kb-modal
+      :show="showModal"
+      :config="{title:'hello',
+        showCloseBtn:true,
+        closeBtnText:'取消',
+        btns:[{
+          text:'保存',
+        class:'btn-primary',
+        onClick:function(){}
+      }]}"
+      @close="showModal = false"
+    >
+      <div slot="body">
+        <kb-form :meta="formMeta" :data="formData" :extra="extra"></kb-form>
+      </div>
+    </kb-modal>
+  </div>
+</div>
+
+<script>
+  Kooboo.loadJS([
+    "/_Admin/Scripts/vue/components/kbModal/index.js",
+    "/_Admin/Scripts/vue/components/kbForm/index.js"
+  ]);
+
+  var vm = new Vue({
+    el: "#app-vue",
+    methods: {
+      onShow() {
+        this.showModal = true;
+      }
+    },
+    data: {
+      showModal: false,
+      formMeta: {
+        loadApi: "",
+        submitApi: "",
+        layout: "horizontal",
+        items: [
+          {
+            type: "textbox",
+            label: "Name",
+            placeholder: "",
+            name: "name"
+          },
+          {
+            type: "textbox",
+            label: "Url",
+            placeholder: "",
+            name: "title"
+          },
+          {
+            type: "selection",
+            label: "Selection",
+            placeholder: "",
+            name: "id",
+            optionConfig: {
+              displayName: "path",
+              value: "id",
+              default: {
+                displayName: "System default",
+                value: "00000000-0000-0000-0000-000000000000"
+              }
+            }
+          }
+        ]
+      },
+      formData: {
+        id: "ed4479b3-94d8-47ce-885e-c9b707c0a4e0",
+        name: "aaaa",
+        title: null,
+        warning: 0,
+        linked: 0,
+        pageView: 2,
+        layoutId: "013ed35a-35ca-d63e-1941-8b4cf52d867f",
+        online: true,
+        lastModified: "2019-04-18T08:47:43.9669353Z",
+        path: "/aaaa",
+        previewUrl: "http://testsfdsf.kooboo/aaaa",
+        inlineUrl:
+          "/_api/redirect/inline?siteid=b524ecca-a9cc-4f5d-bf0a-850d3592998f&pageid=ed4479b3-94d8-47ce-885e-c9b707c0a4e0",
+        startPage: false,
+        relations: {
+          view: 1,
+          layout: 1
+        },
+        type: "Layout"
+      },
+      extra: [
+        {
+          id: "ed4479b3-94d8-47ce-885e-c9b707c0a4e0",
+          name: "aaaa",
+          title: null,
+          warning: 0,
+          linked: 0,
+          pageView: 2,
+          layoutId: "013ed35a-35ca-d63e-1941-8b4cf52d867f",
+          online: true,
+          lastModified: "2019-04-18T08:47:43.9669353Z",
+          path: "/aaaa",
+          previewUrl: "http://testsfdsf.kooboo/aaaa",
+          inlineUrl:
+            "/_api/redirect/inline?siteid=b524ecca-a9cc-4f5d-bf0a-850d3592998f&pageid=ed4479b3-94d8-47ce-885e-c9b707c0a4e0",
+          startPage: false,
+          relations: {
+            view: 1,
+            layout: 1
+          },
+          type: "Layout"
+        },
+        {
+          id: "d5575cdf-25d9-4fa7-a6c7-cbfa6230bb37",
+          name: "test",
+          title: null,
+          warning: 0,
+          linked: 0,
+          pageView: 0,
+          layoutId: "00000000-0000-0000-0000-000000000000",
+          online: true,
+          lastModified: "2019-04-18T05:53:09.1967558Z",
+          path: "/test",
+          previewUrl: "http://testsfdsf.kooboo/test",
+          inlineUrl:
+            "/_api/redirect/inline?siteid=b524ecca-a9cc-4f5d-bf0a-850d3592998f&pageid=d5575cdf-25d9-4fa7-a6c7-cbfa6230bb37",
+          startPage: false,
+          relations: {},
+          type: "Normal"
+        }
+      ]
+    },
+    components: {
+      "kb-form": Kooboo.vue.component.kbForm,
+      "kb-modal": Kooboo.vue.component.kbModal
+    }
+  });
+</script>

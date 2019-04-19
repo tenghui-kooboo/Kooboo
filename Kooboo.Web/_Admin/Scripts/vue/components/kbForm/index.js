@@ -3,7 +3,9 @@
 
   Kooboo.vue.component.kbForm = Vue.component("kb-form", {
     props: {
-      meta: Object
+      meta: Object,
+      data: Object,
+      extra: Array
     },
     computed: {
       layout() {

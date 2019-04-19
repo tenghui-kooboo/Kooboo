@@ -2,9 +2,11 @@
   <kb-form-item
     v-for="(item, idx) in meta.items"
     :key="idx"
+    :data="data"
+    :extra="extra"
+    :name="item.name"
     :label="item.label"
-    :value="item.value"
-    :options="item.options"
+    :optionConfig="item.optionConfig"
     :tooltip="item.tooltip"
     :controlType="item.type"
     :externalClass="item.class"

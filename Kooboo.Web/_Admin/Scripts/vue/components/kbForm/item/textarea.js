@@ -3,7 +3,8 @@
     "kb-form-item-textarea",
     {
       props: {
-        value: String,
+        data: Object,
+        name: String,
         placeholder: String
       },
       data() {
@@ -12,7 +13,7 @@
         };
       },
       created() {
-        this.fieldValue = this.value;
+        this.fieldValue = this.data[this.name];
       },
       template: Kooboo.getTemplate(
         "/_Admin/Scripts/vue/components/kbForm/item/textarea.html"

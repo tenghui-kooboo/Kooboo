@@ -5,9 +5,11 @@
   <div :class="{ 'col-md-9': horizontal }">
     <component
       :is="`kb-form-item-${_ct}`"
-      :value="value"
+      :name="name"
+      :data="data"
+      :extra="extra"
       :class="externalClass"
-      :options="options"
+      :optionConfig="optionConfig"
       :placeholder="placeholder"
     ></component>
     <span class="help-block" v-if="tooltip">{{ tooltip }}</span>
