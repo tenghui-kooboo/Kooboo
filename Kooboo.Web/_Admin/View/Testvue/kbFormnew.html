@@ -1,0 +1,68 @@
+<!-- #layout name=vue -->
+
+<div class="page-header">
+  <h1 class="title">KB FORM</h1>
+</div>
+
+<div class="col-md-8 col-md-offset-2">
+  <div id="app-vue">
+    <button class="btn btn-primary" @click="onShow">show</button>
+    <popup kv-ref="popup" ref="popup"></popup>
+
+  </div>
+</div>
+
+<script>
+  Kooboo.loadJS([
+    "/_Admin/View/Testvue/formdata.js",
+    "/_Admin/View/Testvue/modalconfig.js",
+    "/_Admin/Scripts/vue/components/kbModal/index.js",
+    "/_Admin/Scripts/vue/components/kbForm/index.js"
+  ]);
+  var popup = {
+    data: function () {
+      return {
+        showModal: false,
+        formmeta: {},
+        modalconfig:{}
+      }
+    },
+    methods: {
+      show: function (modelName,model) {
+        this.showModal = true;
+        //ajax get modal
+        this.formmeta = window.formmeta;
+        this.modalconfig=window.modalconfig;
+      },
+    },
+    
+    template: `<kb-modal 
+            :show="showModal"
+            :config="modalconfig"
+            @close='showModal = false'
+          >
+            <div slot="body">
+              <kb-form :meta="formmeta"></kb-form>
+            </div>
+          </kb-modal>`
+  }
+  var vm = new Vue({
+    el: "#app-vue",
+    methods: {
+      onShow() {
+        this.$refs["popup"].show();
+      }
+    },
+    components: {
+      popup
+    }
+    // data: {
+    //   showModal: false,
+    //   formData: window.formmeta
+    // },
+    // components: {
+    //   "kb-form": Kooboo.vue.component.kbForm,
+    //   "kb-modal": Kooboo.vue.component.kbModal
+    // }
+  });
+</script>
