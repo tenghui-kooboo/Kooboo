@@ -1,5 +1,5 @@
 <template>
-  <inner-button :meta="meta" :selected="selected" :icon="true" />
+  <inner-button :meta="meta" :selected="selected" :icon="true" :list="list" />
 </template>
 
 <script>
@@ -11,7 +11,8 @@ export default {
   props: {
     meta: Object,
     selected: Array,
-    data: Object
+    data: Object,
+    list: Array
   },
 
   components: {

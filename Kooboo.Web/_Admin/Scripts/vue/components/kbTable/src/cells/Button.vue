@@ -1,6 +1,6 @@
 <template>
   <td class="table-action">
-    <inner-button :meta="meta" :row="row" :name="name"
+    <inner-button :meta="meta" :row="row" :name="name" :list="list"
       :class="[ 'btn btn-sm', meta.class ]" :style="meta.style">
       {{ meta.innerText }}
     </inner-button>
@@ -17,6 +17,7 @@ export default {
   props: {
     name: String,
     meta: Object,
+    list: Array,
     row: Object
   },
 

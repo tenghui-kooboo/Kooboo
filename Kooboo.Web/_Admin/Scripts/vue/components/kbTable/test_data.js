@@ -28,7 +28,7 @@ export default {
       displayName: "Copy",
       class: "green",
       action: "popup",
-      url: 'page/copy',
+      url: 'page/copy?modelName=Layout',
       visible: {
         compare: '=',
         value: 1
@@ -129,7 +129,7 @@ export default {
           class: 'btn-xs',
           iconClass: "qrcode",
           action: "popup",
-          url: "showQRCode"
+          url: "layout/arCode?modelName=Layout"
         }
       }]
     }

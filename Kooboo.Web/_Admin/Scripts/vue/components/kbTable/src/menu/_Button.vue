@@ -17,6 +17,7 @@ export default {
   props: {
     meta: Object,
     selected: Array,
+    list: Array,
     icon: {
       type: Boolean,
       default: false
@@ -37,7 +38,11 @@ export default {
           this.$root[this.meta.url](this.selected)
           break;
         default:
-          // Todo: modal
+          this.$root.$refs.popup.show({
+            parameters: this.$parameterBinder().getUrlKeyValue(this.meta.url),
+            context: this.list,
+            selected: this.selected
+          })
           break;
       }
     }

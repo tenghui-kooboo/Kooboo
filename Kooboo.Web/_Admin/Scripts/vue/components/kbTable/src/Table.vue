@@ -14,7 +14,8 @@
         <tr v-for="(row, index) in list" :key="index">
           <td><input type="checkbox" v-model="row.__selected"></td>
           <component v-for="{colName, cell} in meta.columns.map(o => ({ colName: o.name, cell: o.cell || defaultTextMeta }))" :key="`${index}_${colName}`"
-            :is="`cell-${cell.type}`" :row="row" :meta="cell" :name="colName" />
+            :is="`cell-${cell.type}`" :name="colName" :meta="cell"
+            :row="row" :list="list" />
         </tr>
       </tbody>
     </table>

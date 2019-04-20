@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <component v-for="(item, index) in meta" :key="index"
         :is="`menu-${item.type}`" v-show="visible(item)"
-        :meta="item" :data="data" :selected="selected" />
+        :meta="item" :data="data" :selected="selected" :list="list" />
     </div>
   </div>
 </template>
@@ -17,7 +17,8 @@ export default {
   props: {
     meta: Array,
     selected: Array,
-    data: Object
+    data: Object,
+    list: Array
   },
 
   methods: {

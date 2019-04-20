@@ -13,6 +13,7 @@ export default {
   props: {
     name: String,
     meta: Object,
+    list: Array,
     row: Object,
     icon: {
       type: Boolean,
@@ -36,8 +37,11 @@ export default {
           api.post(this.bindUrl(this.meta.url, this.row))
           break;
         default:
-          this.$root.$refs["popup"].show();
-          // Todo: modal
+          this.$root.$refs.popup.show({
+            parameters: this.$parameterBinder().getUrlKeyValue(this.meta.url),
+            context: this.list,
+            row: this.row
+          })
           break;
       }
     }
