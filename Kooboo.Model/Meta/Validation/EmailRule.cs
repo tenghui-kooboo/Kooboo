@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidationRules
+namespace Kooboo.Model.Meta.Validation
 {
     public class EmailRule:ValidationRule
     {

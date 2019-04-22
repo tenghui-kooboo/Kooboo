@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.ValidationRules
+namespace Kooboo.Model.Meta.Validation
 {
-    public class IpAddressRule:ValidationRule
+    public class NumericRule:ValidationRule
     {
-        public IpAddressRule(string message)
+        public NumericRule(string message)
         {
             Message = message;
         }
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"ipAddress\",message:\"{0}\"}}", Message);
+            return string.Format("{{type:\"numeric\",message:\"{0}\"}}",Message);
         }
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kooboo.Model.ValidationRules;
+using Kooboo.Model.Meta.Validation;
 using Kooboo.Data;
 
 namespace Kooboo.Model.Setting

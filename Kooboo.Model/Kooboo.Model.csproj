@@ -19,7 +19,7 @@
     <Compile Remove="Setting\LayoutNewModel.cs" />
     <Compile Remove="Setting\RuleSetting.cs" />
     <Compile Remove="Setting\ViewsModel.cs" />
-    <Compile Remove="ValidationRules\RequireFieldRule.cs" />
+    <Compile Remove="Meta\Validation\RequireFieldRule.cs" />
   </ItemGroup>
 
   <ItemGroup>

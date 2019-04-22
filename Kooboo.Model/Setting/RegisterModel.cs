@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Kooboo.Model.ValidationRules;
+using Kooboo.Model.Meta.Validation;
 
 namespace Kooboo.Model.Setting
 {
