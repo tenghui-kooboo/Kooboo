@@ -5,7 +5,7 @@ using Kooboo.Model.Render;
 using Kooboo.Model.Render.ApiMeta;
 using Kooboo.Model;
 using Kooboo.Api;
-using Kooboo.Model.ValidationRules;
+using Kooboo.Model.Meta.Validation;
 using System.Reflection;
 using System.Linq;
 
