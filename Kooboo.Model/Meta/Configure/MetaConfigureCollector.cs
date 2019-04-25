@@ -67,7 +67,7 @@ namespace Kooboo.Model.Meta.Configure
             var modelType = argTypes[0];
             var metaType = argTypes[1];
 
-            addConfigure(modelType, metaType);
+            addConfigure?.Invoke(modelType, metaType);
 
             var creatorInterface = CreatorGeneric.MakeGenericType(modelType, metaType);
             var isCreator = creatorInterface.IsAssignableFrom(configureEntry.Type);

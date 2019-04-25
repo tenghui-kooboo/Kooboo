@@ -11,7 +11,7 @@ namespace Kooboo.Model.Meta.Table
         protected MenuItem()
         { 
             var typeName = GetType().Name.ToLower();
-            Type = typeName.Substring(typeName.Length - 4);
+            Type = typeName.Substring(0, typeName.Length - 4);
         }
 
         protected MenuItem(string type)

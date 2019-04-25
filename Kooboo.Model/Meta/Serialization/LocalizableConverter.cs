@@ -26,9 +26,9 @@ namespace Kooboo.Model.Meta.Serialization
 
         public override void WriteJson(JsonWriter writer, Localizable value, JsonSerializer serializer)
         {
-            Hardcoded.GetValue("user or ip temporarily lockout", Context.RenderContext);
+            var localized = Hardcoded.GetValue(value.Value, Context.RenderContext);
 
-            writer.WriteValue(value.Value);
+            writer.WriteValue(localized);
         }
     }
 }

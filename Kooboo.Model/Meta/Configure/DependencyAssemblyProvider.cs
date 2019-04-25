@@ -26,7 +26,7 @@ namespace Kooboo.Model.Meta.Configure
                 if (_ordered != null)
                     return _ordered;
 
-                _ordered = OrderByDependency(_ordered);
+                _ordered = OrderByDependency(_orignal);
                 return _ordered;
             }
         }
@@ -68,7 +68,7 @@ namespace Kooboo.Model.Meta.Configure
 
                     if (each.References.Count == 0)
                     {
-                        RemoveNode(node);
+                        RemoveNode(each);
                     }
                 }
             }

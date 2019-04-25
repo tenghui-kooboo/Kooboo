@@ -24,7 +24,7 @@ namespace Kooboo.Model.Meta.Serialization
             }
             else
             {
-                writer.WriteValue(value.Condition);
+                serializer.Serialize(writer, value.Condition);
             }
         }
     }

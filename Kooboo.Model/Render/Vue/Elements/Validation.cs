@@ -22,7 +22,7 @@ namespace Kooboo.Model.Render.Vue
             public void Render(InnerJsBuilder builder, IEnumerable<object> items, VueJsBuilderOptions options)
             {
                 foreach (Validation item in items)
-                {
+                {   
                     builder.Validations(b =>
                     {
                         b.AppendLine($"{ParserHelper.ToJsName(item.Name)}: {{").Indent();

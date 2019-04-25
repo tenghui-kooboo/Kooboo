@@ -10,8 +10,8 @@ namespace Kooboo.Model.Meta.Table
     {
         protected Cell()
         {
-            var typeName = GetType().Name.ToLower();
-            Type = typeName.Substring(typeName.Length - 4);
+            var typeName = GetType().Name;
+            Type = typeName.Substring(0, typeName.Length - 4).ToLower(); 
         }
 
         protected Cell(string type)

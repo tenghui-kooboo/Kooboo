@@ -64,6 +64,8 @@ namespace Kooboo.Model.Meta
 
         public IViewMeta GetMeta(string modelName, string metaName = null)
         {
+            EnsureConfigures();
+
             if (!_typeNameMap.TryGetValue(modelName, out Type modelType))
                 throw new KeyNotFoundException($"No type found for model name {modelName}");
 
@@ -105,10 +107,12 @@ namespace Kooboo.Model.Meta
             if (_metaCache.TryGetValue(MetaCacheKey(modelType, metaType), out MetaCacheEntry entry))
                 return entry.Meta;
 
+            EnsureConfigures();
+
             if (!_modelMetaMap.TryGetValue(modelType, out HashSet<Type> metaTypes))
                 ThrowNoConfigureForModelType(modelType);
 
-            TryAddToMetaCache(modelType, metaType);
+            entry = TryAddToMetaCache(modelType, metaType);
             return entry.Meta;
         }
 
@@ -134,7 +138,7 @@ namespace Kooboo.Model.Meta
                 _typeNameMap[modelType.Name] = modelType;
             }
 
-            var metaName = MetaTypeName(modelType);
+            var metaName = MetaTypeName(metaType);
             if (!_typeNameMap.ContainsKey(metaName))
             {
                 _typeNameMap[metaName] = metaType;
@@ -169,7 +173,7 @@ namespace Kooboo.Model.Meta
 
         private string MetaCacheKey(Type modelType, Type metaType) => modelType.Name + "_" + metaType.Name;
 
-        private string MetaTypeName(Type type) => "__" + type.Name.Substring(type.Name.Length - 4);
+        private string MetaTypeName(Type type) => "__" + type.Name.Substring(0, type.Name.Length - 4);
 
         private string MetaTypeName(string shortName) => "__" + shortName;
 

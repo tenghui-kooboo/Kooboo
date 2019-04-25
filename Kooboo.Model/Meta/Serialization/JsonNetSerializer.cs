@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Kooboo.Model.Meta.Serialization
 {
@@ -11,14 +12,16 @@ namespace Kooboo.Model.Meta.Serialization
     {
         public static Action<JsonSerializerSettings, SerializationContext> ConfigureSettings { get; set; }
 
-        public string Serialize(IViewMeta meta, SerializationContext context)
+        public string Serialize(object meta, SerializationContext context)
         {
             var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
             settings.Converters.Add(new LocalizableConverter(context));
             settings.Converters.Add(new FormatConverter());
             settings.Converters.Add(new SelectOptionsConverter());
 
-            ConfigureSettings(settings, context);
+            ConfigureSettings?.Invoke(settings, context);
 
             return JsonConvert.SerializeObject(meta, settings);
         }

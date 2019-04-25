@@ -8,7 +8,7 @@ namespace Kooboo.Model.Meta.Serialization
 {
     public interface IMetaSerializer
     {
-        string Serialize(IViewMeta meta, SerializationContext context);
+        string Serialize(object meta, SerializationContext context);
     }
 
     public class SerializationContext

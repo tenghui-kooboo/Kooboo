@@ -3,29 +3,29 @@ export default {
   meta: {
     menu: [{
       type: "button",
-      displayName: "New page",
+      text: "New page",
       class: "green",
       action: "redirect",
       url: '/_Admin/Page/EditPage'
     }, {
       type: "button",
-      displayName: "New rich text page",
+      text: "New rich text page",
       class: "green",
       action: "redirect",
       url: '/_Admin/Page/EditRichText'
     },{
       type: "dropdown",
-      displayName: "New layout page",
+      text: "New layout page",
       class: "green",
       action: 'redriect',
       url: '/_Admin/Page/EditLayout?layoutId={id}',
       options: {
         data: "layouts",
-        displayName: "name"
+        text: "name"
       }
     }, {
       type: "button",
-      displayName: "Copy",
+      text: "Copy",
       class: "green",
       action: "popup",
       url: 'page/copy?modelName=Layout',
@@ -35,7 +35,7 @@ export default {
       }
     },{
       type: "button",
-      displayName: "Delete",
+      text: "Delete",
       class: "red",
       action: "post",
       confirm: 'confirm.deleteItemsWithRef',
@@ -51,87 +51,85 @@ export default {
       action: "popup",
       url: '/_Admin/Page/Delete?ids={id}'
     }],
-    table: {
-      columns: [{
-        name: "name",
-        header: {
-          displayName: "Name",
+    columns: [{
+      name: "name",
+      header: {
+        text: "Name",
+      }
+    },{
+      name: "linked",
+      header: {
+        text: "Linked"
+      },
+      cell: {
+        type: "badge"
+      }
+    },{
+      name: "online",
+      header: {
+        text: "Online"
+      },
+      cell: {
+        type: "label",
+        class: [ { true: "green", false: "blue" } ],
+        text: {
+          true: "{online.yes}",
+          false: "{online.no}"
         }
-      },{
-        name: "linked",
-        header: {
-          displayName: "Linked"
-        },
-        cell: {
-          type: "badge"
-        }
-      },{
-        name: "online",
-        header: {
-          displayName: "Online"
-        },
-        cell: {
-          type: "label",
-          class: [ { true: "green", false: "blue" } ],
-          text: {
-            true: "{online.yes}",
-            false: "{online.no}"
-          }
-        }
-      },{
-        name: "relations",
-        header: {
-          displayName: "Relations",
-        },
-        cell: {
-          type: "array",
-          text:"{0} {key}",
-        }
-      },{
-        name: "lastModified",
-        header: {
-          displayName: "Last modified",
-        },
-        cell: {
-          type: 'date'
-        }
-      },{
-        name: "previewUrl",
-        header: {
-          displayName: "Preview",
-        },
-        cell: {
-          type: "link",
-          action: "newWindow"
-        }
-      },{
-        name: "setting",
-        cell: {
-          type: "button",
-          class: "blue",
-          innerText: "Setting",
-          action: "redirect",
-          url: "/page/details?id={id}&layoutId={layoutId}"
-        }
-      },{
-        name: "inlineUrl",
-        cell: {
-          type: "button",
-          class: "btn-primary hidden-xs",
-          innerText: "Inline edit",
-          action: "newWindow"
-        }
-      },{
-        name: "qrCode",
-        cell: {
-          type: "icon",
-          class: 'btn-xs',
-          iconClass: "qrcode",
-          action: "popup",
-          url: "layout/arCode?modelName=Layout"
-        }
-      }]
-    }
+      }
+    },{
+      name: "relations",
+      header: {
+        text: "Relations",
+      },
+      cell: {
+        type: "array",
+        text:"{0} {key}",
+      }
+    },{
+      name: "lastModified",
+      header: {
+        text: "Last modified",
+      },
+      cell: {
+        type: 'date'
+      }
+    },{
+      name: "previewUrl",
+      header: {
+        text: "Preview",
+      },
+      cell: {
+        type: "link",
+        action: "newWindow"
+      }
+    },{
+      name: "setting",
+      cell: {
+        type: "button",
+        class: "blue",
+        innerText: "Setting",
+        action: "redirect",
+        url: "/page/details?id={id}&layoutId={layoutId}"
+      }
+    },{
+      name: "inlineUrl",
+      cell: {
+        type: "button",
+        class: "btn-primary hidden-xs",
+        innerText: "Inline edit",
+        action: "newWindow"
+      }
+    },{
+      name: "qrCode",
+      cell: {
+        type: "icon",
+        class: 'btn-xs',
+        iconClass: "qrcode",
+        action: "popup",
+        url: "layout/arCode?modelName=Layout"
+      }
+    }]
   },
   data: {
     "baseUrl": "http://test.vango.kooboo.site/",

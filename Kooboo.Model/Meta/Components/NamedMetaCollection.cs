@@ -7,24 +7,58 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta
 {
-    public class NamedMetaCollection<T> : IEnumerable<T>
+    public partial class NamedMetaCollection<T> : IEnumerable<T>
         where T : INamedMeta
     {
         private List<T> _list = new List<T>();
         private Dictionary<string, T> _map = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
 
-        public T EnsureItem(string name)
+        public NamedMetaCollection()
         {
-            if (_map.TryGetValue(name, out T item))
-                return item;
+        }
+
+        public NamedMetaCollection(IEnumerable<T> items)
+        {
+            _map = items.ToDictionary(o => o.Name, o => o);
+            _list = items.ToList();
+        }
+
+        public int Count => _list.Count;
+
+        public int FindIndex(string name) => _list.FindIndex(o => o.Name == name);
+
+        public bool TryGet(string name, out T item) => _map.TryGetValue(name, out item);
+
+        public bool TryAdd(string name, out T item)
+        {
+            if (!TryCreate(name, out item))
+                return false;
+
+            _list.Add(item);
+            return true;
+        }
+
+        public bool TryInsert(int index, string name, out T item)
+        {
+            if (!TryCreate(name, out item))
+                return false;
+
+            _list.Insert(index, item);
+            return true;
+        }
+
+        public bool TryCreate(string name, out T item)
+        {
+            if (_map.TryGetValue(name, out item))
+                return false;
 
             item = Activator.CreateInstance<T>();
             item.Name = name;
-            _list.Add(item);
             _map[item.Name] = item;
 
-            return item; 
+            return true;
         }
+
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {

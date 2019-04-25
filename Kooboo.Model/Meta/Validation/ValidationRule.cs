@@ -18,7 +18,7 @@ namespace Kooboo.Model.Meta.Validation
         protected ValidationRule()
         {
             var typeName = GetType().Name;
-            Type = typeName.Substring(typeName.Length - 4).ToLower();
+            Type = typeName.Substring(0, typeName.Length - 4).ToLower();
         }
         [JsonIgnore]
         public override object TypeId { get; }

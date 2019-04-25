@@ -19,11 +19,11 @@ namespace Kooboo.Model.Meta.Serialization
         {
             if (value.Context == null)
             {
-                writer.WriteValue(value.Items);
+                serializer.Serialize(writer, value.Items);
             }
             else
             {
-                writer.WriteValue(value.Context);
+                serializer.Serialize(writer, value.Context);
             }
         }
     }
