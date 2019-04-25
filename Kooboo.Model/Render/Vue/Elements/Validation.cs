@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Kooboo.Model.Meta.Validation;
 using Newtonsoft.Json;
 
 namespace Kooboo.Model.Render.Vue
@@ -42,8 +42,7 @@ namespace Kooboo.Model.Render.Vue
                                 {
                                     b.AppendLine(",");
                                 }
-
-                                b.Append(JsonConvert.SerializeObject(rule, Formatting.None));
+                                b.Append(rule.ToJson());
 
                                 i++;
                             }
