@@ -10,6 +10,11 @@ namespace Kooboo.Model.Render
 { 
     public class ViewParser
     {
+        public ViewParser()
+            : this(ViewParseOptions.Instance)
+        {
+        }
+
         public ViewParser(ViewParseOptions options)
         {
             Options = options;
@@ -72,6 +77,16 @@ namespace Kooboo.Model.Render
 
     public static class ViewRendererExtensions
     {
+        public static string TryRenderRootView(this ViewParser parser, string html, ModelRenderContext context)
+        {
+            var url = context.HttpContext.Request.Path;
+            if (!(url.StartsWith("/_Admin/Vue", StringComparison.OrdinalIgnoreCase) ||
+                url.StartsWith("/_Admin/account/Vue", StringComparison.OrdinalIgnoreCase)))
+                return html;
+
+            return parser.RenderRootView(html, context);
+        }
+
         public static string RenderRootView(this ViewParser parser, string html, ModelRenderContext modelContext)
         {
             var context = new ViewParseContext
@@ -79,7 +94,7 @@ namespace Kooboo.Model.Render
                 Dom = DomParser.CreateDom(html),
                 Js = new Vue.RootViewJsBuilder(Vue.VueJsBuilderOptions.RootViewOptions),
                 ViewProvider = new ViewProvider(modelContext),
-                Context=modelContext.HttpContext
+                Context = modelContext.HttpContext
             };
 
             parser.Parse(context);

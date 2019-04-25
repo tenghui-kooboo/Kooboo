@@ -5,25 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Meta\Attributes\Popup\**" />
-    <Compile Remove="Meta\Definition\Popup\**" />
-    <EmbeddedResource Remove="Meta\Attributes\Popup\**" />
-    <EmbeddedResource Remove="Meta\Definition\Popup\**" />
-    <None Remove="Meta\Attributes\Popup\**" />
-    <None Remove="Meta\Definition\Popup\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Meta\Attributes\CellCondition.cs" />
-    <Compile Remove="Setting\LayoutModel.cs" />
-    <Compile Remove="Setting\LayoutNewModel.cs" />
-    <Compile Remove="Setting\RuleSetting.cs" />
-    <Compile Remove="Setting\ViewsModel.cs" />
-    <Compile Remove="Meta\Validation\RequireFieldRule.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Meta\Definition\Popup\KPopup.cs" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

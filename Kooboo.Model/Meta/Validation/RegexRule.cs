@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class RegexRule:ValidationRule
+    public class RegexRule : ValidationRule
     {
-        public string Regex { get; set; }
-        public RegexRule(string regex,string message)
+        public RegexRule(string regex)
+            : base("regex")
         {
             Regex = regex;
-            Message = message;
+            Message = "Invalid format";
         }
 
-        public override string GetRule()
-        {
-            return string.Format("{{type:\"regex\",regex:\"{0}\",message:\"{1}\"}}",Regex, Message);
-        }
+        public string Regex { get; set; }
     }
 }

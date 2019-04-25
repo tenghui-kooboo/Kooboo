@@ -35,7 +35,7 @@ namespace Kooboo.Model.Render
             return "null";
         }
 
-        public static string GetJsonFromModel(ApiMeta.ModelInfo model)
+        public static string GetJsonFromModel(Meta.Api.ModelInfo model)
         {
             if (IsJsArray(model.Type))
                 return "[]";
@@ -51,7 +51,7 @@ namespace Kooboo.Model.Render
             return Char.ToLower(name[0]) + name.Substring(1);
         }
 
-        public static string GenerateUrlFromApiParameters(string url, IEnumerable<ApiMeta.PropertyInfo> parameters)
+        public static string GenerateUrlFromApiParameters(string url, IEnumerable<Meta.Api.PropertyInfo> parameters)
         {
             if (parameters == null || !parameters.Any())
                 return url;

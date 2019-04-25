@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Kooboo.Model.Render;
-using Kooboo.Model.Render.ApiMeta;
+using Kooboo.Model.Meta.Api;
+using ApiMeta = Kooboo.Model.Meta.Api;
 using Kooboo.Model;
 using Kooboo.Api;
 using Kooboo.Model.Meta.Validation;
@@ -15,69 +16,63 @@ namespace Kooboo.Web.Api
     {
         public ApiInfo GetMeta(string url)
         {
-            var info = new ApiInfo();
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                return null;
-            }
+            if (String.IsNullOrEmpty(url))
+                ThrowInvalidUrlException();
+
             var sep = "/\\_".ToCharArray();
             var parts = url.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length >= 2)
+            if (parts.Length < 2)
+                ThrowInvalidUrlException();
+
+            var method = CmsApiHelper.GetApiMethod(parts[0], parts[1]);
+
+            var info = new ApiInfo
             {
-                var method = CmsApiHelper.GetApiMethod(parts[0], parts[1]);
-                info.Result = GetResult(method.ReturnType);
-                info.Parameters = GetParameters(method.Parameters);
-                info.Model = GetModel(method.Parameters);
+                Result = GetModelInfo(method.ReturnType)
+            };
+            
+            foreach (var p in method.Parameters)
+            {
+                if (p.ClrType == typeof(ApiCall))
+                    continue;
+
+                if (IsComplexType(p.ClrType))
+                {
+                    info.Model = GetModelInfo(p.ClrType);
+                }
+                else
+                {
+                    info.Parameters.Add(new ApiMeta.PropertyInfo
+                    {
+                        Name = p.Name,
+                        Type = p.ClrType
+                    });
+                }
             }
 
             return info;
         }
 
-        private ModelInfo GetResult(Type type)
-        {
-            return GetModelInfo(type);
-        }
         private ModelInfo GetModelInfo(Type type)
         {
-            var properties = new List<Model.Render.ApiMeta.PropertyInfo>();
-            var props = type.GetProperties();
-
-            if (props != null)
+            return new ModelInfo()
             {
-                foreach (var prop in props)
+                Type = type,
+                Properties = type.GetProperties().Select(p => new ApiMeta.PropertyInfo
                 {
-                    var rules = new List<ValidationRule>();
-                    var attributes = prop.GetCustomAttributes(typeof(ValidationRule));
-                    if (attributes != null && attributes.Count() > 0)
-                    {
-                        rules = attributes.ToList().Select(r => r as ValidationRule).ToList();
-
-                    }
-                    properties.Add(new Model.Render.ApiMeta.PropertyInfo()
-                    {
-                        Name = prop.Name,
-                        Type = prop.PropertyType,
-                        Rules = rules
-                    });
-
-                }
-            }
-
-            var modelInfo = new ModelInfo()
-            {
-                Type=type,
-                Properties= properties
+                    Name = p.Name,
+                    Type = p.PropertyType,
+                    Rules = p.GetCustomAttributes(typeof(ValidationRule)).Cast<ValidationRule>().ToList()
+                }).ToList()
             };
-
-            return modelInfo;
         }
 
-        private List<Model.Render.ApiMeta.PropertyInfo> GetParameters(List<Parameter> parameters)
+        private List<ApiMeta.PropertyInfo> GetParameters(List<Parameter> parameters)
         {
-            var list = new List<Model.Render.ApiMeta.PropertyInfo>();
+            var list = new List<ApiMeta.PropertyInfo>();
             foreach(var para in parameters)
             {
-                list.Add(new Model.Render.ApiMeta.PropertyInfo()
+                list.Add(new ApiMeta.PropertyInfo()
                 {
                    Name=para.Name,
                    Type=para.ClrType
@@ -88,7 +83,7 @@ namespace Kooboo.Web.Api
 
         private ModelInfo GetModel(List<Parameter> parameters)
         {
-            var model = parameters.Find(p => typeof(IKoobooModel).IsAssignableFrom(p.ClrType));
+            var model = parameters.Find(p => IsComplexType(p.ClrType));
             var modelInfo = new ModelInfo();
             if (model != null)
             {
@@ -96,5 +91,18 @@ namespace Kooboo.Web.Api
             }
             return modelInfo;
         }
+
+        private bool IsComplexType(Type type)
+        {
+            if (type.IsValueType || type.IsArray || type == typeof(String))
+                return false;
+
+            if (type == typeof(ApiCall))
+                return false;
+
+            return true;
+        }
+
+        private void ThrowInvalidUrlException() => throw new ArgumentException("Invalid api url");
     }
 }

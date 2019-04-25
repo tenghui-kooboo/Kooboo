@@ -27,9 +27,9 @@ namespace Kooboo.Model.Render
             return builder.AddItem(new Vue.SubmitData { Url = url, ModelName = modelName });
         }
 
-        public static IJsBuilder Validation(this IJsBuilder builder, string name,List<Validation> validations)
+        public static IJsBuilder Validation(this IJsBuilder builder, string name, IEnumerable<Meta.Api.PropertyInfo> props)
         {
-            return builder.AddItem(new Vue.Validation { Name = name,Validations=validations});
+            return builder.AddItem(new Vue.Validation { Name = name, Properties = props });
         }
 
         public static IJsBuilder El(this IJsBuilder builder, string name)

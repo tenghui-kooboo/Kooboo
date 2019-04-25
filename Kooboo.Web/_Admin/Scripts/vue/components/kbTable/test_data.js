@@ -109,7 +109,6 @@ export default {
         cell: {
           type: "button",
           class: "blue",
-          iconClass: "fa fa-icon",
           innerText: "Setting",
           action: "redirect",
           url: "/page/details?id={id}&layoutId={layoutId}"

@@ -7,27 +7,21 @@ using Kooboo.Api;
 
 namespace Kooboo.Model.Render
 {
-    public class ViewParseOptions
+    public partial class ViewParseOptions
     {
-        public static ViewParseOptions Instance { get; } = new ViewParseOptions()
-            .UseParser<Parsers.RootParser>()
-            .UseParser<Parsers.LoadParser>()
-            .UseParser<Parsers.SubmitParser>()
-            .UseParser<Parsers.RefParser>()
-            .UseParser<Parsers.MetaParser>();
-
         public string AttributePrefix { get; set; } = "kv-";
 
-        public ApiMeta.IApiMetaProvider ApiMetaProvider { get; set; }
+        public Meta.Api.IApiMetaProvider ApiMetaProvider { get; set; }
+
         /// <summary>
         /// Map from attribute name to corresponding renderer.
         /// </summary>
         public Dictionary<string, IVirtualElementParser> ElementParsers { get; } = new Dictionary<string, IVirtualElementParser>();
 
-        public ViewParseOptions UseParser<T>()
+        public ViewParseOptions UseParser<T>(Func<T> factory = null)
             where T : IVirtualElementParser
         {
-            return UseParser(Activator.CreateInstance<T>());
+            return UseParser(factory == null ? Activator.CreateInstance<T>() : factory());
         }
 
         public ViewParseOptions UseParser(IVirtualElementParser parser)
@@ -45,5 +39,15 @@ namespace Kooboo.Model.Render
         {
             return AttributePrefix + unprefixName;
         }
+    }
+
+    partial class ViewParseOptions
+    {
+        public static ViewParseOptions Instance { get; } = new ViewParseOptions()
+            .UseParser<Parsers.RootParser>()
+            .UseParser<Parsers.LoadParser>()
+            .UseParser<Parsers.SubmitParser>()
+            .UseParser<Parsers.RefParser>()
+            .UseParser<Parsers.MetaParser>();
     }
 }

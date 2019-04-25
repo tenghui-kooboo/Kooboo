@@ -59,19 +59,8 @@ namespace Kooboo.Model.Render.Parsers
 
 
             // validations
-            var validations = new List<Kooboo.Model.Render.Vue.Validation>();
-            foreach (var prop in meta.Model.Properties)
-            {
-                if (prop.Rules.Any())
-                {
-                    validations.Add(new Vue.Validation()
-                    {
-                        Name = prop.Name,
-                        Rules = prop.Rules
-                    });
-                }
-            }
-            context.Js.Validation(modelName, validations);
+            var props = meta.Model.Properties.Where(o => o.Rules.Any()).ToArray();
+            context.Js.Validation(modelName, props);
 
             visitChildren?.Invoke();
         }

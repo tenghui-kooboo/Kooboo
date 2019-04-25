@@ -6,19 +6,13 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class MaxLengthRule:ValidationRule
+    public class MaxLengthRule : ValidationRule
     {
-        public int MaxLength;
-
-        public MaxLengthRule(int maxLength,string message)
+        public MaxLengthRule(int maxLength)
         {
             MaxLength = maxLength;
-            Message = string.Format(message,MaxLength).Replace("\"", "\\\"");
         }
 
-        public override string GetRule()
-        {
-            return string.Format("{{type:\"maxLength\",maxLength:{1},message:\"{0}\"}}", Message,MaxLength);
-        }
+        public int MaxLength { get; set; }
     }
 }

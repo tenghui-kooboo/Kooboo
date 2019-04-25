@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class ValidationRule : Attribute
+    public abstract class ValidationRule : Attribute
     {
-        public virtual string Message { get; set; }
-
-        public virtual string GetRule()
+        protected ValidationRule(string type)
         {
-            return "{}";
+            Type = type;
         }
+
+        protected ValidationRule()
+        {
+            var typeName = GetType().Name;
+            Type = typeName.Substring(typeName.Length - 4).ToLower();
+        }
+
+        public string Type { get; set; }
+
+        public Localizable Message { get; set; }
     }
 }

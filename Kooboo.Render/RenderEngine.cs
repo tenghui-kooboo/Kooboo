@@ -5,6 +5,7 @@ using Kooboo.Render.ObjectSource;
 using Kooboo.Sites.Render;
 using Kooboo.Lib;
 using Kooboo.Lib.Helper;
+using Kooboo.Model.Render;
 
 namespace Kooboo.Render
 {
@@ -148,7 +149,7 @@ namespace Kooboo.Render
             {
                 return response;
             }
-            htmlbody = Kooboo.Model.KoobooModelManager.Render(htmlbody, new Model.ModelRenderContext
+            htmlbody = new ViewParser().RenderRootView(htmlbody, new Model.ModelRenderContext
             {
                 HttpContext = Context,
                 SourceProvider = sourceprovider,
