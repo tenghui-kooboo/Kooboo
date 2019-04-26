@@ -12,14 +12,14 @@ namespace Kooboo.Model.Meta.Form
 
         public string SubmitApi { get; set; }
 
-        private FormItemCollection _items;
-        public FormItemCollection Items
+        private NamedMetaCollection<FormItem> _items;
+        public NamedMetaCollection<FormItem> Items
         {
             get
             {
                 if (_items == null)
                 {
-                    _items = new FormItemCollection();
+                    _items = new NamedMetaCollection<FormItem>();
                 }
                 return _items;
             }

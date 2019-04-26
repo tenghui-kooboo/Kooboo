@@ -17,8 +17,7 @@ namespace Kooboo.Model.Meta.Form
 
         public FormMetaBuilder<T> Item(Expression<Func<T, object>> getProperty, Action<FormItem> setItem)
         {
-            var name = ((MemberExpression)getProperty.Body).Member.Name;
-            var item = Meta.Items.EnsureItem(name);
+            Meta.Items.TryAdd(getProperty.PropertyName(), out FormItem item);
             setItem(item);
 
             return this;
@@ -30,7 +29,7 @@ namespace Kooboo.Model.Meta.Form
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var property in properties)
             {
-                var item = Meta.Items.EnsureItem(property.Name);
+                Meta.Items.TryAdd(property.Name, out FormItem item);
 
                 var attrs = property.GetCustomAttributes(true);
                 foreach (var attr in attrs)
