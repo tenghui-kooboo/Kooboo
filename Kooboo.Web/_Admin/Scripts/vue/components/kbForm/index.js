@@ -35,8 +35,8 @@
     },
     methods: {
       submit: function() {
-        var submitUrl = this.meta.submitApi;
         debugger;
+        return api.post(this.$parameterBinder().bind(this.meta.submitApi));
       }
     },
     mounted() {

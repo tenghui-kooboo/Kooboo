@@ -33,7 +33,11 @@
       onClick: function(type) {
         switch (type) {
           case "submit":
-            // this.$refs.body.children[0].__vue__.meta.submitApi
+            var self = this;
+            this.$refs.body.children[0].__vue__.submit().then(function(res) {
+              debugger;
+              self.onClose();
+            });
             break;
           case "close":
             this.onClose();
