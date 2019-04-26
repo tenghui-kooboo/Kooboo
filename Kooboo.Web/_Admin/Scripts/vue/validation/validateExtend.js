@@ -1,3 +1,4 @@
+debugger
 Vue.use(window.vuelidate.default);
 var helpers = validators.helpers;
 

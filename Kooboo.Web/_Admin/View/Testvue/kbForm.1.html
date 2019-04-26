@@ -26,8 +26,19 @@
     </kb-modal>
   </div>
 </div>
-
+<script src="/_Admin/Scripts/vue/validation/vuelidate.min.js"></script>
+<script src="/_Admin/Scripts/vue/validation/validators.min.js"></script>
+<script src="/_Admin/Scripts/vue/validation/validateExtend.js"></script>
 <script>
+
+  // window.fieldItemMixins = {
+  //   validations: {
+  //     fieldValue: {
+  //       rules: validators.rules(this.rules)
+  //     }
+  //   }
+  // };
+  
   Kooboo.loadJS([
     "/_Admin/Scripts/vue/components/kbModal/index.js",
     "/_Admin/Scripts/vue/components/kbForm/index.js"
@@ -48,30 +59,62 @@
         layout: "horizontal",
         items: [
           {
-            type: "textbox",
-            label: "Name",
+            type: "textBox",
+            label: "name",
+            name: "name",
             placeholder: "",
-            name: "name"
-          },
-          {
-            type: "textbox",
-            label: "Url",
-            placeholder: "",
-            name: "title"
-          },
-          {
-            type: "selection",
-            label: "Selection",
-            placeholder: "",
-            name: "id",
-            optionConfig: {
-              displayName: "path",
-              value: "id",
-              default: {
-                displayName: "System default",
-                value: "00000000-0000-0000-0000-000000000000"
+            tooltip: "",
+            options: {
+              data: "selected", //context:selected/list
+              text: "{name}_copy"
+            },
+            rules: [
+              {
+                type: "required",
+                message: "required"
+              },
+              {
+                type: "between",
+                from: 1,
+                to: 64,
+                message: "minLength 1,maxLength 64"
+              },
+              {
+                type: "unique",
+                api: "/page/isUnique?name={name}",
+                message: "taken"
               }
+            ]
+          },
+          {
+            type: "hidden",
+            label: "id",
+            name: "id",
+            options: {
+              data: "selected", //context:selected/list
+              text: "id"
             }
+          },
+          {
+            type: "hidden",
+            label: "url",
+            name: "url",
+            options: {
+              data: "selected",
+              text: "/{name}_copy"
+            },
+            rules: [
+              {
+                type: "required",
+                message: "required"
+              },
+              {
+                type: "regex",
+                regex:
+                  "^[^\s|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\[|\]|\;|\:|\"|'|\,|\<|\>|\?]*$",
+                message: "invalid"
+              }
+            ]
           }
         ]
       },

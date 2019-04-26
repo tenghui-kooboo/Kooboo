@@ -29,6 +29,16 @@
       },
       onClose: function () {
         this.$emit("close");
+      },
+      onClick: function(type) {
+        switch (type) {
+          case "submit":
+            // this.$refs.body.children[0].__vue__.meta.submitApi
+            break;
+          case "close":
+            this.onClose();
+            break;
+        }
       }
     },
     watch: {

@@ -10,8 +10,9 @@
         placeholder: String
       },
       data() {
-        return { options: [] };
+        return { options: [], fieldValue: "" };
       },
+      // mixins: [fieldItemMixins],
       mounted() {
         var self = this;
         if (this.optionConfig.default) {

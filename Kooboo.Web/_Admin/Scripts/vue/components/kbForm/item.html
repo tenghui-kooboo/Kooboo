@@ -1,4 +1,5 @@
-<div class="form-group">
+<div class="form-group" :class="{ hidden: _ct == 'hidden' }">
+  <!-- <div class="form-group" :class="{ 'has-error': $v.fieldValue.$error }"> -->
   <label class="control-label" :class="{ 'col-md-3': horizontal }">{{
     label
   }}</label>
@@ -7,11 +8,15 @@
       :is="`kb-form-item-${_ct}`"
       :name="name"
       :data="data"
+      :rules="rules"
       :extra="extra"
       :class="externalClass"
       :optionConfig="optionConfig"
       :placeholder="placeholder"
     ></component>
+    <!-- <template v-for="(err, idx) in $v.fieldValue.$error">
+      <span class="help-block" :key="idx">{{ err }}</span>
+    </template> -->
     <span class="help-block" v-if="tooltip">{{ tooltip }}</span>
   </div>
 </div>

@@ -1,16 +1,19 @@
 <div class="form" :class="layout">
-  <kb-form-item
-    v-for="(item, idx) in meta.items"
-    :key="idx"
-    :data="data"
-    :extra="extra"
-    :name="item.name"
-    :label="item.label"
-    :optionConfig="item.optionConfig"
-    :tooltip="item.tooltip"
-    :controlType="item.type"
-    :externalClass="item.class"
-    :placeholder="item.placeholder"
-    :horizontal="meta.layout=='horizontal'"
-  ></kb-form-item>
+  <template v-if="meta">
+    <kb-form-item
+      v-for="(item, idx) in meta.items"
+      :key="idx"
+      :data="data"
+      :extra="extra"
+      :name="item.name"
+      :rules="item.rules"
+      :label="item.label"
+      :optionConfig="item.optionConfig"
+      :tooltip="item.tooltip"
+      :controlType="item.type"
+      :externalClass="item.class"
+      :placeholder="item.placeholder"
+      :horizontal="meta.layout=='horizontal'"
+    ></kb-form-item>
+  </template>
 </div>

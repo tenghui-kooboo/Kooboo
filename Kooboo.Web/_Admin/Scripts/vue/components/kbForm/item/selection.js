@@ -12,6 +12,7 @@
       data() {
         return { options: [], fieldValue: "" };
       },
+      // mixins: [ fieldItemMixins ],
       mounted() {
         debugger;
         var self = this;

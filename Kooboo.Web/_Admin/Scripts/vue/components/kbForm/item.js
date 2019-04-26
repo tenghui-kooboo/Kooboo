@@ -4,6 +4,7 @@
     "/_Admin/Scripts/vue/components/kbForm/item/textarea.js",
     "/_Admin/Scripts/vue/components/kbForm/item/checkbox.js",
     "/_Admin/Scripts/vue/components/kbForm/item/radiobox.js",
+    "/_Admin/Scripts/vue/components/kbForm/item/hidden.js",
     "/_Admin/Scripts/vue/components/kbForm/item/selection.js",
     "/_Admin/Scripts/vue/components/kbForm/item/number.js",
     "/_Admin/Scripts/vue/components/kbForm/item/datetime.js"
@@ -19,6 +20,7 @@
       controlType: String,
       horizontal: Boolean,
       data: Object,
+      rules: Array,
       extra: Array,
       name: String
     },
@@ -37,6 +39,7 @@
       "kb-form-item-radiobox": Kooboo.vue.component.kbFormItemRadiobox,
       "kb-form-item-number": Kooboo.vue.component.kbFormItemNumber,
       "kb-form-item-selection": Kooboo.vue.component.kbFormItemSelection,
+      "kb-form-item-hidden": Kooboo.vue.component.kbFormItemHidden,
       "kb-form-item-datetime": Kooboo.vue.component.kbFormItemDatetime
     },
     template: Kooboo.getTemplate(

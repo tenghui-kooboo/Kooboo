@@ -12,6 +12,7 @@
           fieldValue: ""
         };
       },
+      // mixins: [ fieldItemMixins ],
       created() {
         this.fieldValue = this.data[this.name];
       },

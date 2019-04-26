@@ -12,6 +12,7 @@
       data() {
         return { options: [] };
       },
+      // mixins: [fieldItemMixins],
       computed: {
         fieldValue: {
           get: function() {
