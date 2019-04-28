@@ -1,4 +1,4 @@
-(function () {
+(function() {
   Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbForm/item.js"]);
 
   Kooboo.vue.component.kbForm = Vue.component("kb-form", {
@@ -10,11 +10,12 @@
           return {};
         }
       },
-      extra: Array
+      ctx: Object
     },
     data() {
       return {
-        meta: {}
+        meta: {},
+        formData: null
       };
     },
     computed: {
@@ -43,68 +44,59 @@
       var self = this;
       if (this.metaName) {
         this.meta = {
-          loadApi: "",
-          submitApi: "/page/copy",
-          layout: "horizontal",
+          loadApi: "/Page/DefaultRoute",
+          submitApi: "/page/defaultRouteUpdate",
           items: [
             {
-              type: "textBox",
-              label: "name",
-              name: "name",
+              type: "selection",
+              label: "Home page",
+              name: "startPage",
               placeholder: "",
               class: "col-md-9",
               tooltip: "",
               options: {
-                data: "selected", //context:selected/list
-                text: "{name}_copy"
-              },
-              rules: [
-                {
-                  type: "required",
-                  message: "required"
-                },
-                {
-                  type: "between",
-                  from: 1,
-                  to: 64,
-                  message: "minLength 1,maxLength 64"
-                },
-                {
-                  type: "unique",
-                  api: "/page/isUnique?name={name}",
-                  message: "taken"
+                data: "context", //context:selected/list
+                text: "{name}",
+                value: "{id}",
+                default: {
+                  text: "System default",
+                  value: "00000000-0000-0000-0000-000000000000"
                 }
-              ]
-            },
-            {
-              type: "hidden",
-              label: "id",
-              name: "id",
-              options: {
-                data: "selected", //context:selected/list
-                text: "id"
               }
             },
             {
-              type: "hidden",
-              label: "url",
-              name: "url",
+              type: "selection",
+              label: "404 page",
+              name: "notFound",
+              placeholder: "",
+              class: "col-md-9",
+              tooltip: "",
               options: {
-                data: "selected",
-                text: "/{name}_copy"
-              },
-              rules: [
-                {
-                  type: "required",
-                  message: "required"
-                },
-                {
-                  type: "regex",
-                  regex:
-                    "^[^s|~|`|!|@|#|$|%|^|&|*|(|)|+|=|||[|]|;|:|\"|'|,|<|>|?]*$",
-                  message: "invalid"
+                data: "context", //context:selected/list
+                text: "{name}",
+                value: "{id}",
+                default: {
+                  text: "System default",
+                  value: "00000000-0000-0000-0000-000000000000"
                 }
-              ]
+              }
+            },
+            {
+              type: "selection",
+              label: "Error page",
+              name: "error",
+              placeholder: "",
+              class: "col-md-9",
+              tooltip: "",
+              options: {
+                data: "context", //context:selected/list
+                text: "{name}",
+                value: "{id}",
+                default: {
+                  text: "System default",
+                  value: "00000000-0000-0000-0000-000000000000"
+                }
+              }
             }
           ]
         };
@@ -115,9 +107,11 @@
             .then(function(res) {
               debugger;
               if (res.success) {
-                self.data = res.model;
+                self.formData = res.model;
               }
             });
+        } else {
+          this.formData = this.data;
         }
         // api.getMeta(this.metaName).then(function(res) {
         //   debugger;
@@ -129,8 +123,7 @@
         debugger;
       },
       submit() {
-        debugger;
-        return api.post(this.meta.submitApi);
+        return api.post(this.$parameterBinder().bind(this.meta.submitApi));
       }
     },
     components: {

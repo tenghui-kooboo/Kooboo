@@ -9,7 +9,7 @@
       data() {
         return { fieldValue: "" };
       },
-      // mixins: [fieldItemMixins],
+      mixins: [window.fieldValidateMixin],
       created() {
         this.fieldValue = this.value;
       },

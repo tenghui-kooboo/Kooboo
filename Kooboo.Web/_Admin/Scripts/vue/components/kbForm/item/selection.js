@@ -5,29 +5,45 @@
       props: {
         data: Object,
         name: String,
-        extra: Array,
-        optionConfig: Object,
-        placeholder: String
+        options: Object,
+        placeholder: String,
+        ctx: Object
       },
       data() {
-        return { options: [], fieldValue: "" };
+        return { finalOptions: [], fieldValue: "" };
       },
-      // mixins: [ fieldItemMixins ],
-      mounted() {
-        debugger;
-        var self = this;
-        if (this.optionConfig.default) {
-          this.options.push(this.optionConfig.default);
+      watch: {
+        data(data) {
+          this.fieldValue = data[this.name];
         }
-        this.options = this.options.concat(
-          this.extra.map(function(data) {
-            return {
-              displayName: data[self.optionConfig.displayName],
-              value: data[self.optionConfig.value]
-            };
-          })
-        );
-        this.fieldValue = this.data[this.name];
+      },
+      mixins: [window.fieldValidateMixin],
+      mounted() {
+        var self = this;
+        if (this.options.default) {
+          this.finalOptions.push({
+            displayName: this.options.default.text,
+            value: this.options.default.value
+          });
+        }
+
+        if (this.options instanceof Array) {
+          this.finalOptions = this.finalOptions.concat(this.options);
+        } else if (this.options instanceof Object) {
+          var self = this;
+          this.finalOptions = this.finalOptions.concat(
+            this.ctx[this.options.data].map(function(item) {
+              return {
+                displayName: self
+                  .$parameterBinder()
+                  .getValue(item, self.options.text),
+                value: self
+                  .$parameterBinder()
+                  .getValue(item, self.options.value)
+              };
+            })
+          );
+        }
       },
       template: Kooboo.getTemplate(
         "/_Admin/Scripts/vue/components/kbForm/item/selection.html"

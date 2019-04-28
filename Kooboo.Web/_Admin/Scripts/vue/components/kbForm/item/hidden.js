@@ -9,7 +9,7 @@
     data() {
       return { fieldValue: "" };
     },
-    // mixins: [fieldItemMixins],
+    mixins: [window.vuelidate.validationMixin],
     created() {
       this.fieldValue = this.data[this.name];
     },

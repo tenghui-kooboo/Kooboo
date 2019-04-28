@@ -5,14 +5,13 @@
       props: {
         data: Object,
         name: String,
-        extra: Array,
         optionConfig: Object,
         placeholder: String
       },
       data() {
         return { options: [] };
       },
-      // mixins: [fieldItemMixins],
+      mixins: [window.fieldValidateMixin],
       computed: {
         fieldValue: {
           get: function() {

@@ -119,7 +119,7 @@ Vue.prototype.$parameterBinder = function () {
                     url += "&"
                 }
                 var key = keys[i];
-                var value = this.getQueryStringValue(model, keyValue[key]);
+                var value = this.getValue(model, keyValue[key]);
                 url += key + "=" + value;
             }
             return url;
@@ -158,7 +158,7 @@ Vue.prototype.$parameterBinder = function () {
         isValuePlaceHolder: function (value) {
             return value.indexOf("{") > -1 && value.indexOf("}") > -1;
         },
-        getQueryStringValue: function (model, value) {
+        getValue: function (model, value) {
             if (!this.isValuePlaceHolder(value)) {
                 return value;
             }
