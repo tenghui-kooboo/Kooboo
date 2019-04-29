@@ -15,7 +15,12 @@
     data() {
       return {
         meta: {},
-        formData: null
+        formData: {
+          error: "",
+          notFound: "",
+          startPage: ""
+        },
+        fieldsValue: []
       };
     },
     computed: {
@@ -34,13 +39,8 @@
         }
       }
     },
-    methods: {
-      submit: function() {
-        debugger;
-        return api.post(this.$parameterBinder().bind(this.meta.submitApi));
-      }
-    },
     mounted() {
+      debugger;
       var self = this;
       if (this.metaName) {
         this.meta = {
@@ -52,16 +52,11 @@
               label: "Home page",
               name: "startPage",
               placeholder: "",
-              class: "col-md-9",
               tooltip: "",
               options: {
                 data: "context", //context:selected/list
                 text: "{name}",
-                value: "{id}",
-                default: {
-                  text: "System default",
-                  value: "00000000-0000-0000-0000-000000000000"
-                }
+                value: "{id}"
               }
             },
             {
@@ -69,7 +64,6 @@
               label: "404 page",
               name: "notFound",
               placeholder: "",
-              class: "col-md-9",
               tooltip: "",
               options: {
                 data: "context", //context:selected/list
@@ -86,7 +80,6 @@
               label: "Error page",
               name: "error",
               placeholder: "",
-              class: "col-md-9",
               tooltip: "",
               options: {
                 data: "context", //context:selected/list
@@ -105,9 +98,10 @@
           api
             .get(this.$parameterBinder().bind(this.meta.loadApi))
             .then(function(res) {
-              debugger;
               if (res.success) {
-                self.formData = res.model;
+                debugger;
+                Vue.set(self,"formData",res.model);
+                //self.formData = res.model;
               }
             });
         } else {
@@ -118,12 +112,57 @@
         // });
       }
     },
-    methods: {
-      validate() {
+    watch: {
+      formData(data) {
         debugger;
+      }
+    },
+    methods: {
+      valueChange(obj) {
+        let idx = this.fieldsValue.findIndex(function(field) {
+          return field.name == obj.name;
+        });
+        if (idx > -1) {
+          this.fieldsValue.splice(idx, 1, obj);
+        } else {
+          this.fieldsValue.push(obj);
+        }
       },
-      submit() {
-        return api.post(this.$parameterBinder().bind(this.meta.submitApi));
+      getFieldsValue() {
+        let res = {};
+        this.fieldsValue.forEach(function(field) {
+          res[field.name] = field.value;
+        });
+        return res;
+      },
+      validate(cb) {
+        let hasError = this.fieldsValue.filter(function(field) {
+          return field.invalid;
+        });
+
+        cb && cb(hasError.length > 0);
+      },
+      submit: function() {
+        var self = this;
+        return new Promise(function(resolve, reject) {
+          api
+            .post(
+              self.$parameterBinder().bind(self.meta.submitApi),
+              self.getFieldsValue()
+            )
+            .then(function(res) {
+              resolve(res);
+            })
+            .catch(function(ex) {
+              reject(ex);
+            });
+        });
+      },
+      reset() {
+        Vue.set(this,"formData",{});
+        //this.formData = {};
+        this.fieldsValue = [];
+        this.meta = {};
       }
     },
     components: {

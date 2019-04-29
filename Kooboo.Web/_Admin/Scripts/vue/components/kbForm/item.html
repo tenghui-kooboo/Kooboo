@@ -17,6 +17,7 @@
       :is="`kb-form-item-${_ct}`"
       :placeholder="placeholder"
       :options="options"
+      @fieldValue="valueChange"
     ></component>
     <template v-if="isFieldInvalid">
       <span

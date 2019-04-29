@@ -15,6 +15,7 @@
       :externalClass="item.class"
       :placeholder="item.placeholder"
       :horizontal="meta.layout=='horizontal'"
+      @fieldValue="valueChange"
     ></kb-form-item>
   </template>
 </div>

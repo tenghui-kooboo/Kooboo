@@ -11,6 +11,14 @@
       data() {
         return { options: [] };
       },
+      watch: {
+        fieldValue(value) {
+          this.$emit("fieldValue", {
+            invalid: this.$v.fieldValue.$invalid,
+            value: value
+          });
+        }
+      },
       mixins: [window.fieldValidateMixin],
       computed: {
         fieldValue: {

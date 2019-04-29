@@ -14,7 +14,14 @@
       },
       watch: {
         data(data) {
+          debugger;
           this.fieldValue = data[this.name];
+        },
+        fieldValue(value) {
+          this.$emit("fieldValue", {
+            invalid: this.$v.fieldValue.$invalid,
+            value: value
+          });
         }
       },
       mixins: [window.fieldValidateMixin],

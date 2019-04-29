@@ -30,6 +30,11 @@
         rendered: false
       };
     },
+    watch: {
+      data(data) {
+        debugger;
+      }
+    },
     computed: {
       _ct() {
         return this.controlType.toLowerCase();
@@ -48,6 +53,11 @@
         } else {
           return false;
         }
+      }
+    },
+    methods: {
+      valueChange(obj) {
+        this.$emit("fieldValue", Object.assign(obj, { name: this.name }));
       }
     },
     mounted() {

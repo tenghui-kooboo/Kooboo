@@ -9,6 +9,14 @@
     data() {
       return { fieldValue: "" };
     },
+    watch: {
+      fieldValue(value) {
+        this.$emit("fieldValue", {
+          invalid: this.$v.fieldValue.$invalid,
+          value: value
+        });
+      }
+    },
     mixins: [window.vuelidate.validationMixin],
     created() {
       this.fieldValue = this.data[this.name];
