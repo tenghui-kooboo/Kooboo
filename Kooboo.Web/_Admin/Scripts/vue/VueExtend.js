@@ -97,120 +97,144 @@ Vue.showMeta = function (vm, context) {
     }
 
 }
-Vue.prototype.$parameterBinder = function () {
-    var self = this;
-    var ParameterBinder = {
-        bind: function (url, model) {
-            model = $.extend(true, {}, self.$data, model);
-            if (!url) return "";
-            var keyValue = this.getUrlKeyValue(url);
-            url = this.getUrl(url, keyValue, model);
 
-            return url;
-        },
-        getUrl: function (url, keyValue, model) {
-            var keys = Object.keys(keyValue);
-            url = url.split("?")[0];
-            if (keys.length > 0) {
-                url += "?";
-            }
-            for (var i = 0; i < keys.length; i++) {
-                if (i > 0) {
-                    url += "&"
-                }
-                var key = keys[i];
-                var value = this.getValue(model, keyValue[key]);
-                url += key + "=" + value;
-            }
-            return url;
-        },
-        getUrlKeyValue: function (url) {
-            parts = url.split("?");
-            var keyValue = {}; //default add siteid
-            if (parts.length > 1) {
-                var queryStringParts = parts[1].split("&");
-                for (var i = 0; i < queryStringParts.length; i++) {
-                    var part = queryStringParts[i];
-                    var itemParts = part.split("=");
-                    if (itemParts.length == 2) {
-                        var key = itemParts[0];
-                        var value = itemParts[1];
-                        keyValue[key] = value;
-                    }
+Object.defineProperty(Vue.prototype, "$parameterBinder", {
+    get() {
+        var self = this;
+
+        function getQuerString(url) {
+            var query = "";
+            if (!url) {
+                query = window.location.search.substr(1);
+            } else {
+                var questionIndex = url.indexOf("?");
+                if (questionIndex > -1) {
+                    query = url.substring(questionIndex + 1);
                 }
             }
-            if (!this.isContainSiteId(keyValue)) {
-                keyValue["siteId"] = "{siteId}"
-            }
-            return keyValue;
-        },
-        isContainSiteId: function (keyValue) {
-            var keys = Object.keys(keyValue);
-            var exist = false;
-            for (var i = 0; i < keys.length; i++) {
-                if (keys[i].toLowerCase() == "siteid") {
-                    exist = true;
-                    break;
-                }
-            }
-            return exist;
-        },
-        isValuePlaceHolder: function (value) {
-            return value.indexOf("{") > -1 && value.indexOf("}") > -1;
-        },
-        getValue: function (model, value) {
-            if (!this.isValuePlaceHolder(value)) {
-                return value;
-            }
-            var key = value.replace("{", "").replace("}", "").trim();
-            var value = this.getValuebyModel(model, key);
-            if (value) {
-                return value
-            }
-            value = this.getQueryString(key);
-            if (value) {
-                return value
+
+            var params = {};
+            if (!query) return params;
+            var parts = query.split("&");
+            for (var i = 0; i < parts.length; i++) {
+                var pair = parts[i].split("=");
+                params[pair[0]] = decodeURIComponent(pair[1]);
             }
 
-            return "";
-        },
-        getValuebyModel: function (model, findKey) {
-            function getValue(data, field) {
-                var value = "";
-                if (!data[field]) {
-                    var keys = Object.keys(data);
-                    for (var i = 0; i < keys.length; i++) {
-                        var key = keys[i];
-                        if (data[key] instanceof Object) {
-                            value = getValue(data[key], field);
-                            if (value) {
-                                break;
-                            }
-                        }
-
-                    }
-                } else {
-                    value = data[field];
-                }
-
-                return value;
-            }
-            return getValue(model, findKey);
-        },
-        //code from kooboobase
-        getQueryString: function (name, source) {
-            if (!name) {
-                return null;
-            }
-            source = source || window.location.search.substr(1);
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = source.match(reg);
-            if (r != null) {
-                return r[2];
-            }
-            return null;
+            return params;
         }
 
+        function existSiteId(url) {
+            var keyValue = getQuerString(url);
+            var keys = Object.keys(keyValue);
+            var index = _.findIndex(keys, function (key) {
+                return key.toLowerCase() == "siteid"
+            });
+            return index > -1;
+        }
+
+        function addSiteId(url, model) {
+            var arr = _.map(model, function (value, key) {
+                return {
+                    key: key.toLowerCase(),
+                    value: value
+                }
+            });
+
+            var pair = _.find(arr, function (pair) {
+                return pair.key == "siteid"
+            });
+            if (pair) {
+                url += url.indexOf("?") > -1 ? "&" : "?";
+                url += "siteId=" + pair.value;
+            }
+
+            return url;
+        }
+
+        function getModel(model) {
+            var queryStringKey = getQuerString();
+            if (self.$data) {
+                model = $.extend(true, {}, queryStringKey, self.$data, model);
+            } else {
+                model = $.extend(true, {}, queryStringKey, model);
+            }
+            return model;
+        }
+        return {
+            //return url
+            bind: function (url, model) {
+                model = getModel(model);
+                url = this.formatText(url, model);
+
+                if (!existSiteId(url)) {
+                    url= addSiteId(url, model);
+                }
+
+                return url;
+                //admin/site-->admin/site?siteId=1
+                //admin/site?id=1-->admin/site?id=1&siteId=1
+                //admin/site?id={id},model={id:1}-->admin/site?id=1&siteId=1
+                ///Development/{type}?id={id},model={type:'view',id:1}
+                //-->Development/view?id=1&siteId=1
+            },
+            //get url keyvalue
+            getKeyValue: function (url, model) {
+                model = getModel(model);
+                //admin/site?id={id}&name=name,model={id:1}-->{id:1,name:name}
+                url = this.formatText(url, model);
+                var keyvalue = getQuerString(url);
+
+                return keyvalue;
+            },
+            formatText: function (text, model) {
+                model = getModel(model);
+                //text="aa"-->return aa
+                if (!text) return "";
+                debugger;
+                if (text.indexOf("}") == -1 && text.indexOf("}") == -1)
+                    return text;
+
+                return text.replace(/{(\w+)}/g, function (match, key) {
+                    key = key.trim();
+                    if (model[key]) {
+                        return model[key];
+                    }
+                    return "";
+                });
+
+                //text="{name}",model={name:'aa'}->return aa
+                //text="{name}_copy",model={name:'aa'}-->return aa_copy
+            },
+            //for validation
+            getValueFromModel: function (modelKey, model) {
+                function getValue(data, key) {
+                    if (_.findIndex(Object.keys(data), function (item) {
+                            return item == key
+                        }) > -1) {
+                        return data[key];
+                    }
+                    var values = _.map(data, function (value) {
+                        return value;
+                    });
+
+                    var values = _.filter(values, function (value) {
+                        return value instanceof Object
+                    });
+
+                    for (var i = 0; i < values.length; i++) {
+                        var value = values[i];
+                        value = getValue(value, key);
+                        if (value) {
+                            return value;
+                        }
+                    }
+
+                    return null;
+                }
+                model = getModel(model);
+                return getValue(model, modelKey);
+            },
+        }
     }
-    return ParameterBinder;
-};
+})

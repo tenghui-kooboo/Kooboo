@@ -1,31 +1,30 @@
-
 window.data = {
   meta: {
     menu: [{
-      type: "btn",
-      displayName: "New page",
+      type: "button",
+      text: "New page",
       class: "green",
       action: "redirect",
       url: '/_Admin/Page/EditPage'
     }, {
-      type: "btn",
-      displayName: "New rich text page",
+      type: "button",
+      text: "New rich text page",
       class: "green",
       action: "redirect",
       url: '/_Admin/Page/EditRichText'
-    },{
+    }, {
       type: "dropdown",
-      displayName: "New layout page",
+      text: "New layout page",
       class: "green",
       action: 'redriect',
       url: '/_Admin/Page/EditLayout?layoutId={id}',
       options: {
         data: "layouts",
-        displayName: "name"
+        text: "name"
       }
     }, {
-      type: "btn",
-      displayName: "Delete",
+      type: "button",
+      text: "Delete",
       class: "red",
       action: "event",
       confirm: 'confirm.deleteItemsWithRef',
@@ -41,107 +40,102 @@ window.data = {
       action: "popup",
       url: '/_Admin/Page/Delete?ids={id}'
     }],
-    table: {
-      columns: [{
-        name: "name",
-        header: {
-          displayName: "Name",
+    columns: [{
+      name: "name",
+      header: {
+        text: "Name",
+      }
+    }, {
+      name: "linked",
+      header: {
+        text: "Linked"
+      },
+      cell: {
+        type: "badge"
+      }
+    }, {
+      name: "online",
+      header: {
+        text: "Online"
+      },
+      cell: {
+        type: "label",
+        class: "green",
+        text: {
+          true: "{online.yes}",
+          false: "{online.no}"
         }
-      },{
-        name: "linked",
-        header: {
-          displayName: "Linked"
-        },
-        cell: {
-          type: "badge"
-        }
-      },{
-        name: "online",
-        header: {
-          displayName: "Online"
-        },
-        cell: {
-          type: "label",
-          class: "green",
-          text: {
-            true: "{online.yes}",
-            false: "{online.no}"
-          }
-        }
-      },{
-        name: "relations",
-        header: {
-          displayName: "Relations",
-        },
-        cell: {
-          type: "array",
-          text:"{0} {key}",
-        }
-      },{
-        name: "lastModified",
-        header: {
-          displayName: "Last modified",
-        },
-        cell: {
-          type: 'date'
-        }
-      },{
-        name: "previewUrl",
-        header: {
-          displayName: "Preview",
-        },
-        cell: {
-          type: "link",
-          action: "newWindow"
-        }
-      },{
-        name: "setting",
-        cell: {
-          type: "button",
-          class: "blue",
-          iconClass: "fa fa-icon",
-          innerText: "Setting",
-          action: "popup",
-          url: "/page/details?id={id}"
-        }
-      },{
-        name: "inlineUrl",
-        cell: {
-          type: "button",
-          class: "btn-primary hidden-xs",
-          innerText: "Inline edit",
-          action: "newWindow"
-        }
-      },{
-        name: "qrCode",
-        cell: {
-          type: "icon",
-          class: 'btn-xs',
-          iconClass: "qrcode",
-          action: "popup",
-          url: "showQRCode"
-        }
-      }]
-    }
+      }
+    }, {
+      name: "relations",
+      header: {
+        text: "Relations",
+      },
+      cell: {
+        type: "array",
+        text: "{0} {key}",
+      }
+    }, {
+      name: "lastModified",
+      header: {
+        text: "Last modified",
+      },
+      cell: {
+        type: 'date'
+      }
+    }, {
+      name: "previewUrl",
+      header: {
+        text: "Preview",
+      },
+      cell: {
+        type: "link",
+        action: "newWindow"
+      }
+    }, {
+      name: "setting",
+      cell: {
+        type: "button",
+        class: "blue",
+        iconClass: "fa fa-icon",
+        innerText: "Setting",
+        action: "popup",
+        url: "/page/details?id={id}"
+      }
+    }, {
+      name: "inlineUrl",
+      cell: {
+        type: "button",
+        class: "btn-primary hidden-xs",
+        innerText: "Inline edit",
+        action: "newWindow"
+      }
+    }, {
+      name: "qrCode",
+      cell: {
+        type: "icon",
+        class: 'btn-xs',
+        iconClass: "qrcode",
+        action: "popup",
+        url: "showQRCode"
+      }
+    }]
   },
   data: {
     "baseUrl": "http://test.vango.kooboo.site/",
-    "layouts": [
-      {
-        "id": "9a3e717f-e15b-a99e-9ebd-d69188b30ca0",
-        "name": "asdfasd",
-        "extension": "html",
-        "body": "<!DOCTYPE html>\n<html>\n\n<head>\n</head>\n\n<body>\n    <div k-placeholder=\"Main\"> Sample text inside the layout.. </div>\n</body>\n\n</html>",
-        "online": true,
-        "version": 3,
-        "constType": 98,
-        "creationDate": "2019-04-17T09:19:07.1776466Z",
-        "lastModified": "2019-04-17T09:19:07.1776466Z",
-        "lastModifyTick": 636910895471776466
-      }
-    ],
-    "pages": [
-      {
+    "layouts": [{
+      "id": "9a3e717f-e15b-a99e-9ebd-d69188b30ca0",
+      "name": "asdfasd",
+      "extension": "html",
+      "body": "<!DOCTYPE html>\n<html>\n\n<head>\n</head>\n\n<body>\n    <div k-placeholder=\"Main\"> Sample text inside the layout.. </div>\n</body>\n\n</html>",
+      "online": true,
+      "version": 3,
+      "constType": 98,
+      "creationDate": "2019-04-17T09:19:07.1776466Z",
+      "lastModified": "2019-04-17T09:19:07.1776466Z",
+      "lastModifyTick": 636910895471776466
+    }],
+    "pages": [{
         "id": "f2b7bc62-2ff6-4ef7-b401-b5bdf86b6963",
         "name": "asdfsdfsdfdf",
         "title": null,

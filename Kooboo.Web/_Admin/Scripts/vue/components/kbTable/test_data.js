@@ -3,29 +3,29 @@ export default {
   meta: {
     menu: [{
       type: "button",
-      displayName: "New page",
+      text: "New page",
       class: "green",
       action: "redirect",
       url: '/_Admin/Page/EditPage'
     }, {
       type: "button",
-      displayName: "New rich text page",
+      text: "New rich text page",
       class: "green",
       action: "redirect",
       url: '/_Admin/Page/EditRichText'
     },{
       type: "dropdown",
-      displayName: "New layout page",
+      text: "New layout page",
       class: "green",
       action: 'redriect',
       url: '/_Admin/Page/EditLayout?layoutId={id}',
       options: {
         data: "layouts",
-        displayName: "name"
+        text: "name"
       }
     }, {
       type: "button",
-      displayName: "Copy",
+      text: "Copy",
       class: "green",
       action: "popup",
       url: 'page/copy?modelName=Layout',
@@ -35,7 +35,7 @@ export default {
       }
     },{
       type: "button",
-      displayName: "Delete",
+      text: "Delete",
       class: "red",
       action: "post",
       confirm: 'confirm.deleteItemsWithRef',
@@ -55,12 +55,12 @@ export default {
       columns: [{
         name: "name",
         header: {
-          displayName: "Name",
+          text: "Name",
         }
       },{
         name: "linked",
         header: {
-          displayName: "Linked"
+          text: "Linked"
         },
         cell: {
           type: "badge"
@@ -68,7 +68,7 @@ export default {
       },{
         name: "online",
         header: {
-          displayName: "Online"
+          text: "Online"
         },
         cell: {
           type: "label",
@@ -81,7 +81,7 @@ export default {
       },{
         name: "relations",
         header: {
-          displayName: "Relations",
+          text: "Relations",
         },
         cell: {
           type: "array",
@@ -90,7 +90,7 @@ export default {
       },{
         name: "lastModified",
         header: {
-          displayName: "Last modified",
+          text: "Last modified",
         },
         cell: {
           type: 'date'
@@ -98,7 +98,7 @@ export default {
       },{
         name: "previewUrl",
         header: {
-          displayName: "Preview",
+          text: "Preview",
         },
         cell: {
           type: "link",

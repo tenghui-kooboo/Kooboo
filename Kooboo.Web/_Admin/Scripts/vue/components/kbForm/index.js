@@ -96,7 +96,7 @@
 
         if (this.meta.loadApi) {
           api
-            .get(this.$parameterBinder().bind(this.meta.loadApi))
+            .get(this.$parameterBinder.bind(this.meta.loadApi))
             .then(function(res) {
               if (res.success) {
                 debugger;
@@ -147,7 +147,7 @@
         return new Promise(function(resolve, reject) {
           api
             .post(
-              self.$parameterBinder().bind(self.meta.submitApi),
+              self.$parameterBinder.bind(self.meta.submitApi),
               self.getFieldsValue()
             )
             .then(function(res) {

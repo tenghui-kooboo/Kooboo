@@ -16,7 +16,9 @@ export default {
 
   computed: {
     text () {
+      
       const date = new Date(this.row[this.name])
+  
       return date.toDefaultLangString()
     }
   },

@@ -42,10 +42,10 @@
             this.ctx[this.options.data].map(function(item) {
               return {
                 displayName: self
-                  .$parameterBinder()
+                  .$parameterBinder
                   .getValue(item, self.options.text),
                 value: self
-                  .$parameterBinder()
+                  .$parameterBinder
                   .getValue(item, self.options.value)
               };
             })

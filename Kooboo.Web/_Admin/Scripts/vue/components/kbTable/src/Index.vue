@@ -4,7 +4,7 @@
       :meta="meta.menu" :data="typeof data === 'object' ? data : null" :list="list"
       :selected="selected"></inner-menu>
     <inner-table v-if="meta"
-      :meta="meta.table" :list="list"></inner-table>
+      :meta="meta" :list="list"></inner-table>
   </div>
 </template>
 

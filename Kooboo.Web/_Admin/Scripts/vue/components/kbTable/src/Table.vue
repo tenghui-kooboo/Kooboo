@@ -7,7 +7,7 @@
             <input type="checkbox" v-if="list.length" @change="selectAll" >
           </th>
           <th v-for="{colName, header} in meta.columns.map(o => ({ colName: o.name, header: o.header || defaultHeaderMeta }))" :key="`header_${colName}`"
-            :class="header.class" :style="header.style">{{ header.displayName }}</th>
+            :class="header.class" :style="header.style">{{ header.text }}</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,7 @@
 import Vue from 'vue'
 import CellComponents from './cells'
 
-const DEFAULT_HEADER_META = { displayName: '' }
+const DEFAULT_HEADER_META = { text: '' }
 const DEFAULT_TEXT_META = { type: 'text' }
 
 export default {
