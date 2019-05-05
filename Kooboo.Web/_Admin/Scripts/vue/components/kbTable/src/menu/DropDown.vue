@@ -71,7 +71,7 @@ export default {
           break;
         default:
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder.getUrlKeyValue(this.meta.url),
+            parameters: this.$parameterBinder.getKeyValue(this.meta.url),
             context: this.list,
             selected: this.selected
           })

@@ -1,7 +1,6 @@
-(function() {
+(function () {
   Kooboo.vue.component.kbFormItemSelection = Vue.component(
-    "kb-form-item-selection",
-    {
+    "kb-form-item-selection", {
       props: {
         data: Object,
         name: String,
@@ -10,11 +9,14 @@
         ctx: Object
       },
       data() {
-        return { finalOptions: [], fieldValue: "" };
+        return {
+          finalOptions: [],
+          fieldValue: ""
+        };
       },
       watch: {
         data(data) {
-          debugger;
+
           this.fieldValue = data[this.name];
         },
         fieldValue(value) {
@@ -39,14 +41,14 @@
         } else if (this.options instanceof Object) {
           var self = this;
           this.finalOptions = this.finalOptions.concat(
-            this.ctx[this.options.data].map(function(item) {
+            this.ctx[this.options.data].map(function (item) {
               return {
                 displayName: self
                   .$parameterBinder
-                  .getValue(item, self.options.text),
+                  .formatText(self.options.text, item),
                 value: self
                   .$parameterBinder
-                  .getValue(item, self.options.value)
+                  .formatText(self.options.value, item)
               };
             })
           );

@@ -191,7 +191,7 @@ Object.defineProperty(Vue.prototype, "$parameterBinder", {
                 model = getModel(model);
                 //text="aa"-->return aa
                 if (!text) return "";
-                debugger;
+                
                 if (text.indexOf("}") == -1 && text.indexOf("}") == -1)
                     return text;
 
