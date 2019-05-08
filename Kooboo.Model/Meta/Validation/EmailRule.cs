@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -37,6 +38,17 @@ namespace Kooboo.Model.Meta.Validation
         public override string GetRule()
         {
             return string.Format("{{type:\"regex\",regex:\"{0}\",message:\"{1}\"}}", Regex, Message);
+        }
+
+        public override bool IsValid(object value)
+        {
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+
+            return System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), Regex);
+
         }
     }
 }

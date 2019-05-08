@@ -19,5 +19,16 @@ namespace Kooboo.Model.Meta.Validation
         {
             return string.Format("{{type:\"regex\",regex:\"{0}\",message:\"{1}\"}}",Regex, Message);
         }
+
+        public override bool IsValid(object value)
+        {
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+
+            return System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), Regex);
+
+        }
     }
 }

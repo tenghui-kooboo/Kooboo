@@ -14,5 +14,15 @@ namespace Kooboo.Model.Meta.Validation
         {
             return "{}";
         }
+
+        public virtual bool IsValid(object value)
+        {
+            //require attribute to valid value is not empty
+            if (value == null || (value as string)?.Length == 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

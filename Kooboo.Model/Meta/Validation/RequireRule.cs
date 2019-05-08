@@ -17,5 +17,15 @@ namespace Kooboo.Model.Meta.Validation
         {
             return string.Format("{{ type: \"required\", message: \"{0}\" }}", Message);
         }
+
+        public override bool IsValid(object value)
+        {
+            if (value == null || (value as string)?.Length == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

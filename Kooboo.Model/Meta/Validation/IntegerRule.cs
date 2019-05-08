@@ -17,5 +17,19 @@ namespace Kooboo.Model.Meta.Validation
         {
             return string.Format("{{type:\"integer\",message:\"{0}\"}}", Message);
         }
+
+        public override bool IsValid(object value)
+        {
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+            int i;
+            if(int.TryParse(value.ToString(), out i))
+            {
+                return false;
+            }
+            return i >= 0;
+        }
     }
 }

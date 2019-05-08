@@ -19,5 +19,10 @@ namespace Kooboo.Model.Meta.Validation
         {
             return string.Format("{{type:\"unique\",api:\"{1}\",message:\"{0}\"}}", Message,Api);
         }
+
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
     }
 }

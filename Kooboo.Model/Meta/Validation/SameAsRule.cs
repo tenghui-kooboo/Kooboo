@@ -20,6 +20,10 @@ namespace Kooboo.Model.Meta.Validation
             return string.Format("{{type:\"sameAs\",field:\"{1}\",message:\"{0}\"}}", Message,_field);
         }
 
+        public override bool IsValid(object value)
+        {
+            return false;
+        }
 
     }
 }

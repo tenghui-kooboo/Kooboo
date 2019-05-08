@@ -20,5 +20,19 @@ namespace Kooboo.Model.Meta.Validation
         {
             return string.Format("{{type:\"minLength\",minLength:{1},message:\"{0}\"}}", Message, MinLength);
         }
+
+        public override bool IsValid(object value)
+        {
+            int length=0;
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+            if (value is string str)
+            {
+                length = str.Length;
+            }
+            return length >= MinLength;
+        }
     }
 }

@@ -21,5 +21,22 @@ namespace Kooboo.Model.Meta.Validation
         {
             return string.Format("{{type:\"between\",from:{0},to:{1},message:\"{2}\"}}",From,To ,Message);
         }
+
+        public override bool IsValid(object value)
+        {
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+            int i;
+            
+            if(int.TryParse(value.ToString(), out i))
+            {
+                return i >= From && i <= To;
+            }
+
+            return false;
+        }
+
     }
 }
