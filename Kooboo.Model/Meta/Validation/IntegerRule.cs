@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -24,12 +25,14 @@ namespace Kooboo.Model.Meta.Validation
             {
                 return true;
             }
-            int i;
-            if(int.TryParse(value.ToString(), out i))
-            {
-                return false;
-            }
-            return i >= 0;
+
+            return Regex.IsMatch(value.ToString(), "(^[0-9]*$)|(^-[0-9]+$)");
+            //int i;
+            //if(int.TryParse(value.ToString(), out i))
+            //{
+            //    return false;
+            //}
+            //return i >= 0;
         }
     }
 }

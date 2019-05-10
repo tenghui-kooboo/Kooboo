@@ -8,6 +8,10 @@ namespace Kooboo.Model.Meta.Validation
 {
     public class ValidationRule : Attribute
     {
+        public object Model { get; set; }
+
+        public string Field { get; set; }
+
         public virtual string Message { get; set; }
 
         public virtual string GetRule()

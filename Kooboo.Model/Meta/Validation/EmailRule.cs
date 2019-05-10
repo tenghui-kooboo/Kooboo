@@ -25,9 +25,9 @@ namespace Kooboo.Model.Meta.Validation
             {
                 if(string.IsNullOrEmpty(_message))
                 {
-                    _message = "Email is error";
+                    _message = "invalid Email";
                 }
-                return "";
+                return _message;
             }
             set
             {

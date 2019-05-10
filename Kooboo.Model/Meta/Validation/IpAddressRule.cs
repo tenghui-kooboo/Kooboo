@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
+using System.Net;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -26,7 +26,18 @@ namespace Kooboo.Model.Meta.Validation
                 return true;
             }
 
-            return Regex.IsMatch(value.ToString(), "");
+            var parts = value.ToString().Split('.');
+            //all ipv4
+            if (parts.Length != 4)
+            {
+                return false;
+            }
+
+            IPAddress address;
+            return IPAddress.TryParse(value.ToString(), out address);
+
+            //byte bit;
+            //return parts.All(p => byte.TryParse(p, out bit));
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Kooboo.Model.Meta.Validation
 
                 foreach(var attr in attrs)
                 {
+                    attr.Model = model;
+                    attr.CurrentField = property.Name;
                     if (!attr.IsValid(value))
                     {
                         callback?.Invoke(attr.Message);
