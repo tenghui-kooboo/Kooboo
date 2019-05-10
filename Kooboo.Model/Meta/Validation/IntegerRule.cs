@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -12,6 +13,22 @@ namespace Kooboo.Model.Meta.Validation
         public IntegerRule(string message)
         {
             Message = message;
+        }
+
+        public string _message;
+        public override string Message
+        {
+            get
+            {
+                _message = string.IsNullOrEmpty(_message)
+                 ? Hardcoded.GetValue("invalid Integer", Context)
+                 : Hardcoded.GetValue(_message, Context);
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
         }
 
         public override string GetRule()
@@ -27,12 +44,7 @@ namespace Kooboo.Model.Meta.Validation
             }
 
             return Regex.IsMatch(value.ToString(), "(^[0-9]*$)|(^-[0-9]+$)");
-            //int i;
-            //if(int.TryParse(value.ToString(), out i))
-            //{
-            //    return false;
-            //}
-            //return i >= 0;
+
         }
     }
 }

@@ -4,14 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
     public class IpAddressRule:ValidationRule
     {
-        public IpAddressRule(string message)
+        public IpAddressRule(string message="")
         {
             Message = message;
+        }
+
+        private string _message;
+        public override string Message
+        {
+            get
+            {
+                _message = string.IsNullOrEmpty(_message)
+                 ? Hardcoded.GetValue("invalid ip address", Context)
+                 : Hardcoded.GetValue(_message, Context);
+
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
         }
 
         public override string GetRule()

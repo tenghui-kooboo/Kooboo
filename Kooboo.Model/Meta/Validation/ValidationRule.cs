@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -11,6 +12,8 @@ namespace Kooboo.Model.Meta.Validation
         public object Model { get; set; }
 
         public string Field { get; set; }
+
+        public RenderContext Context { get; set; }
 
         public virtual string Message { get; set; }
 

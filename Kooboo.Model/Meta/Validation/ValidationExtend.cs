@@ -8,8 +8,9 @@ namespace Kooboo.Model.Meta.Validation
 {
     public static class ValidationExtend
     {
-        public static bool ValidModel(this object model, Action<string> callback)
+        public static bool ValidModel(this object model, Action<string> callback, RenderContext context=null)
         {
+            
             var type = model.GetType();
             var properties = type.GetProperties();
             var isValid = true;
@@ -23,7 +24,8 @@ namespace Kooboo.Model.Meta.Validation
                 foreach(var attr in attrs)
                 {
                     attr.Model = model;
-                    attr.CurrentField = property.Name;
+                    attr.Field = property.Name;
+                    attr.Context = context;
                     if (!attr.IsValid(value))
                     {
                         callback?.Invoke(attr.Message);

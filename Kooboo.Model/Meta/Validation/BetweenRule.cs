@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -10,11 +11,27 @@ namespace Kooboo.Model.Meta.Validation
     {
         public int From;
         public int To;
-        public BetweenRule(int from ,int to,string message)
+        public BetweenRule(int from ,int to,string message="")
         {
             From = from;
             To = to;
-            Message = string.Format(message, From, To).Replace("\"", "\\\"");
+            Message = message;
+        }
+
+        private string _message;
+        public override string Message
+        {
+            get
+            {
+                _message = string.IsNullOrEmpty(_message)
+                   ? string.Format(Hardcoded.GetValue("length must be between {0} and {1}", Context), From, To)
+                    : string.Format(Hardcoded.GetValue(_message, Context), From, To);
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
         }
 
         public override string GetRule()

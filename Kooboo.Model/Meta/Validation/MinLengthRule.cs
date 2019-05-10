@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -10,10 +11,26 @@ namespace Kooboo.Model.Meta.Validation
     {
         public int MinLength;
 
-        public MinLengthRule(int minLength, string message)
+        public MinLengthRule(int minLength, string message="")
         {
             MinLength = minLength;
-            Message = string.Format(message, minLength).Replace("\"", "\\\"");
+            Message = message;
+        }
+        private string _message;
+        public override string Message
+        {
+            get
+            {
+                _message = string.IsNullOrEmpty(_message)
+                   ? string.Format(Hardcoded.GetValue("min length is {0}", Context), MinLength)
+                    : string.Format(Hardcoded.GetValue(_message, Context), MinLength);
+
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
         }
 
         public override string GetRule()

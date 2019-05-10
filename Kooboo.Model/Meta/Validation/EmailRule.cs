@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
@@ -23,10 +24,9 @@ namespace Kooboo.Model.Meta.Validation
         {
             get
             {
-                if(string.IsNullOrEmpty(_message))
-                {
-                    _message = "invalid Email";
-                }
+                _message = string.IsNullOrEmpty(_message)
+                ? Hardcoded.GetValue("invalid Email", Context)
+                : Hardcoded.GetValue(_message, Context);
                 return _message;
             }
             set
