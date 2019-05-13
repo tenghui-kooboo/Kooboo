@@ -38,116 +38,7 @@
     created() {
       var self = this;
       if (this.metaName) {
-        this.meta = {
-          loadApi: "/Page/DefaultRoute",
-          submitApi: "/page/defaultRouteUpdate",
-          items: [
-            {
-              type: "selection",
-              label: "Home page",
-              name: "startPage",
-              placeholder: "",
-              tooltip: "",
-              options: {
-                data: "context", //context:selected/list
-                text: "{name}",
-                value: "{id}"
-              }
-            },
-            {
-              type: "selection",
-              label: "404 page",
-              name: "notFound",
-              placeholder: "",
-              tooltip: "",
-              options: {
-                data: "context", //context:selected/list
-                text: "{name}",
-                value: "{id}",
-                default: {
-                  text: "System default",
-                  value: "00000000-0000-0000-0000-000000000000"
-                }
-              }
-            },
-            {
-              type: "selection",
-              label: "Error page",
-              name: "error",
-              placeholder: "",
-              tooltip: "",
-              options: {
-                data: "context", //context:selected/list
-                text: "{name}",
-                value: "{id}",
-                default: {
-                  text: "System default",
-                  value: "00000000-0000-0000-0000-000000000000"
-                }
-              }
-            }
-          ]
-        };
-        // this.meta = {
-        //   loadApi: "",
-        //   submitApi: "/page/copy",
-        //   items: [
-        //     {
-        //       type: "textBox",
-        //       label: "name",
-        //       name: "name",
-        //       placeholder: "",
-        //       class: "col-md-9",
-        //       tooltip: "",
-        //       options: {
-        //         data: "selected", //context:selected/list
-        //         text: "{name}_copy"
-        //       },
-        //       rules: [
-        //         {
-        //           type: "required",
-        //           message: "required"
-        //         },
-        //         {
-        //           type: "between",
-        //           from: 1,
-        //           to: 64,
-        //           message: "minLength 1,maxLength 64"
-        //         },
-        //         {
-        //           type: "unique",
-        //           api: "/page/isUnique?name={name}",
-        //           message: "taken"
-        //         }
-        //       ]
-        //     },
-        //     {
-        //       type: "hidden",
-        //       label: "id",
-        //       name: "id",
-        //       options: {
-        //         data: "selected", //context:selected/list
-        //         text: "id"
-        //       }
-        //     },
-        //     {
-        //       type: "textBox",
-        //       label: "url",
-        //       name: "url",
-        //       options: {
-        //         data: "selected",
-        //         text: "/{name}_copy"
-        //       },
-        //       rules: [
-        //         {
-        //           type: "required",
-        //           message: "required"
-        //         }
-        //       ]
-        //     }
-        //   ]
-        // };
-
+        this.meta=api.getMeta(this.metaName);
         if (this.meta.loadApi) {
           api
             .get(this.$parameterBinder.bind(this.meta.loadApi))
@@ -156,14 +47,9 @@
                 Vue.set(self, "formData", res.model);
               }
             });
-          debugger;
-          //self.$forceUpdate();
         } else {
           this.formData = this.data;
         }
-        // api.getMeta(this.metaName).then(function(res) {
-        //   debugger;
-        // });
       }
     },
     watch: {
