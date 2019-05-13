@@ -21,7 +21,7 @@
       placeholder: String,
       controlType: String,
       horizontal: Boolean,
-      data: Object,
+      data: String,
       rules: Array,
       name: String
     },
@@ -29,11 +29,6 @@
       return {
         rendered: false
       };
-    },
-    watch: {
-      data(data) {
-        debugger;
-      }
     },
     computed: {
       _ct() {

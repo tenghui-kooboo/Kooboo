@@ -2,7 +2,7 @@
   Kooboo.vue.component.kbFormItemSelection = Vue.component(
     "kb-form-item-selection", {
       props: {
-        data: Object,
+        data: String,
         name: String,
         options: Object,
         placeholder: String,
@@ -16,8 +16,8 @@
       },
       watch: {
         data(data) {
-
-          this.fieldValue = data[this.name];
+          this.fieldValue = this.data;
+          // this.fieldValue = this.data[this.name];
         },
         fieldValue(value) {
           this.$emit("fieldValue", {

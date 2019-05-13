@@ -3,7 +3,7 @@
     "kb-form-item-textbox",
     {
       props: {
-        data: Object,
+        data: String,
         name: String,
         rules: Array,
         placeholder: String
@@ -21,7 +21,8 @@
       },
       mixins: [window.fieldValidateMixin],
       created() {
-        this.fieldValue = this.data[this.name];
+        this.fieldValue = this.data;
+        // this.fieldValue = this.data[this.name];
       },
       template: Kooboo.getTemplate(
         "/_Admin/Scripts/vue/components/kbForm/item/textbox.html"

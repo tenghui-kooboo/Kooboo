@@ -3,7 +3,7 @@
     "kb-form-item-datetime",
     {
       props: {
-        value: String,
+        data: String,
         placeholder: String
       },
       data() {
@@ -19,7 +19,8 @@
       },
       mixins: [window.fieldValidateMixin],
       created() {
-        this.fieldValue = this.value;
+        this.fieldValue = this.data;
+        // this.fieldValue = this.data[this.name];
       },
       template: Kooboo.getTemplate(
         "/_Admin/Scripts/vue/components/kbForm/item/datetime.html"

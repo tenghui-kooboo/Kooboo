@@ -3,7 +3,7 @@
     "kb-form-item-checkbox",
     {
       props: {
-        data: Object,
+        data: String,
         name: String,
         optionConfig: Object,
         placeholder: String

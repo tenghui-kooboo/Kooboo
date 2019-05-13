@@ -3,7 +3,7 @@
     "kb-form-item-radiobox",
     {
       props: {
-        data: Object,
+        data: String,
         name: String,
         optionConfig: Object,
         placeholder: String
@@ -33,7 +33,8 @@
         //     };
         //   })
         // );
-        this.fieldValue = this.data[this.name];
+        this.fieldValue = this.data;
+        // this.fieldValue = this.data[this.name];
       },
       template: Kooboo.getTemplate(
         "/_Admin/Scripts/vue/components/kbForm/item/radiobox.html"

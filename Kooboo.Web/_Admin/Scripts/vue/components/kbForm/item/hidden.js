@@ -1,7 +1,7 @@
 (function() {
   Kooboo.vue.component.kbFormItemHidden = Vue.component("kb-form-item-hidden", {
     props: {
-      data: Object,
+      data: String,
       name: String,
       rules: Array,
       placeholder: String
@@ -19,7 +19,8 @@
     },
     mixins: [window.vuelidate.validationMixin],
     created() {
-      this.fieldValue = this.data[this.name];
+      this.fieldValue = this.data;
+      // this.fieldValue = this.data[this.name];
     },
     template: Kooboo.getTemplate(
       "/_Admin/Scripts/vue/components/kbForm/item/hidden.html"

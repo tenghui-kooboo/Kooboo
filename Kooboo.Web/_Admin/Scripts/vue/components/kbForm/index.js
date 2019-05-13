@@ -1,4 +1,4 @@
-(function () {
+(function() {
   Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbForm/item.js"]);
 
   Kooboo.vue.component.kbForm = Vue.component("kb-form", {
@@ -6,7 +6,7 @@
       metaName: String,
       data: {
         type: Object,
-        default: function () {
+        default: function() {
           return {};
         }
       },
@@ -35,14 +35,14 @@
         }
       }
     },
-    mounted() {
-
+    created() {
       var self = this;
       if (this.metaName) {
         this.meta = {
           loadApi: "/Page/DefaultRoute",
           submitApi: "/page/defaultRouteUpdate",
-          items: [{
+          items: [
+            {
               type: "selection",
               label: "Home page",
               name: "startPage",
@@ -88,21 +88,76 @@
             }
           ]
         };
+        // this.meta = {
+        //   loadApi: "",
+        //   submitApi: "/page/copy",
+        //   items: [
+        //     {
+        //       type: "textBox",
+        //       label: "name",
+        //       name: "name",
+        //       placeholder: "",
+        //       class: "col-md-9",
+        //       tooltip: "",
+        //       options: {
+        //         data: "selected", //context:selected/list
+        //         text: "{name}_copy"
+        //       },
+        //       rules: [
+        //         {
+        //           type: "required",
+        //           message: "required"
+        //         },
+        //         {
+        //           type: "between",
+        //           from: 1,
+        //           to: 64,
+        //           message: "minLength 1,maxLength 64"
+        //         },
+        //         {
+        //           type: "unique",
+        //           api: "/page/isUnique?name={name}",
+        //           message: "taken"
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       type: "hidden",
+        //       label: "id",
+        //       name: "id",
+        //       options: {
+        //         data: "selected", //context:selected/list
+        //         text: "id"
+        //       }
+        //     },
+        //     {
+        //       type: "textBox",
+        //       label: "url",
+        //       name: "url",
+        //       options: {
+        //         data: "selected",
+        //         text: "/{name}_copy"
+        //       },
+        //       rules: [
+        //         {
+        //           type: "required",
+        //           message: "required"
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // };
 
         if (this.meta.loadApi) {
           api
             .get(this.$parameterBinder.bind(this.meta.loadApi))
-            .then(function (res) {
+            .then(function(res) {
               if (res.success) {
-                debugger;
-                self.formData = res.model
-                //Vue.set(self, "formData", res.model);
-                
-                //self.formData = res.model;
+                Vue.set(self, "formData", res.model);
               }
             });
-            debugger;
-            //self.$forceUpdate();
+          debugger;
+          //self.$forceUpdate();
         } else {
           this.formData = this.data;
         }
@@ -113,23 +168,16 @@
     },
     watch: {
       formData(data) {
-        var self=this;
-        debugger;
-        if(this.meta && this.meta.items.length>0){
-          this.meta.items.forEach(function(item,index){
-            var newItem=item;
-            newItem.formData=data;
-
-            Vue.set(self.meta.items,index,newItem);
-            debugger;
-            //self.$set(item,"formData",data);
-          })
+        if (this.meta && this.meta.items && this.meta.items.length > 0) {
+          this.meta.items.forEach(function(item) {
+            Vue.set(item, "data", data[item.name]);
+          });
         }
       }
     },
     methods: {
       valueChange(obj) {
-        let idx = this.fieldsValue.findIndex(function (field) {
+        let idx = this.fieldsValue.findIndex(function(field) {
           return field.name == obj.name;
         });
         if (idx > -1) {
@@ -140,30 +188,30 @@
       },
       getFieldsValue() {
         let res = {};
-        this.fieldsValue.forEach(function (field) {
+        this.fieldsValue.forEach(function(field) {
           res[field.name] = field.value;
         });
         return res;
       },
       validate(cb) {
-        let hasError = this.fieldsValue.filter(function (field) {
+        let hasError = this.fieldsValue.filter(function(field) {
           return field.invalid;
         });
 
         cb && cb(hasError.length > 0);
       },
-      submit: function () {
+      submit: function() {
         var self = this;
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
           api
             .post(
               self.$parameterBinder.bind(self.meta.submitApi),
               self.getFieldsValue()
             )
-            .then(function (res) {
+            .then(function(res) {
               resolve(res);
             })
-            .catch(function (ex) {
+            .catch(function(ex) {
               reject(ex);
             });
         });
