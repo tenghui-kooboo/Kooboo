@@ -3,40 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using Kooboo.Data.Context;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public abstract class ValidationRule : Attribute
+    public class ValidationRule : Attribute
     {
-        protected ValidationRule(string type)
+        public object Model { get; set; }
+
+        public string Field { get; set; }
+
+        public RenderContext Context { get; set; }
+
+        public virtual string Message { get; set; }
+
+        public virtual string GetRule()
         {
-            Type = type;
+            return "{}";
         }
 
-        protected ValidationRule()
+        public virtual bool IsValid(object value)
         {
-            var typeName = GetType().Name;
-            Type = typeName.Substring(0, typeName.Length - 4).ToLower();
-        }
-        [JsonIgnore]
-        public override object TypeId { get; }
-
-        public string Type { get; set; }
-
-        public Localizable Message { get; set; }
-    }
-
-    public static class ValidationRuleExtension
-    {
-        public static string ToJson(this ValidationRule rule)
-        {
-            var dic = new Dictionary<string, string>();
-            dic.Add("type", rule.Type);
-            dic.Add("message", rule.Message);
-
-            return Kooboo.Lib.Helper.JsonHelper.Serialize(dic);
+            //require attribute to valid value is not empty
+            if (value == null || (value as string)?.Length == 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

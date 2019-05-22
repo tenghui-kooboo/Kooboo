@@ -6,28 +6,22 @@
 
 <div class="col-md-8 col-md-offset-2">
   <div id="app-vue">
-    <button class="btn btn-primary" @click="onShow">show</button>
-
-    <kb-modal
-      :show="showModal"
-      :config="{title:'hello',
-        showCloseBtn:true,
-        closeBtnText:'取消',
-        btns:[{
-          text:'保存',
-        class:'btn-primary',
-        onClick:function(){}
-      }]}"
-      @close="showModal = false"
-    >
-      <div slot="body">
-        <kb-form :meta="formMeta" :data="formData" :extra="extra"></kb-form>
-      </div>
-    </kb-modal>
+    <kb-form meta-name="test" :data="formData" :extra="extra"></kb-form>
   </div>
 </div>
-
+<script src="/_Admin/Scripts/vue/validation/vuelidate.min.js"></script>
+<script src="/_Admin/Scripts/vue/validation/validators.min.js"></script>
+<script src="/_Admin/Scripts/vue/validation/validateExtend.js"></script>
 <script>
+  window.fieldValidateMixin = Object.assign(window.vuelidate.validationMixin, {
+    validations() {
+      return {
+        fieldValue: {
+          rules: validators.rules(this.rules)
+        }
+      };
+    }
+  });
   Kooboo.loadJS([
     "/_Admin/Scripts/vue/components/kbModal/index.js",
     "/_Admin/Scripts/vue/components/kbForm/index.js"
@@ -48,30 +42,62 @@
         layout: "horizontal",
         items: [
           {
-            type: "textbox",
-            label: "Name",
+            type: "textBox",
+            label: "name",
+            name: "name",
             placeholder: "",
-            name: "name"
-          },
-          {
-            type: "textbox",
-            label: "Url",
-            placeholder: "",
-            name: "title"
-          },
-          {
-            type: "selection",
-            label: "Selection",
-            placeholder: "",
-            name: "id",
-            optionConfig: {
-              displayName: "path",
-              value: "id",
-              default: {
-                displayName: "System default",
-                value: "00000000-0000-0000-0000-000000000000"
+            tooltip: "",
+            options: {
+              data: "selected", //context:selected/list
+              text: "{name}_copy"
+            },
+            rules: [
+              {
+                type: "required",
+                message: "required"
+              },
+              {
+                type: "between",
+                from: 1,
+                to: 64,
+                message: "minLength 1,maxLength 64"
+              },
+              {
+                type: "unique",
+                api: "/page/isUnique?name={name}",
+                message: "taken"
               }
+            ]
+          },
+          {
+            type: "hidden",
+            label: "id",
+            name: "id",
+            options: {
+              data: "selected", //context:selected/list
+              text: "id"
             }
+          },
+          {
+            type: "hidden",
+            label: "url",
+            name: "url",
+            options: {
+              data: "selected",
+              text: "/{name}_copy"
+            },
+            rules: [
+              {
+                type: "required",
+                message: "required"
+              },
+              {
+                type: "regex",
+                regex:
+                  "^[^\s|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\[|\]|\;|\:|\"|'|\,|\<|\>|\?]*$",
+                message: "invalid"
+              }
+            ]
           }
         ]
       },

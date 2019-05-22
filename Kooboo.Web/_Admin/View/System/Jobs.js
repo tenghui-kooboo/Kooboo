@@ -104,7 +104,6 @@ $(function() {
             self.frequence('Second');
             self.frequenceUnit(null);
             self.showJobDialog(false);
-            self.showKscript(false);
             self.showCode(false);
         }
 

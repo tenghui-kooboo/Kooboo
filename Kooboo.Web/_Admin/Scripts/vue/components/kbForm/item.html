@@ -1,17 +1,32 @@
-<div class="form-group">
+<div
+  class="form-group"
+  :class="{ hidden: _ct == 'hidden', 'has-error': isFieldInvalid }"
+>
+  <!-- <div class="form-group" :class="{ hidden: _ct == 'hidden'}"> -->
   <label class="control-label" :class="{ 'col-md-3': horizontal }">{{
     label
   }}</label>
   <div :class="{ 'col-md-9': horizontal }">
     <component
-      :is="`kb-form-item-${_ct}`"
+      :ctx="ctx"
       :name="name"
       :data="data"
-      :extra="extra"
+      :rules="rules"
       :class="externalClass"
-      :optionConfig="optionConfig"
+      :ref="`field_item_${idx}`"
+      :is="`kb-form-item-${_ct}`"
       :placeholder="placeholder"
+      :options="options"
+      @fieldValue="valueChange"
     ></component>
+    <template v-if="isFieldInvalid">
+      <span
+        class="help-block"
+        v-for="(err, index) in fieldErrors"
+        :key="index"
+        >{{ err }}</span
+      >
+    </template>
     <span class="help-block" v-if="tooltip">{{ tooltip }}</span>
   </div>
 </div>

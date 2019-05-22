@@ -3,15 +3,23 @@
     "kb-form-item-checkbox",
     {
       props: {
-        data: Object,
+        data: String,
         name: String,
-        extra: Array,
         optionConfig: Object,
         placeholder: String
       },
       data() {
         return { options: [] };
       },
+      watch: {
+        fieldValue(value) {
+          this.$emit("fieldValue", {
+            invalid: this.$v.fieldValue.$invalid,
+            value: value
+          });
+        }
+      },
+      mixins: [window.fieldValidateMixin],
       computed: {
         fieldValue: {
           get: function() {

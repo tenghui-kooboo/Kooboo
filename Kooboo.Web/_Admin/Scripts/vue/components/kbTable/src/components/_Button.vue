@@ -2,7 +2,7 @@
   <a ref="button" :href="href" :target="target">
     <slot>
       <i v-if="icon" :class="`fa fa-${meta.iconClass}`"></i>
-      <template v-else>{{ meta.displayName }}</template>
+      <template v-else>{{ meta.text }}</template>
     </slot>
   </a>
 </template>

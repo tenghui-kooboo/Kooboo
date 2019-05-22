@@ -7,24 +7,25 @@ using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class MinLengthRule:ValidationRule
+    public class BetweenRule:ValidationRule
     {
-        public int MinLength;
-
-        public MinLengthRule(int minLength, string message="")
+        public int From;
+        public int To;
+        public BetweenRule(int from ,int to,string message="")
         {
-            MinLength = minLength;
+            From = from;
+            To = to;
             Message = message;
         }
+
         private string _message;
         public override string Message
         {
             get
             {
                 _message = string.IsNullOrEmpty(_message)
-                   ? string.Format(Hardcoded.GetValue("min length is {0}", Context), MinLength)
-                    : string.Format(Hardcoded.GetValue(_message, Context), MinLength);
-
+                   ? string.Format(Hardcoded.GetValue("length must be between {0} and {1}", Context), From, To)
+                    : string.Format(Hardcoded.GetValue(_message, Context), From, To);
                 return _message;
             }
             set
@@ -35,21 +36,24 @@ namespace Kooboo.Model.Meta.Validation
 
         public override string GetRule()
         {
-            return string.Format("{{type:\"minLength\",minLength:{1},message:\"{0}\"}}", Message, MinLength);
+            return string.Format("{{type:\"between\",from:{0},to:{1},message:\"{2}\"}}",From,To ,Message);
         }
 
         public override bool IsValid(object value)
         {
-            int length=0;
             if (base.IsValid(value))
             {
                 return true;
             }
-            if (value is string str)
+            int i;
+            
+            if(int.TryParse(value.ToString(), out i))
             {
-                length = str.Length;
+                return i >= From && i <= To;
             }
-            return length >= MinLength;
+
+            return false;
         }
+
     }
 }

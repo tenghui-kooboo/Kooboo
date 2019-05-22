@@ -3,14 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class EmailRule : RegexRule
+    public class EmailRule:ValidationRule
     {
-        public EmailRule()
-            : base("^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+@[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\\.[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$")
+        public string Regex
         {
+            get
+            {
+                //example can change ,this value is from front-end;
+                return "^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+@[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\\.[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$";
+            }
+        }
+
+        public string _message;
+        public override string Message
+        {
+            get
+            {
+                _message = string.IsNullOrEmpty(_message)
+                ? Hardcoded.GetValue("invalid Email", Context)
+                : Hardcoded.GetValue(_message, Context);
+                return _message;
+            }
+            set
+            {
+                _message = value;
+            }
+        }
+
+        public override string GetRule()
+        {
+            return string.Format("{{type:\"regex\",regex:\"{0}\",message:\"{1}\"}}", Regex, Message);
+        }
+
+        public override bool IsValid(object value)
+        {
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+
+            return System.Text.RegularExpressions.Regex.IsMatch(value.ToString(), Regex);
+
         }
     }
 }

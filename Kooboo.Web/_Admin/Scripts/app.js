@@ -6,6 +6,7 @@
     Date.prototype.toDefaultLangString = function () {
         // return this.toLocaleString(Kooboo.LanguageManager.getDateLanguage());
         //'2018-11-23 23:59'
+        
         var year = this.getFullYear(),
             month = (this.getMonth() + 1),
             date = this.getDate();

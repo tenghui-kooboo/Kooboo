@@ -1,4 +1,4 @@
-﻿/.vs/
+/.vs/
 .vs/
 /published/
 /packages/
@@ -21,3 +21,5 @@ bld/
 
 *.csproj.user
 *.assets.json
+node_modules/
+Kooboo.Web/_Admin/Scripts/vue/components/kbTable.zip

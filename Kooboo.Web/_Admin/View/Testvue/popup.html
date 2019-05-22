@@ -1,0 +1,73 @@
+<!-- #layout name=vue -->
+
+<div class="page-header">
+  <h1 class="title">POP UP</h1>
+</div>
+
+<div class="col-md-8 col-md-offset-2">
+  <div id="app-vue">
+    <button class="btn btn-primary" @click="onShow">show</button>
+
+    <kb-modal :show="showModal" :config="meta" @close="showModal = false">
+      <template v-for="view in meta.views">
+        <template v-if="view.type == 'form'">
+          <kb-form
+            slot="body"
+            :ctx="popupCtx"
+            :meta-name="view.metaName"
+          ></kb-form>
+        </template>
+      </template>
+    </kb-modal>
+  </div>
+</div>
+<script>
+  Kooboo.loadJS([
+    "/_Admin/Scripts/vue/components/kbForm/index.js",
+    "/_Admin/Scripts/vue/components/kbModal/index.js"
+  ]);
+
+  new Vue({
+    el: "#app-vue",
+    data: {
+      showModal: false,
+      popupCtx: null,
+      meta: {
+        title: "Copy", //copy view:aa-->copy {page.title}:{selectedrow.name}
+        description: {
+          title: "",
+          content: "",
+          closable: false
+        },
+        buttons: [
+          {
+            class: "green",
+            text: "start",
+            type: "submit"
+          },
+          {
+            class: "gray",
+            text: "cancel",
+            type: "close"
+          }
+        ],
+        views: [
+          {
+            type: "form",
+            metaName: "copyFormMeta"
+          }
+        ]
+      }
+    },
+    methods: {
+      onShow(ctx) {
+        this.popupCtx = ctx;
+        this.showModal = true;
+      }
+    },
+    components: {
+      "kb-modal": Kooboo.vue.component.kbModal,
+      "kb-form": Kooboo.vue.component.kbForm
+    }
+  });
+</script>

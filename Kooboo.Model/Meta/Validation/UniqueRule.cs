@@ -7,10 +7,12 @@ using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class RequiredRule : ValidationRule
+    public class UniqueRule : ValidationRule
     {
-        public RequiredRule(string message="")
+        public string Api { get; set; }
+        public UniqueRule(string api,string message="")
         {
+            Api = api;
             Message = message;
         }
 
@@ -20,7 +22,7 @@ namespace Kooboo.Model.Meta.Validation
             get
             {
                 _message = string.IsNullOrEmpty(_message)
-                   ? Hardcoded.GetValue("required", Context)
+                   ? Hardcoded.GetValue("not unique", Context)
                     : Hardcoded.GetValue(_message, Context);
 
                 return _message;
@@ -33,16 +35,11 @@ namespace Kooboo.Model.Meta.Validation
 
         public override string GetRule()
         {
-            return string.Format("{{ type: \"required\", message: \"{0}\" }}", Message);
+            return string.Format("{{type:\"unique\",api:\"{1}\",message:\"{0}\"}}", Message,Api);
         }
 
         public override bool IsValid(object value)
         {
-            if (value == null || (value as string)?.Length == 0)
-            {
-                return false;
-            }
-
             return true;
         }
     }

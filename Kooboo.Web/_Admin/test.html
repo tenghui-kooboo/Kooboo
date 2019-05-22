@@ -21,8 +21,11 @@
   </div>
   <script src="Scripts/KoobooBase.js"></script>
   <script src="Scripts/kooboo/text.js"></script>
+  <script src="Scripts/lib/jquery.min.js"></script>
+  <script src="/Scripts/lib/lodash.min.js"></script>
   <script src="Scripts/vue/vue.js"></script>
   <script src="Scripts/vue/VueExtend.js"></script>
+  <script src="Scripts/vue/mixin/mixins.js"></script>
   <script src="Scripts/vue/api.js"></script>
   <script src="Scripts/vue/validation/vuelidate.min.js"></script>
   <script src="Scripts/vue/validation/validators.min.js"></script>
@@ -31,7 +34,24 @@
   <script src="Scripts/vue/components/kbTable.js"></script>
   <script src="Scripts/vue/components/kbTable/window_test_data.js"></script>
   <script>
-    
+    Date.prototype.toDefaultLangString = function () {
+        // return this.toLocaleString(Kooboo.LanguageManager.getDateLanguage());
+        //'2018-11-23 23:59'
+        var year = this.getFullYear(),
+            month = (this.getMonth() + 1),
+            date = this.getDate();
+
+        var hour = this.getHours(),
+            minute = this.getMinutes();
+
+        return [year, getTwoDigit(month), getTwoDigit(date)].join('-') + ' ' + [getTwoDigit(hour), getTwoDigit(minute)].join(':');
+
+        function getTwoDigit(num) {
+            var str = num + '';
+            return str.length == 2 ? str : ('0' + str)
+        }
+    }
+
 new Vue({
   el: '#app',
   data: {

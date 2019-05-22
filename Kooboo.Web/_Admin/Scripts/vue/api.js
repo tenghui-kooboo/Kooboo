@@ -80,19 +80,19 @@ api = {
         } else {
           // if(res.model&& res.model.redirectUrl){
           //   window.location.href=res.model.redirectUrl;
-          if(res.model){
-            window.location.href=res.model;
-          }else{
-            window.location.href=window.location.href;
+          if (res.model) {
+            window.location.href = res.model;
+          } else {
+            window.location.href = window.location.href;
           }
         }
       });
   },
-  upload: function (url, model,progressor) {
+  upload: function (url, model, progressor) {
     var self = this;
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
-    
+
     !progressor && loading.start();
 
     return DataCache.uploadData(apiObj.obj, apiObj.method, model, progressor)
@@ -110,11 +110,11 @@ api = {
   },
 
   getMeta: function (modelName) {
-    var url="/meta/get?modelname="+modelName;
-    var meta={};
-    self.get(url).then(function(res){
-      if(res.model){
-        meta=res.model;
+    var url = "/meta/get?modelname=" + modelName;
+    var meta = {};
+    this.get(url).then(function (res) {
+      if (res.model) {
+        meta = res.model;
       }
     })
     return meta;
@@ -136,38 +136,56 @@ api = {
     return {
       obj: apiParts[0],
       method: apiParts[1].split("?")[0],
-      data:this.getData(url)
+      data: this.getData(url)
     }
 
   },
-  getData:function(url){
-    parts=url.split("?");
-    var data={};
-    if(parts.length>1){
-        var queryStringParts=parts[1].split("&");
-        for(var i=0;i<queryStringParts.length;i++){
-          var part=queryStringParts[i];
-          var itemParts=part.split("=");
-          if(itemParts.length==2){
-            if(itemParts[1]){
-              data[itemParts[0]]=itemParts[1];
-            }
+  getData: function (url) {
+    parts = url.split("?");
+    var data = {};
+    if (parts.length > 1) {
+      var queryStringParts = parts[1].split("&");
+      for (var i = 0; i < queryStringParts.length; i++) {
+        var part = queryStringParts[i];
+        var itemParts = part.split("=");
+        if (itemParts.length == 2) {
+          if (itemParts[1]) {
+            data[itemParts[0]] = itemParts[1];
           }
         }
+      }
     }
     return data;
   },
-  startLoading:function(hideLoading){
+  startLoading: function (hideLoading) {
     var hideLoading = !!hideLoading && true;
-      hideLoading && $(".page-loading").hide();
-      !hideLoading && loading.start();
+    hideLoading && $(".page-loading").hide();
+    !hideLoading && loading.start();
   },
-  stopLoading:function(hideLoading){
+  stopLoading: function (hideLoading) {
     !hideLoading && loading.stop();
   },
   handleRequestError: function () {
     window.info.fail(
       Kooboo.text.info.networkError + ", " + Kooboo.text.info.checkServer
     );
-  }
+  },
+  getList: function (modelName) {
+    var meta = this.getMeta(modelName);
+
+    var data = {};
+    if (meta.dataApi) {
+      api.get(meta.dataApi)
+        .then(function (res) {
+          data = res.model || res;
+        });
+    }
+
+    return {
+      meta: meta,
+      data: data,
+      popup: {}
+    }
+  },
+
 }

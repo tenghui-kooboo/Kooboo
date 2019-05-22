@@ -24,7 +24,7 @@ export default {
   methods: {
     bindUrl (url) {
       url = url || this.row[this.name]
-      url = this.$parameterBinder().bind(url, this.row)
+      url = this.$parameterBinder.bind(url, this.row)
       return url
     },
 
@@ -38,7 +38,7 @@ export default {
           break;
         default:
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder().getUrlKeyValue(this.meta.url),
+            parameters: this.$parameterBinder.getKeyValue(this.meta.url),
             context: this.list,
             row: this.row
           })

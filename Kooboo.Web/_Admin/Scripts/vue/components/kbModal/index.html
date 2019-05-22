@@ -1,17 +1,22 @@
 <div class="modal fade" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" :class='modalSize'>
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" @click='onClose'><i class="fa fa-close"></i></button>
-                <h4 class="modal-title">{{ config.title }}</h4>
-            </div>
-            <div class="modal-body">
-                <slot name='body'></slot>
-            </div>
-            <div class="modal-footer">
-                <button v-for='btn in config.buttons' class="btn" :class='btn.class' @click='onclick(btn)'>{{ btn.text }}</button>
-                <button class="btn gray" @click='onClose' v-if='config.showCloseBtn'>{{ config.closeBtnText }}</button>
-            </div>
-        </div>
+  <div class="modal-dialog" :class="modalSize">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" @click="onClose">
+          <i class="fa fa-close"></i>
+        </button>
+        <h4 class="modal-title">{{ config.title }}</h4>
+      </div>
+      <div class="modal-body" ref="body">
+        <slot name="body"></slot>
+      </div>
+      <div class="modal-footer">
+        <template v-for="(btn, idx) in config.buttons">
+          <button class="btn" :class="btn.class" @click="onClick(btn.type)">
+            {{ btn.text }}
+          </button>
+        </template>
+      </div>
     </div>
+  </div>
 </div>

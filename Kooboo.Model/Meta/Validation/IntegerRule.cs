@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class RequiredRule : ValidationRule
+    public class IntegerRule:ValidationRule
     {
-        public RequiredRule(string message="")
+        public IntegerRule(string message)
         {
             Message = message;
         }
 
-        private string _message;
+        public string _message;
         public override string Message
         {
             get
             {
                 _message = string.IsNullOrEmpty(_message)
-                   ? Hardcoded.GetValue("required", Context)
-                    : Hardcoded.GetValue(_message, Context);
-
+                 ? Hardcoded.GetValue("invalid Integer", Context)
+                 : Hardcoded.GetValue(_message, Context);
                 return _message;
             }
             set
@@ -33,17 +33,18 @@ namespace Kooboo.Model.Meta.Validation
 
         public override string GetRule()
         {
-            return string.Format("{{ type: \"required\", message: \"{0}\" }}", Message);
+            return string.Format("{{type:\"integer\",message:\"{0}\"}}", Message);
         }
 
         public override bool IsValid(object value)
         {
-            if (value == null || (value as string)?.Length == 0)
+            if (base.IsValid(value))
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return Regex.IsMatch(value.ToString(), "(^[0-9]*$)|(^-[0-9]+$)");
+
         }
     }
 }

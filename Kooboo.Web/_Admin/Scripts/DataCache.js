@@ -32,7 +32,7 @@
                     };
                     return $.Deferred().resolve(result);
                 } else {
-                    return this.requestData(objectName, method, paradata).done(function(res) {
+                    return this.requestData(objectName, method, paradata,useSync).done(function(res) {
                         if (res && res.success) {
                             localStorage.setItem(key, JSON.stringify(res.model));
                         }
@@ -78,6 +78,7 @@
             return $.ajax({
                 url: this._getUrl(objectName, method,paradata),
                 type: type,
+                dataType:'json',
                 data: paradata,
                 async: !useSync
             });

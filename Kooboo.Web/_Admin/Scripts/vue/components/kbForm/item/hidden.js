@@ -1,13 +1,13 @@
 (function() {
-  Kooboo.vue.component.kbFormItemNumber = Vue.component("kb-form-item-number", {
+  Kooboo.vue.component.kbFormItemHidden = Vue.component("kb-form-item-hidden", {
     props: {
       data: String,
+      name: String,
+      rules: Array,
       placeholder: String
     },
     data() {
-      return {
-        fieldValue: ""
-      };
+      return { fieldValue: "" };
     },
     watch: {
       fieldValue(value) {
@@ -17,13 +17,13 @@
         });
       }
     },
-    mixins: [window.fieldValidateMixin],
+    mixins: [window.vuelidate.validationMixin],
     created() {
       this.fieldValue = this.data;
       // this.fieldValue = this.data[this.name];
     },
     template: Kooboo.getTemplate(
-      "/_Admin/Scripts/vue/components/kbForm/item/number.html"
+      "/_Admin/Scripts/vue/components/kbForm/item/hidden.html"
     )
   });
 })();

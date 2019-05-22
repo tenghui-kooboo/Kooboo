@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 using Kooboo.Data.Language;
 
 namespace Kooboo.Model.Meta.Validation
 {
-    public class RequiredRule : ValidationRule
+    public class IpAddressRule:ValidationRule
     {
-        public RequiredRule(string message="")
+        public IpAddressRule(string message="")
         {
             Message = message;
         }
@@ -20,8 +21,8 @@ namespace Kooboo.Model.Meta.Validation
             get
             {
                 _message = string.IsNullOrEmpty(_message)
-                   ? Hardcoded.GetValue("required", Context)
-                    : Hardcoded.GetValue(_message, Context);
+                 ? Hardcoded.GetValue("invalid ip address", Context)
+                 : Hardcoded.GetValue(_message, Context);
 
                 return _message;
             }
@@ -33,17 +34,28 @@ namespace Kooboo.Model.Meta.Validation
 
         public override string GetRule()
         {
-            return string.Format("{{ type: \"required\", message: \"{0}\" }}", Message);
+            return string.Format("{{type:\"ipAddress\",message:\"{0}\"}}", Message);
         }
 
         public override bool IsValid(object value)
         {
-            if (value == null || (value as string)?.Length == 0)
+            if (base.IsValid(value))
+            {
+                return true;
+            }
+
+            var parts = value.ToString().Split('.');
+            //all ipv4
+            if (parts.Length != 4)
             {
                 return false;
             }
 
-            return true;
+            IPAddress address;
+            return IPAddress.TryParse(value.ToString(), out address);
+
+            //byte bit;
+            //return parts.All(p => byte.TryParse(p, out bit));
         }
     }
 }

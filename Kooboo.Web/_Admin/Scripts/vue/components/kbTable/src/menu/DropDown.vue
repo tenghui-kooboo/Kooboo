@@ -1,7 +1,7 @@
 <template>
   <div :class="[ 'btn-group navbar-btn', { open: expanded }]">
     <button :class="`btn ${meta.class}`" data-toggle="dropdown" @click.prevent="expanded = !expanded">
-      <span>{{ meta.displayName }}</span>
+      <span>{{ meta.text }}</span>
       <i class="fa fa-angle-down"></i>
     </button>
     <ul class="dropdown-menu">
@@ -36,18 +36,29 @@ export default {
   computed: {
     options () {
       const options = this.meta.options
-      if (typeof options == "object") {
-        const data = this.data[options.data]
-        return data.map(o => ({ text: o[options.displayName], value: o })) 
-      } else {
-        return options.map(o => ({ text: o.displayName, value: o }))
+      if(options instanceof Array){
+        return options.map(o => ({ text: o.text, value: o }))
+      }else if(options instanceof Object){
+        const data = this.data[options.data];
+        console.log(data);
+        var self=this;
+        return data.map(function(o){
+          var text=self.$parameterBinder.formatText(options.text,o);
+          var url=self.$parameterBinder.bind(url,o);
+          return {
+            text:text,
+            value:url
+          };
+        })
       }
+
+      return [];
     }
   },
 
   methods: {
     bindUrl (url, option) {
-      return this.$parameterBinder().bind(url)
+      return this.$parameterBinder.bind(url)
     },
 
     onClick (option) {
@@ -60,7 +71,7 @@ export default {
           break;
         default:
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder().getUrlKeyValue(this.meta.url),
+            parameters: this.$parameterBinder.getKeyValue(this.meta.url),
             context: this.list,
             selected: this.selected
           })
