@@ -23,7 +23,4 @@ namespace Kooboo.Model.Meta
                 .MergeModel();
         }
     }
-
-
-
 }

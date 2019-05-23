@@ -42,7 +42,7 @@ namespace Kooboo.Model.Render.Vue
                                 {
                                     b.AppendLine(",");
                                 }
-                                b.Append(rule.ToJson());
+                                b.Append(rule.GetRule());
 
                                 i++;
                             }
