@@ -15,7 +15,7 @@ namespace Kooboo.Model.Render
 
         public IJsBuilder Js { get; set; }
 
-        public Document Dom { get; set; }
+        public DocumentWrap Dom { get; set; }
 
         public ViewType ViewType { get; set; } = ViewType.Root;
 

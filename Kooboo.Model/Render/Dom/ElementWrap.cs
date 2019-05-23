@@ -12,13 +12,15 @@ namespace Kooboo.Model.Render
     {
         private Element _inner;
 
-        internal ElementWrap(DocumentWrap doc, Element el)
+        public ElementWrap(DocumentWrap doc, Element el)
             : base(doc)
         {
             _inner = el;
         }
 
         public override Node Node => _inner;
+
+        public IEnumerable<Attr> attributes => _inner.attributes;
 
         public string getAttribute(string name)
         {
@@ -32,6 +34,13 @@ namespace Kooboo.Model.Render
             Document.NotifyModified(this);
         }
 
+        public void removeAttribute(string name)
+        {
+            _inner.removeAttribute(name);
+
+            Document.NotifyModified(this);
+        }
+
         public IEnumerable<ElementWrap> Select(string cssSelector)
         {
             return _inner.Select(cssSelector).item.Select(o => new ElementWrap(Document, o));
@@ -39,9 +48,9 @@ namespace Kooboo.Model.Render
 
         internal override int Output(StringBuilder sb)
         {
-            DomService.GenerateOpenTag(_inner.attributes.ToDictionary(o => o.name, o => o.value), _inner.tagName);
+            sb.Append(DomService.GenerateOpenTag(_inner.attributes.ToDictionary(o => o.name, o => o.value), _inner.tagName));
 
-            return Node.location.openTokenEndIndex;
+            return Node.location.openTokenEndIndex + 1;
         }
     }
 }

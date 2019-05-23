@@ -8,25 +8,74 @@ using Kooboo.Dom;
 namespace Kooboo.Model.Render
 {
     // Todo: Add action monitor is not implemented yet
-    public class DocumentWrap
+    public class DocumentWrap : NodeWrap
     {
         private Document _inner;
         private SortedDictionary<int, ChangeEntry> _modified = new SortedDictionary<int, ChangeEntry>();
 
         public DocumentWrap(Document doc)
+            : base(null)
         {
             _inner = doc;
         }
 
-        public IEnumerable<NodeWrap> Children
+        public DocumentWrap(string html)
+            : this(Dom.DomParser.CreateDom(html))
         {
-            get
-            {
-                return _inner.childNodes.item.Select(o => NodeWrap.Wrap(this, o));
-            }
         }
 
-        internal void NotifyModified(NodeWrap node)
+        /// <summary>
+        /// For unit test
+        /// </summary>
+        public SortedDictionary<int, ChangeEntry> Modified => _modified;
+
+        public override DocumentWrap Document => this;
+
+        public override Node Node => _inner;
+
+        public ElementWrap Body => new ElementWrap(this, _inner.body);
+
+        public IEnumerable<ElementWrap> Select(string cssSelector)
+        {
+            return _inner.Select(cssSelector).item.Select(o => new ElementWrap(this, o));
+        }
+
+        public override string ToString()
+        {
+            var source = _inner.HtmlSource;
+            var sb = new StringBuilder();
+            var p = 0;
+
+            foreach (var each in _modified)
+            {
+                if (p < each.Key)
+                {
+                    sb.Append(source.Substring(p, each.Key - p));
+                }
+
+                if (each.Value.Type == ChangeType.Modified)
+                {
+                    p = each.Value.Node.Output(sb);
+                }
+                else if (each.Value.Type == ChangeType.Removed)
+                {
+                    p = each.Value.Node.EndIndex + 1;
+                }
+                else
+                {
+                    throw new NotSupportedException("Add element not supported yet");
+                }
+            }
+
+            if (p < source.Length - 1)
+            {
+                sb.Append(source.Substring(p));
+            }
+
+            return sb.ToString();
+        }
+
+        public void NotifyModified(NodeWrap node)
         {
             if (!_modified.TryGetValue(node.StartIndex, out var exist))
             {
@@ -34,7 +83,7 @@ namespace Kooboo.Model.Render
             }
         }
 
-        internal void NotifyRemoved(NodeWrap node)
+        public void NotifyRemoved(NodeWrap node)
         {
             if (!_modified.TryGetValue(node.StartIndex, out var entry))
             {
@@ -53,44 +102,29 @@ namespace Kooboo.Model.Render
             }
         }
 
-        public override string ToString()
-        {
-            var source = _inner.HtmlSource;
-            var sb = new StringBuilder();
-            var p = 0;
 
-            foreach (var each in _modified)
-            {
-                if (p < each.Key)
-                {
-                    sb.Append(source.Substring(p, each.Key - p));
-                }
-
-                p = each.Value.Node.Output(sb);
-            }
-
-            if (p < source.Length - 1)
-            {
-                sb.Append(source.Substring(p));
-            }
-
-            return sb.ToString();
-        }
-
-        class ChangeEntry
+        public class ChangeEntry
         {
             public ChangeType Type { get; set; }
 
             public NodeWrap Node { get; set; }
         }
 
-        enum ChangeType
+        public enum ChangeType
         {
             Added,
 
             Modified,
 
             Removed
+        }
+    }
+
+    public static class DocumentWrapExtensions
+    {
+        public static ElementWrap RootWithoutBody(this DocumentWrap doc)
+        {
+            return doc.Body.Children.First() as ElementWrap;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Kooboo.Model.Render.Parsers
 
         public int Priority => ParserPriority.Low;
 
-        public void Parse(Element el, TagParseContext context, Action visitChildren)
+        public void Parse(ElementWrap el, TagParseContext context, Action visitChildren)
         {
             // Get url
             context.TryGet<string>(SubmitParser.Data_Url, out string url);

@@ -14,7 +14,7 @@ namespace Kooboo.Model.Render.Parsers
 
         public int Priority => ParserPriority.High;
 
-        public void Parse(Element el, TagParseContext context, Action visitChildren)
+        public void Parse(ElementWrap el, TagParseContext context, Action visitChildren)
         {
             var viewUrl = el.getAttribute(context.Options.GetAttributeName(Name));
             if (!ViewName.TryParse(viewUrl, out ViewName viewName))

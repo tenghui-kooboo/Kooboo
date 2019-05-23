@@ -16,7 +16,7 @@ namespace Kooboo.Model.Render.Parsers
 
         public int Priority => ParserPriority.Normal;
 
-        public void Parse(Element el, TagParseContext context, Action visitChildren)
+        public void Parse(ElementWrap el, TagParseContext context, Action visitChildren)
         {
             // Get url, modelName
             var url = el.getAttribute(context.Options.GetAttributeName(Name));

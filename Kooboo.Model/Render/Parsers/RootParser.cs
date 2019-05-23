@@ -10,7 +10,7 @@ namespace Kooboo.Model.Render.Parsers
 
         public int Priority => ParserPriority.Highest;
 
-        public void Parse(Element el, TagParseContext context, Action visitChildren)
+        public void Parse(ElementWrap el, TagParseContext context, Action visitChildren)
         {
             var id = el.getAttribute("id");
 

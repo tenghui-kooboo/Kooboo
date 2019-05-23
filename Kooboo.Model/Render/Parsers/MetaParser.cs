@@ -23,7 +23,7 @@ namespace Kooboo.Model.Render.Parsers
 
         public int Priority => ParserPriority.High;
 
-        public void Parse(Element el, TagParseContext context, Action visitChildren)
+        public void Parse(ElementWrap el, TagParseContext context, Action visitChildren)
         {
             var name = el.getAttribute(context.Options.GetAttributeName(Name));
             if (String.IsNullOrEmpty(name))

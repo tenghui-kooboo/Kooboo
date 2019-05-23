@@ -23,6 +23,6 @@ namespace Kooboo.Model.Render
         /// <summary>
         /// Decide how to build JS
         /// </summary>
-        void Parse(Element el, TagParseContext context, Action visitChildren);
+        void Parse(ElementWrap el, TagParseContext context, Action visitChildren);
     }
 }

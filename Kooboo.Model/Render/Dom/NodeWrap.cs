@@ -22,7 +22,7 @@ namespace Kooboo.Model.Render
             _inner = node;
         }
 
-        public DocumentWrap Document { get; }
+        public virtual DocumentWrap Document { get; }
 
         public virtual Node Node => _inner;
 
@@ -30,7 +30,7 @@ namespace Kooboo.Model.Render
         {
             get
             {
-                return _inner.childNodes.item.Select(o => Wrap(Document, o));
+                return Node.childNodes.item.Select(o => Wrap(Document, o));
             }
         }
 
@@ -41,7 +41,7 @@ namespace Kooboo.Model.Render
         internal virtual int Output(StringBuilder sb)
         {
             sb.Append(Node.OuterHtml);
-            return EndIndex;
+            return EndIndex + 1;
         }
     }
 
@@ -61,7 +61,7 @@ namespace Kooboo.Model.Render
 
             if (WrapTypes.TryGetValue(node.nodeType, out var wrapType))
             {
-                return Activator.CreateInstance(wrapType, node) as NodeWrap;
+                return Activator.CreateInstance(wrapType, doc, node) as NodeWrap;
             }
             else
             {

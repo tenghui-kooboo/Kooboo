@@ -17,7 +17,7 @@ namespace Kooboo.Model.Render
             var data = Node as CharacterData;
             sb.Append(data.data);
 
-            return EndIndex;
+            return EndIndex + 1;
         }
     }
 }

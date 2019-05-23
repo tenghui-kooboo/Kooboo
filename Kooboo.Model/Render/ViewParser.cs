@@ -27,7 +27,7 @@ namespace Kooboo.Model.Render
             VisitNode(context.Dom, context);
         }
 
-        private void VisitNode(Node node, ViewParseContext context)
+        private void VisitNode(NodeWrap node, ViewParseContext context)
         {
             if (!TryRenderNode(node, context, VisitChildern))
             {
@@ -36,16 +36,16 @@ namespace Kooboo.Model.Render
 
             void VisitChildern()
             {
-                foreach (var child in node.childNodes.item)
+                foreach (var child in node.Children)
                 {
                     VisitNode(child, context);
                 }
             }
         }
 
-        private bool TryRenderNode(Node node, ViewParseContext context, Action visitChildren)
+        private bool TryRenderNode(NodeWrap node, ViewParseContext context, Action visitChildren)
         {
-            var el = node as Element;
+            var el = node as ElementWrap;
             if (el == null)
                 return false;
 
@@ -91,7 +91,7 @@ namespace Kooboo.Model.Render
         {
             var context = new ViewParseContext
             {
-                Dom = DomParser.CreateDom(html),
+                Dom = new DocumentWrap(html),
                 Js = new Vue.RootViewJsBuilder(Vue.VueJsBuilderOptions.RootViewOptions),
                 ViewProvider = new ViewProvider(modelContext),
                 Context = modelContext.HttpContext
@@ -100,7 +100,7 @@ namespace Kooboo.Model.Render
             parser.Parse(context);
 
             var result = new StringBuilder()
-                .AppendLine(ParserHelper.ToHtml(context.Dom.childNodes.item))
+                .AppendLine(context.Dom.ToString())
                 .AppendLine("<script>")
                 .AppendLine(context.Js.Build())
                 .AppendLine("</script>")
@@ -114,7 +114,7 @@ namespace Kooboo.Model.Render
             var js = new Vue.SubViewJsBuilder(Vue.VueJsBuilderOptions.SubViewOptions);
             var context = new ViewParseContext
             {
-                Dom = DomParser.CreateDom(html),
+                Dom = new DocumentWrap(html),
                 Js = js,
                 ViewProvider = null,
                 ViewType = ViewType.Sub,
@@ -123,7 +123,7 @@ namespace Kooboo.Model.Render
 
             parser.Parse(context);
 
-            return js.BuildWithTemplate(ParserHelper.ToHtml(context.Dom.body.childNodes.item));
+            return js.BuildWithTemplate(context.Dom.ToString());
         }
     }
 }
