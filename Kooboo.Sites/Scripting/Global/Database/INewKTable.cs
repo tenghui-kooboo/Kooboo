@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Kooboo.Data.Context;
 using Kooboo.IndexedDB.Dynamic;
-using System;
 
 namespace Kooboo.Sites.Scripting.Global.Database
 {
@@ -33,9 +32,9 @@ namespace Kooboo.Sites.Scripting.Global.Database
         DynamicTableObject[] findAll(string condition);
         //DynamicTableObject
         DynamicTableObject get(object id);
-
+        //todo extend/rewrite
         TableQuery Query();
-
+        //todo extend/rewrite
         TableQuery Query(string searchCondition);
         //create index
         void createIndex(string fieldname);
