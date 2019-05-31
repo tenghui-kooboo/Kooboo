@@ -92,6 +92,17 @@ namespace Kooboo.Data.Template
 
         public int ViewCount { get; set; }
 
+        //enum is not supported by indexdb
+        //ToApprove=0,
+        //Rejected=1,
+        //Approved=2
+        public int Status { get; set; }
+        //public TemplatPackageStatus Status { get; set; }
+
+        public string Suggest { get; set; } = string.Empty;
+
+        public int DownloadCount { get; set; }
+
         public bool IsApproved { get; set;  }
 
         public decimal Price { get; set; } = 0;
@@ -104,6 +115,8 @@ namespace Kooboo.Data.Template
             unique += this.ContentCount.ToString() + this.ImageCount.ToString() + this.LayoutCount.ToString() + this.ViewCount.ToString() + this.PageCount.ToString() + this.MenuCount.ToString();
 
             unique += this.EditVersion.ToString() + this.UserId.ToString() + this.OrganizationId.ToString() + this.SiteId.ToString() + this.Score.ToString();
+
+            unique += this.Status.ToString() + this.Suggest.ToString() + this.DownloadCount.ToString();
 
             foreach (var item in this.Images)
             {
@@ -119,5 +132,12 @@ namespace Kooboo.Data.Template
 
         public Guid BinaryHash { get; set; }  
         
+    }
+
+    public enum TemplatPackageStatus
+    {
+        ToApprove=0,
+        Rejected=1,
+        Approved=2
     }
 }

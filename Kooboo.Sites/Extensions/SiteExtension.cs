@@ -113,5 +113,52 @@ namespace Kooboo.Sites.Extensions
             return string.Empty;
         }
 
+        public static string GetStartRelativeUrl(this WebSite site)
+        {
+            var startpages = site.StartPages();
+            if (startpages != null && startpages.Count() > 0)
+            {
+                foreach (var item in startpages)
+                {
+                    Route route = site.SiteDb().Routes.Query.Where(o => o.objectId == item.Id).FirstOrDefault();
+
+                    if (route != null && !route.Name.Contains("{") && !route.Name.Contains("%"))
+                    {
+                        return route.Name;
+                    }
+                }
+            }
+
+            var allpages = site.SiteDb().Pages.All();
+
+            if (allpages != null && allpages.Count() > 0)
+            {
+                foreach (var item in allpages)
+                {
+                    Route route = site.SiteDb().Routes.Query.Where(o => o.objectId == item.Id).FirstOrDefault();
+
+                    if (route != null && !route.Name.Contains("{") && !route.Name.Contains("%"))
+                    {
+                        return route.Name;
+                    }
+                }
+            }
+
+            if (allpages != null && allpages.Count() > 0)
+            {
+                foreach (var item in allpages)
+                {
+                    Route route = site.SiteDb().Routes.Query.Where(o => o.objectId == item.Id).FirstOrDefault();
+
+                    if (route != null)
+                    {
+                        return route.Name;
+                    }
+                }
+            }
+
+            return "/";
+        }
+
     }
 }
