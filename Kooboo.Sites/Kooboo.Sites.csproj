@@ -72,5 +72,13 @@
     <ProjectReference Include="..\Kooboo.Mail\Kooboo.Mail.csproj" />
     <ProjectReference Include="..\Kooboo.Search\Kooboo.Search.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\lib\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\lib\MySql.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
