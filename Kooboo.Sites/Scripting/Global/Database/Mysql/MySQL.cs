@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Kooboo.Data.Context;
 using Kooboo.Data.Interface;
+using System.Linq;
 
 namespace Kooboo.Sites.Scripting.Global.Database
 {
@@ -68,33 +69,71 @@ namespace Kooboo.Sites.Scripting.Global.Database
             return false;
         }
 
+        //unused
         public object append(object value)
         {
             throw new NotImplementedException();
         }
-
+        //can't use this method
         public void delete(object id)
         {
             throw new NotImplementedException();
         }
 
-        public object find(string searchCondition)
+        public DynamicTableObject find(string searchCondition)
         {
             var connection = DataBus.GetDataBase(Database.connectionString);
             var sql = SQLHelper.GetSelectSql(Name, searchCondition);
 
             var data= connection.ExecuteSingle<object>(sql, null);
-            return data;
+            var dic = Convert(data);
+            
+            return DynamicTableObject.Create(dic, null, this.context);
         }
 
-        public object[] findAll(string condition)
+        public DynamicTableObject find(string field, object value)
+        {
+            var connection = DataBus.GetDataBase(Database.connectionString);
+
+            var searchCondition = string.Format("{0}=@{0}", field);
+            var sql = SQLHelper.GetSelectSql(Name, searchCondition);
+
+            var param = new Dictionary<string, object>();
+            param.Add(field, value);
+            var data = connection.ExecuteSingle<object>(sql, param);
+
+            return DynamicTableObject.Create(Convert(data), null, this.context);
+        }
+
+        public DynamicTableObject[] findAll(string field, object value)
+        {
+            var connection = DataBus.GetDataBase(Database.connectionString);
+
+            var condition = string.Format("{0}=@{0}", field);
+            var sql = SQLHelper.GetSelectSql(Name, condition);
+
+            var param = new Dictionary<string, object>();
+            param.Add(field, value);
+            var list = connection.ExecuteList<object>(sql, param).ToArray();
+
+            DynamicTableObject[] objects = list.Select(i => DynamicTableObject.Create(Convert(i), null, this.context)).ToArray();
+
+            return objects;
+        }
+
+        public DynamicTableObject[] findAll(string condition)
         {
             var connection = DataBus.GetDataBase(Database.connectionString);
             var sql = SQLHelper.GetSelectSql(Name,condition);
-            return connection.ExecuteList<object>(sql, null).ToArray();
+            
+            var list= connection.ExecuteList<object>(sql, null).ToArray();
+            DynamicTableObject[] objects = list.Select(i => DynamicTableObject.Create(Convert(i),null,this.context)).ToArray();
+
+            return objects;
         }
 
-        public object get(object id)
+        //can't use this method
+        public DynamicTableObject get(object id)
         {
             throw new NotImplementedException();
         }
@@ -114,7 +153,7 @@ namespace Kooboo.Sites.Scripting.Global.Database
 
             }
         }
-
+        //can't use this method
         public void update(object newvalue)
         {
             throw new NotImplementedException();
@@ -123,14 +162,15 @@ namespace Kooboo.Sites.Scripting.Global.Database
 
         #region new method
 
-        public object get(string key,object id)
+        public DynamicTableObject get(string key,object id)
         {
             var connection = DataBus.GetDataBase(Database.connectionString);
             var sql = SQLHelper.GetSelectSql(Name, string.Format("{0}=@{0}", key));
             var dic = new Dictionary<string, object>();
             dic.Add(key, id);
-            return connection.ExecuteSingle<object>(sql, dic);
-            
+            var data= connection.ExecuteSingle<object>(sql, dic);
+
+            return DynamicTableObject.Create(Convert(data), null, this.context);
         }
         public void delete(string key, object value)
         {
@@ -143,63 +183,43 @@ namespace Kooboo.Sites.Scripting.Global.Database
         }
 
         #endregion
+
+        #region private
+        private IDictionary<string,object> Convert(object data)
+        {
+            return data as IDictionary<string, object>;
+        }
+
+        public ITableQuery Query()
+        {
+            return new MySQLQuery(this);
+        }
+
+        public ITableQuery Query(string searchCondition)
+        {
+            var result = new MySQLQuery(this);
+            result.Where(searchCondition);
+            return result;
+        }
+
+        public void createIndex(string fieldname)
+        {
+            var connection = DataBus.GetDataBase(Database.connectionString);
+            var sql = SQLHelper.CreateIndexSql(Name,fieldname);
+            connection.ExecuteNoQuery(sql, null);
+        }
+
+        public DynamicTableObject[] all()
+        {
+            var connection = DataBus.GetDataBase(Database.connectionString);
+            var sql = SQLHelper.GetSelectSql(Name,string.Empty);
+
+            var list = connection.ExecuteList<object>(sql, null).ToArray();
+            DynamicTableObject[] objects = list.Select(i => DynamicTableObject.Create(Convert(i), null, this.context)).ToArray();
+
+            return objects;
+        }
+        #endregion
     }
 
-
-    public class SQLHelper
-    {
-        public static string GetInsertSql(string tableName,IDictionary<string,object> dic)
-        {
-            var builder = new StringBuilder();
-            builder.AppendFormat("insert into {0}", tableName);
-
-            var fieldBuilder = new StringBuilder();
-            var valueBuilder = new StringBuilder();
-            foreach(var keypair in dic)
-            {
-                if (fieldBuilder.Length > 0)
-                    fieldBuilder.Append(",");
-                fieldBuilder.AppendFormat("{0}", keypair.Key);
-
-                if (valueBuilder.Length > 0)
-                    valueBuilder.Append(",");
-                valueBuilder.AppendFormat("@{0}", keypair.Key);
-            }
-
-            builder.AppendFormat("({0})",fieldBuilder.ToString());
-            builder.AppendFormat("values({0})", valueBuilder.ToString());
-
-            return builder.ToString();
-        }
-
-        public static string GetUpdateSql(string tableName, IDictionary<string, object> dic,string primaryKey)
-        {
-            var builder = new StringBuilder();
-            builder.AppendFormat("update {0} set ", tableName);
-
-            var updateBuilder = new StringBuilder();
-            foreach (var keypair in dic)
-            {
-                if (updateBuilder.Length > 0)
-                    updateBuilder.Append(",");
-                updateBuilder.AppendFormat("{0}=@{0}", keypair.Key);
-            }
-
-            builder.Append(updateBuilder.ToString());
-            builder.AppendFormat(" where {0}=@{0}", primaryKey);
-
-            return builder.ToString();
-        }
-
-        public static string GetDeleteSql(string tableName,string primaryKey)
-        {
-            return string.Format("delete from {0} where {1}=@{1}", tableName, primaryKey);
-        }
-
-        public static string GetSelectSql(string tableName,string condition)
-        {
-            return string.Format("select * from {0} where {1}",tableName ,condition);
-        }
-
-    }
 }

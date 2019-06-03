@@ -19,17 +19,17 @@ namespace Kooboo.Sites.Scripting.Global.Database
         List<T> ExecuteList<T>(string sql, IDictionary<string, object> parameters);
         T ExecuteSingle<T>(string sql, IDictionary<string, object> parameters);
     }
-    public class DatabaseConnect: IDatabaseConnect
+    public class MySQLDatabaseConnect: IDatabaseConnect
     {
         private MySqlConnection sqlConnection = null;
 
         private string ConnectString = "";
 
-        public DatabaseConnect()
+        public MySQLDatabaseConnect()
         {
         }
 
-        public DatabaseConnect(string connectString)
+        public MySQLDatabaseConnect(string connectString)
         {
             ConnectString = connectString;
         }
@@ -253,7 +253,7 @@ namespace Kooboo.Sites.Scripting.Global.Database
         {
             if (ThreadDatabaseConnect == null)
             {
-                ThreadDatabaseConnect = new DatabaseConnect(connectionString);
+                ThreadDatabaseConnect = new MySQLDatabaseConnect(connectionString);
 
             }
             return ThreadDatabaseConnect;
