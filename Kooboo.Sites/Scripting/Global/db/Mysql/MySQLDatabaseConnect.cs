@@ -33,14 +33,25 @@ namespace Kooboo.Sites.Scripting.Global.Db
 
         private string ConnectString = "";
 
-        public MySQLDatabaseConnect()
-        {
-        }
-
         public MySQLDatabaseConnect(string connectString)
         {
             ConnectString = connectString;
         }
+
+        private MySqlConnection Connection
+        {
+            get
+            {
+                if (sqlConnection == null)
+                {
+                    sqlConnection = new MySqlConnection(ConnectString);
+                }
+                return sqlConnection;
+            }
+            set { sqlConnection = null; }
+        }
+
+        #region Reserved method
 
         private bool Open()
         {
@@ -61,24 +72,11 @@ namespace Kooboo.Sites.Scripting.Global.Db
             }
             return sqlConnection.State == ConnectionState.Open;
         }
+
         private void Close()
         {
             if (!isTransactionRun)
                 Dispose();
-        }
-        
-
-        private MySqlConnection Connection
-        {
-            get
-            {
-                if (sqlConnection == null)
-                {
-                    sqlConnection = new MySqlConnection(ConnectString);
-                }
-                return sqlConnection;
-            }
-            set { sqlConnection = null; }
         }
 
         private IDbTransaction transaction;
@@ -183,7 +181,7 @@ namespace Kooboo.Sites.Scripting.Global.Db
                 throw ex;
             }
         }
-
+        #endregion
         /// <summary>
         /// create,update,Delete operate
         /// </summary>
@@ -208,6 +206,12 @@ namespace Kooboo.Sites.Scripting.Global.Db
             Connection.Execute(sql, model, transaction);
         }
 
+        /// <summary>
+        /// ExecuteScalar
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public object ExecuteScalar(string sql, IDictionary<string, object> value)
         {
             return Connection.ExecuteScalar(sql, value);
