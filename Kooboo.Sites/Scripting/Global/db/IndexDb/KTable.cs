@@ -3,7 +3,7 @@
 using Kooboo.Data.Context;
 using Kooboo.IndexedDB.Dynamic;
 using System;
-using Kooboo.Sites.Scripting.Global.Database;
+using Kooboo.Sites.Scripting.Global.Db;
 
 namespace Kooboo.Sites.Scripting.Global
 {

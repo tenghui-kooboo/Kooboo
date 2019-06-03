@@ -4,15 +4,15 @@ using System.Text;
 using Kooboo.Data.Context;
 using Kooboo.Data.Interface;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
-    public class IndexDb:Database
+    public class IndexDB:Database
     {
-        public IndexDb(RenderContext context) : base(context)
+        public IndexDB(RenderContext context) : base(context)
         {
 
         }
-        protected override string Name => "indexdb";
+        public override string Name => "indexdb";
 
         public override IkTable GetTable(string name)
         {

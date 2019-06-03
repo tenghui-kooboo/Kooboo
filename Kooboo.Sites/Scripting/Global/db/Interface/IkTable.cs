@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Kooboo.Data.Context;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
     public interface IkTable
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
     public class SQLHelper
     {
@@ -27,6 +27,7 @@ namespace Kooboo.Sites.Scripting.Global.Database
             builder.AppendFormat("({0})", fieldBuilder.ToString());
             builder.AppendFormat("values({0})", valueBuilder.ToString());
 
+            builder.Append(";select @@IDENTITY");
             return builder.ToString();
         }
 
@@ -70,7 +71,14 @@ namespace Kooboo.Sites.Scripting.Global.Database
 
         public static string GetCountSql(string tableName, string condition)
         {
-            return string.Format("select count(1) as count from {0} where {1}", tableName, condition);
+            var builder = new StringBuilder();
+            builder.AppendFormat("select count(1) as count from {0} ",tableName);
+
+            if (!string.IsNullOrEmpty(condition))
+            {
+                builder.AppendFormat("where {0}", condition);
+            }
+            return builder.ToString();
         }
 
         public static string GetSelectSql(string tableName, string condition, string orderBy, bool Ascending, int skipcount, int count)
@@ -86,7 +94,7 @@ namespace Kooboo.Sites.Scripting.Global.Database
                 builder.AppendFormat(" order by {0} {1}", orderBy, Ascending ? "asc" : "desc");
             }
 
-            builder.AppendFormat("limit {0},{1}", skipcount, count);
+            builder.AppendFormat(" limit {0},{1}", skipcount, count);
 
             return builder.ToString();
         }

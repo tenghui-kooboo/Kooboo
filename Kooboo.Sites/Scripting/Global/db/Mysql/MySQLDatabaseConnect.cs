@@ -6,17 +6,25 @@ using Dapper;
 using System.Configuration;
 using System.Data.Common;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
 
     public interface IDatabaseConnect
     {
         void BeginTransaction();
+
         void Commit();
+
         void RollBack();
+
         bool ExecuteNoQuery(string sql, IDictionary<string,object> parameters);
+
         void ExecuteNoQuery<T>(string sql, T model);
+        //get auto increase data
+        object ExecuteScalar(string sql, IDictionary<string, object> parameters);
+
         List<T> ExecuteList<T>(string sql, IDictionary<string, object> parameters);
+
         T ExecuteSingle<T>(string sql, IDictionary<string, object> parameters);
     }
     public class MySQLDatabaseConnect: IDatabaseConnect
@@ -198,6 +206,11 @@ namespace Kooboo.Sites.Scripting.Global.Database
         public void ExecuteNoQuery<T>(string sql, T model)
         {
             Connection.Execute(sql, model, transaction);
+        }
+
+        public object ExecuteScalar(string sql, IDictionary<string, object> value)
+        {
+            return Connection.ExecuteScalar(sql, value);
         }
         /// <summary>
         /// return a list 

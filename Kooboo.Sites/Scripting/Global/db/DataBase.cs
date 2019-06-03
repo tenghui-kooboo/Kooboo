@@ -5,14 +5,16 @@ using Kooboo.Data.Context;
 using Kooboo.Data.Interface;
 using Kooboo.Sites.Extensions;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
     public abstract class Database
     {
         protected RenderContext context;
 
-        protected virtual string Name => "indexdb";
+        public virtual string Name => "indexdb";
+
         public string connectionString;
+
         public Database(RenderContext context)
         {
             this.context = context;
@@ -20,6 +22,8 @@ namespace Kooboo.Sites.Scripting.Global.Database
 
         protected T GetSetting<T>(RenderContext context) where T : ISiteSetting
         {
+            if (context.WebSite == null)
+                return default(T);
             return context.WebSite.SiteDb().CoreSetting.GetSetting<T>();
         }
 

@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
     public class MySQLQuery : TableQuery
     {
-        private IkTable table;
         public MySQLQuery(IkTable table):base(table)
         {
-            this.table = table;
         }
         
-
         public override DynamicTableObject[] take(int count)
         {
-            var connection = DataBus.GetDataBase(table.TableContext.ConnectionString);
-            var sql = SQLHelper.GetSelectSql(table.TableContext.TableName, SearchCondition, OrderByField, Ascending, skipcount, count);
+            var connection = DataBus.GetDataBase(ktable.TableContext.ConnectionString);
+            var sql = SQLHelper.GetSelectSql(ktable.TableContext.TableName, SearchCondition, OrderByField, Ascending, skipcount, count);
 
             var list = connection.ExecuteList<object>(sql, null).ToArray();
             DynamicTableObject[] objects = list.Select(i => DynamicTableObject.Create(i as IDictionary<string, object>, null, null)).ToArray();
@@ -27,8 +24,8 @@ namespace Kooboo.Sites.Scripting.Global.Database
 
         public override int count()
         {
-            var connection = DataBus.GetDataBase(table.TableContext.ConnectionString);
-            var sql = SQLHelper.GetCountSql(table.TableContext.TableName, SearchCondition);
+            var connection = DataBus.GetDataBase(ktable.TableContext.ConnectionString);
+            var sql = SQLHelper.GetCountSql(ktable.TableContext.TableName, SearchCondition);
 
             var data = connection.ExecuteSingle<object>(sql, null);
 
@@ -47,7 +44,6 @@ namespace Kooboo.Sites.Scripting.Global.Database
 
             return 0;
         }
-
         
     }
 }

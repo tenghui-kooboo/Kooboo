@@ -5,7 +5,7 @@ using Kooboo.IndexedDB;
 using Kooboo.IndexedDB.Dynamic;
 using Kooboo.Data.Context;
 
-namespace Kooboo.Sites.Scripting.Global.Database
+namespace Kooboo.Sites.Scripting.Global.Db
 {
     public class TableContext
     {

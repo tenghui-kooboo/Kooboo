@@ -1,7 +1,9 @@
 //Copyright (c) 2018 Yardi Technology Limited. Http://www.kooboo.com 
 //All rights reserved.
+using System;
 using Kooboo.Data.Context;
-using Kooboo.Sites.Scripting.Global.Database;
+using Kooboo.Sites.Scripting.Global.Db;
+using System.Collections.Generic;
  
 namespace Kooboo.Sites.Scripting.Global
 { 
@@ -13,35 +15,80 @@ namespace Kooboo.Sites.Scripting.Global
             this.context = context;
         }
          
-        public KTable GetTable(string Name)
+        public IkTable GetTable(string Name)
         {
-            var db = Kooboo.Data.DB.GetKDatabase(this.context.WebSite);
-            var tb =  db.GetOrCreateTable(Name);
-            return new KTable(tb, this.context); 
+            //use indexdb by default
+            var db = new IndexDB(context);
+            return db.GetTable(Name);
         }
 
-        public KTable Table(string Name)
+        public IkTable Table(string Name)
         {
             return GetTable(Name); 
         }
 
-        public KMySQL Mysql
+        //return database/Iktable
+        public object this[string key]
         {
             get
             {
-                return new KMySQL(context);
+                var db = GetDatabase(key);
+                if (db!=null)
+                {
+                    return GetDatabase(key);
+                }
+
+                return GetTable(key);
             }
         }
 
+        private Database GetDatabase(string name)
+        {
+            if (DataBases.ContainsKey(name))
+            {
+                var type = DataBases[name];
+                return Activator.CreateInstance(type, context) as Database;
+            }
+            return null;
+        }
 
-        public KTable this[string key]
+        private static object _lockObj = new object();
+
+        private static Dictionary<string, Type> dataBases;
+
+        private static Dictionary<string,Type> DataBases
         {
             get
             {
-                return GetTable(key);  
+                if (dataBases == null)
+                {
+                    lock (_lockObj)
+                    {
+                        if (dataBases == null)
+                        {
+                            dataBases = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
+                            var types= Kooboo.Lib.Reflection.AssemblyLoader.LoadTypeByInterface(typeof(Database));
+
+                            var rendercontext = new RenderContext();
+                            foreach(var type in types)
+                            {
+                                try
+                                {
+                                    var instance = Activator.CreateInstance(type, rendercontext) as Database;
+                                    dataBases[instance.Name] = type;
+                                }
+                                catch
+                                {
+
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+                return dataBases;
             }
         }
-
 
     }  
 } 
