@@ -5,18 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kooboo.Sites.Scripting.Global.Database;
 
 namespace Kooboo.Sites.Scripting.Global
 {
     public class TableQuery
     {
-        public TableQuery(KTable table)
+        public TableQuery(IkTable table)
         {
             this.ktable = table;  
         }
 
         [Attributes.SummaryIgnore]
-        public KTable ktable { get; set; }
+        public IkTable ktable { get; set; }
 
         public int skipcount { get; set; }
 
@@ -52,9 +53,9 @@ namespace Kooboo.Sites.Scripting.Global
             return this;
         }
 
-        public DynamicTableObject[] take(int count)
+        public virtual DynamicTableObject[] take(int count)
         {
-            var query = new IndexedDB.Dynamic.Query(this.ktable.table);
+            var query = new IndexedDB.Dynamic.Query(this.ktable.TableContext.Table);
              
             if (!string.IsNullOrEmpty(this.SearchCondition))
             {
@@ -79,11 +80,11 @@ namespace Kooboo.Sites.Scripting.Global
             }
             
             var result =  query.Skip(this.skipcount).Take(count).ToArray();
-            return DynamicTableObject.CreateList(result, this.ktable.table, this.ktable.context); 
+            return DynamicTableObject.CreateList(result, this.ktable.TableContext.Table, this.ktable.context); 
 
         }
          
-        public int count()
+        public virtual int count()
         {
             // TODO: improve performance.
             var all = take(99999); 

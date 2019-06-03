@@ -5,51 +5,19 @@ using System.Linq;
 
 namespace Kooboo.Sites.Scripting.Global.Database
 {
-    public class MySQLQuery : ITableQuery
+    public class MySQLQuery : TableQuery
     {
-        private MySQLTable table;
-        public MySQLQuery(MySQLTable table)
+        private IkTable table;
+        public MySQLQuery(IkTable table):base(table)
         {
             this.table = table;
         }
-        public int skipcount { get; set; }
+        
 
-        public bool Ascending { get; set; }
-
-        public string OrderByField { get; set; }
-
-        public string SearchCondition { get; set; }
-
-        public ITableQuery OrderBy(string fieldname)
+        public override DynamicTableObject[] take(int count)
         {
-            this.OrderByField = fieldname;
-            this.Ascending = true;
-            return this;
-        }
-
-        public ITableQuery OrderByDescending(string fieldname)
-        {
-            this.OrderByField = fieldname;
-            this.Ascending = false;
-            return this;
-        }
-
-        public ITableQuery skip(int skip)
-        {
-            this.skipcount = skip;
-            return this;
-        }
-
-        public ITableQuery Where(string searchCondition)
-        {
-            this.SearchCondition = searchCondition;
-            return this;
-        }
-
-        public DynamicTableObject[] take(int count)
-        {
-            var connection = DataBus.GetDataBase(table.Database.connectionString);
-            var sql = SQLHelper.GetSelectSql(table.Name, SearchCondition, OrderByField, Ascending, skipcount, count);
+            var connection = DataBus.GetDataBase(table.TableContext.ConnectionString);
+            var sql = SQLHelper.GetSelectSql(table.TableContext.TableName, SearchCondition, OrderByField, Ascending, skipcount, count);
 
             var list = connection.ExecuteList<object>(sql, null).ToArray();
             DynamicTableObject[] objects = list.Select(i => DynamicTableObject.Create(i as IDictionary<string, object>, null, null)).ToArray();
@@ -57,10 +25,10 @@ namespace Kooboo.Sites.Scripting.Global.Database
             return objects;
         }
 
-        public int count()
+        public override int count()
         {
-            var connection = DataBus.GetDataBase(table.Database.connectionString);
-            var sql = SQLHelper.GetCountSql(table.Name, SearchCondition);
+            var connection = DataBus.GetDataBase(table.TableContext.ConnectionString);
+            var sql = SQLHelper.GetCountSql(table.TableContext.TableName, SearchCondition);
 
             var data = connection.ExecuteSingle<object>(sql, null);
 

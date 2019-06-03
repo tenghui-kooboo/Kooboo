@@ -18,8 +18,7 @@ namespace Kooboo.Sites.Scripting.Global.Database
         {
             var db = Kooboo.Data.DB.GetKDatabase(this.context.WebSite);
             var tb = db.GetOrCreateTable(Name);
-            //return new KTable(tb, this.context);
-            return null;
+            return new KTable(tb, this.context);
         }
     }
 }

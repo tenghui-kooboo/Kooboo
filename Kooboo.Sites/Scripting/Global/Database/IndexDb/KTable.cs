@@ -3,17 +3,25 @@
 using Kooboo.Data.Context;
 using Kooboo.IndexedDB.Dynamic;
 using System;
+using Kooboo.Sites.Scripting.Global.Database;
 
 namespace Kooboo.Sites.Scripting.Global
 {
-    public class KTable
+    public class KTable:IkTable
     {
         public Table table { get; set; }
 
         public RenderContext context { get; set; }
 
+        public TableContext TableContext { get; set; }
+
         public KTable(Table table, RenderContext context)
         {
+            TableContext = new TableContext()
+            {
+                Table = table,
+                RenderContext = context
+            };
             this.table = table;
             this.context = context;
         }

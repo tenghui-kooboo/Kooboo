@@ -48,6 +48,8 @@ namespace Kooboo.Sites.Scripting.Global.Database
     {
         public Database Database { get; set; }
         public string Name { get; set; }
+
+        public TableContext TableContext { get; set; }
         public RenderContext context { get; set; }
         #region old method
         public object add(object value)
