@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using System.Linq.Expressions;
 
 namespace Kooboo.Model.Meta.Table
@@ -89,6 +90,25 @@ namespace Kooboo.Model.Meta.Table
             where TCell : Cell
         {
             return Column(getName.PropertyName(), configureCell);
+        }
+
+        public TableMetaBuilder<T> MergeModel()
+        {
+            var type = typeof(T);
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var property in properties)
+            {
+                var attr = property.GetCustomAttribute(typeof(ColumnAttribute), true) as ColumnAttribute;
+                if (attr != null)
+                {
+                    Meta.Columns.TryAdd(Render.ParserHelper.ToJsName(property.Name), out var column);
+                    column.Cell = attr.Cell;
+                    var header = attr.Header ?? property.Name;
+                    column.Header = new Header { Text = header };
+                }
+            }
+
+            return this;
         }
 
         private void ConfigureColumn<TCell>(Column column, string header, Action<TCell> configureCell)

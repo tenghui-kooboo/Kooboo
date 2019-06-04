@@ -23,7 +23,7 @@ namespace Kooboo.Model.Meta.Table
 
         public string Name { get; set; }
 
-        public Localizable Text { get; set; }
+        public string Text { get; set; }
 
         public MenuAlign Align { get; set; }
 

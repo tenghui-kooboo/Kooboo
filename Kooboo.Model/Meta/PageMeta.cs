@@ -8,7 +8,7 @@ namespace Kooboo.Model.Meta
 {
     public class PageMeta : IViewMeta
     {
-        public Localizable Title { get; set; }
+        public string Title { get; set; }
 
         public Description Description { get; set; }
 

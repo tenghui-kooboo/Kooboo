@@ -47,7 +47,7 @@ namespace Kooboo.Model.Meta
             return true;
         }
 
-        public bool TryCreate(string name, out T item)
+        private bool TryCreate(string name, out T item)
         {
             if (_map.TryGetValue(name, out item))
                 return false;
