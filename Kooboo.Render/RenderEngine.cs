@@ -149,7 +149,7 @@ namespace Kooboo.Render
             {
                 return response;
             }
-            htmlbody = new ViewParser().RenderRootView(htmlbody, new Model.Render.ModelRenderContext
+            htmlbody = new ViewParser().TryRenderRootView(htmlbody, new Model.Render.ModelRenderContext
             {
                 HttpContext = Context,
                 SourceProvider = sourceprovider,

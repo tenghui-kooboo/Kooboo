@@ -4,6 +4,8 @@
       data: String,
       name: String,
       rules: Array,
+      options: Object,
+      ctx: Object,
       placeholder: String
     },
     data() {
@@ -17,11 +19,7 @@
         });
       }
     },
-    mixins: [window.vuelidate.validationMixin],
-    created() {
-      this.fieldValue = this.data;
-      // this.fieldValue = this.data[this.name];
-    },
+    mixins: [window.vuelidate.validationMixin,window.formItem],
     template: Kooboo.getTemplate(
       "/_Admin/Scripts/vue/components/kbForm/item/hidden.html"
     )

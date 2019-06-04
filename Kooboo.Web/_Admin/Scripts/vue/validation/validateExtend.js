@@ -53,7 +53,7 @@ validators.Extend = {
     if (rule.type == "sameAs") {
       var field = rule["field"];
       function equalTo(vm) {
-        return vm.$parameterBinder().getValuebyModel(vm.$data, field);
+        return vm.$parameterBinder.getValuebyModel(vm.$data, field);
       }
       return [equalTo];
     }
@@ -67,6 +67,7 @@ validators.Extend = {
       //sameAs: ["field"]
     };
     var keys = [];
+
     if (validatorParamsKeys[rule.type]) {
       keys = validatorParamsKeys[rule.type];
     }
@@ -128,7 +129,7 @@ validators.unique = function(apiurl) {
   return function(value, vm) {
     if (!value) return true;
 
-    var url = vm.$parameterBinder().bind(apiurl);
+    var url = vm.$parameterBinder.bind(apiurl);
     var result = false;
     api.get(url, true, true).then(function(res) {
       result = res.success;

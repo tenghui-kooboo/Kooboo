@@ -1,12 +1,13 @@
-<kb-modal :show="showModal" :config="meta" @close="showModal = false">
+<kb-modal :show="showModal" :config="metadata" @close="showModal = false">
   <template v-if="showModal">
-    <template v-for="view in meta.views">
+    <template v-for="view in metadata.views">
       <template v-if="view.type == 'form'">
-        <kb-form
+        <kb-form ref="body"
           slot="body"
           :ctx="ctx"
           :meta-name="view.metaName"
         ></kb-form>
-      </template> </template
-  ></template>
+      </template> 
+      </template>
+    </template>
 </kb-modal>

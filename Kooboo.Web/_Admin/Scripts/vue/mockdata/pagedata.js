@@ -1,5 +1,5 @@
 //table data
-var siteId = "d04e2749-a785-fc5c-80cb-3573520e27bb";
+var siteId = "2f3b128c-b919-e2c7-7379-667b7411d25b";
 Mock.mock("/_api/page/all?SiteId=" + siteId, function () {
   return {
     model: {
@@ -295,7 +295,6 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=routeFormMeta", functi
 
 //copyPopup 
 Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=copyPopup", function () {
-  debugger;
   return {
     model: {
       title: 'Copy', //copy view:aa-->copy {page.title}:{selectedrow.name}
@@ -345,14 +344,18 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=copyFormMeta", functio
             message: 'required'
           },
           {
-            type: "between",
-            from: 1,
-            to: 64,
-            message: 'minLength 1,maxLength 64'
+            type: "minLength",
+            minLength: 1,
+            message: 'minLength 1'
+          },
+          {
+            type: "maxLength",
+            maxLength: 64,
+            message: 'maxLength 64'
           },
           {
             type: "unique",
-            api: "/page/isUnique?name={name}",
+            api: "/page/isUniqueName?name={name}",
             message: 'taken'
           }
         ]
@@ -362,7 +365,7 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=copyFormMeta", functio
         name: "id",
         options: {
           data: "selected", //context:selected/list
-          text: "id"
+          text: "{id}"
         }
       }, {
         type: "hidden",
@@ -378,7 +381,8 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=copyFormMeta", functio
           },
           {
             type: "regex",
-            regex: "^[^\s|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\[|\]|\;|\:|\"|\'|\,|\<|\>|\?]*$",
+            //regex: "^[^\s|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\||\[|\]|\;|\:|\"|\'|\,|\<|\>|\?]*$",
+            regex:'.+',
             message: "invalid"
           }
         ]

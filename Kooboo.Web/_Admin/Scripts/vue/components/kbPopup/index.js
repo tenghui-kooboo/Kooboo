@@ -9,18 +9,31 @@
       visible: Boolean,
       meta: Object
     },
+    provide(){
+      return {
+        popup:this
+      }
+    },
     data() {
       return {
         showModal: false,
-        ctx: null
+        ctx: null,
+        metadata:this.meta
       };
     },
     methods: {
+      getPopupBody(){
+        if(this.$refs.body && this.$refs.body.length > 0){
+          return this.$refs.body[0]
+        }
+        return null
+      },
       show(ctx) {
         this.ctx = ctx;
         var modelName=this.getModelName(ctx.parameters);
         if(modelName){
-          this.meta= api.getMeta(modelName);
+          //can't set value to prop directly
+          this.metadata= api.getMeta(modelName);
         }
 
         this.showModal = true;

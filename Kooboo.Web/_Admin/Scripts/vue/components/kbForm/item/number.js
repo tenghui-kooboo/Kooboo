@@ -2,6 +2,8 @@
   Kooboo.vue.component.kbFormItemNumber = Vue.component("kb-form-item-number", {
     props: {
       data: String,
+      options: Object,
+      ctx: Object,
       placeholder: String
     },
     data() {
@@ -17,11 +19,7 @@
         });
       }
     },
-    mixins: [window.fieldValidateMixin],
-    created() {
-      this.fieldValue = this.data;
-      // this.fieldValue = this.data[this.name];
-    },
+    mixins: [window.fieldValidateMixin,window.formItem],
     template: Kooboo.getTemplate(
       "/_Admin/Scripts/vue/components/kbForm/item/number.html"
     )

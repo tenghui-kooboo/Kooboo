@@ -1,4 +1,4 @@
-(function() {
+(function () {
   Kooboo.loadJS([
     "/_Admin/Scripts/vue/components/kbForm/item/textbox.js",
     "/_Admin/Scripts/vue/components/kbForm/item/textarea.js",
@@ -52,8 +52,10 @@
     },
     methods: {
       valueChange(obj) {
-        this.$emit("fieldValue", Object.assign(obj, { name: this.name }));
-      }
+        this.$emit("fieldValue", Object.assign(obj, {
+          name: this.name
+        }));
+      },
     },
     mounted() {
       this.rendered = true;
