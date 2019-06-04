@@ -1,10 +1,13 @@
 <template>
   <div>
-    <inner-menu v-if="meta"
-      :meta="meta.menu" :data="typeof data === 'object' ? data : null" :list="list"
-      :selected="selected"></inner-menu>
-    <inner-table v-if="meta"
-      :meta="meta" :list="list"></inner-table>
+    <inner-menu
+      v-if="meta_d"
+      :meta="meta_d.menu"
+      :data="typeof data_d === 'object' ? data_d : null"
+      :list="list"
+      :selected="selected"
+    ></inner-menu>
+    <inner-table v-if="meta_d" :ctx="ctx" :meta="meta_d" :list="list" :showSelected="showSelected"></inner-table>
   </div>
 </template>
 
@@ -16,21 +19,51 @@ export default {
   name: "KoobooTable",
 
   props: {
+    metaName: String,
     meta: Object,
     data: Object,
-    listName: String
+    listName: String,
+    ctx: Object
   },
-
+  data() {
+    return {
+      meta_d: this.meta,
+      data_d: this.data
+    }
+  },
+  created() {
+    if (!this.meta_d && this.metaName) {
+      this.meta_d = api.getMeta(this.metaName);
+      var self = this;
+      
+      if (this.meta_d.dataApi) {
+        api
+          .get(this.$parameterBinder.bind(this.meta_d.dataApi, this.ctx.parameters))
+          .then(function (res) {
+            if (res.success) {
+              self.data_d =res.model;
+            }
+          });
+      }
+    }
+  },
   computed: {
-    selected () {
+    showSelected(){
+      if(this.meta_d.hasOwnProperty("showSelected")){
+          return this.meta_d.showSelected ? true : false;
+      }
+      //default is show
+      return true;
+    },
+    selected() {
       return this.list.filter(o => o.__selected)
     },
 
-    list () {
-      if (!this.data) {
+    list() {
+      if (!this.data_d) {
         return []
       } else {
-        return this.listName ? this.data[this.listName] : this.data
+        return this.listName ? this.data_d[this.listName] : this.data_d
       }
     }
   },

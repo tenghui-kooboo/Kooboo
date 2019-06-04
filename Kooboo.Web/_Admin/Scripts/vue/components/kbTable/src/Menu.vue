@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar navbar-default">
+  <div class="navbar navbar-default" v-if="meta&&meta.length>0">
     <div class="container-fluid">
       <component v-for="(item, index) in meta" :key="index"
         :is="`menu-${item.type}`" v-show="visible(item)"
@@ -17,7 +17,7 @@ export default {
   props: {
     meta: Array,
     selected: Array,
-    data: Object,
+    data: Object|Array,
     list: Array
   },
 

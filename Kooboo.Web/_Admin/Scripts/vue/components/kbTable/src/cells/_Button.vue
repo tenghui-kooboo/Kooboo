@@ -20,17 +20,23 @@ export default {
       default: false
     }
   },
-
+  inject: ['table'],
   methods: {
-    bindUrl (url) {
+    bindUrl(url) {
       url = url || this.row[this.name]
-      url = this.$parameterBinder.bind(url, this.row)
+      debugger
+      var data = this.row
+      if (this.table.ctx && this.table.ctx.parameters) {
+        data = Vue.util.extend({}, this.row)
+        data = Vue.util.extend(data, this.table.ctx.parameters)
+      }
+      url = this.$parameterBinder.bind(url, data)
       return url
     },
 
-    onClick () {
+    onClick() {
       switch (this.meta.action) {
-        case 'event': 
+        case 'event':
           this.$root[this.meta.url](this.row)
           break;
         case 'post':

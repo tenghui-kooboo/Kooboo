@@ -23,7 +23,7 @@ export default {
   props: {
     meta: Object,
     selected: Array,
-    data: Object,
+    data: Object|Array,
     list: Array
   },
 

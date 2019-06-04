@@ -30,7 +30,10 @@ Mock.mock("/_api/page/all?SiteId=" + siteId, function () {
         previewUrl: "http://asdf.kooboo/aass",
         inlineUrl: "/_api/redirect/inline?siteid=b88fea9f-2f3a-51a7-f38c-bf827c38918d&pageid=3104f1e5-7d0e-4d37-9124-c67c7ae10e4b",
         startPage: false,
-        relations: {},
+        relations: {
+          "view": 1,
+          "layout": 1
+        },
         type: "Normal"
       }]
     }
@@ -388,6 +391,91 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=copyFormMeta", functio
         ]
       }]
 
+    }
+  }
+});
+//dataApi:'Relation/ShowBy?id={id}&by={by}&type={type}',
+//id=3104f1e5-7d0e-4d37-9124-c67c7ae10e4b&by=layout&type=page&siteId=2f3b128c-b919-e2c7-7379-667b7411d25b
+Mock.mock("/_api/Relation/ShowBy?SiteId=" + siteId + "&id=3104f1e5-7d0e-4d37-9124-c67c7ae10e4b&by=layout&type=page", function () {
+  return {
+    "model": [
+      {
+        "objectId": "22e26c62-1b35-b268-59f7-3de172f11249",
+        "constType": 10,
+        "modelType": "Kooboo.Sites.Models.View, Kooboo.Sites, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "url": "http://test.kooboo/__kb/View/22e26c62-1b35-b268-59f7-3de172f11249",
+        "name": "test",
+        "remark": null
+      },
+      
+    ],
+    success:true
+  }
+});
+
+Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=relationPopup", function () {
+  return {
+    model: {
+      title: 'Relation', //copy view:aa-->copy {page.title}:{selectedrow.name}
+      description: {
+        title: '',
+        content: '',
+        closable: false
+      },
+      buttons: [{
+        class: "gray",
+        text: "OK",
+        type: "close",
+      }],
+      views: [{
+        type: 'table',
+        metaName: "relationTable",
+      }]
+    }
+
+  }
+});
+
+//copy meta
+Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=relationTable", function () {
+  return {
+    model: {
+      listName:'',
+      dataApi:'Relation/ShowBy?id={id}&by={by}&type={type}',
+      menu:[],
+      showSelected:false,
+      columns:[
+        {
+          name: "name",
+          header: {
+            text: "Name"
+          },
+          cell: {
+            type: "link",
+            action: "newWindow",
+            url:'{url}'
+          }
+        },
+        {
+          name: "remark",
+          header: {
+            text: "Remark"
+          },
+          cell: {
+            type: "text"
+          }
+        },
+        {
+          name: "Edit",
+          cell: {
+            type: "icon",
+            class: "blue btn-xs",
+            iconClass:'pencil',
+            action: "newWindow",
+            url: "/_Admin/Development/{by}?id={objectId}"
+          }
+        }
+      ]
     }
   }
 });

@@ -13,7 +13,11 @@
     },
     methods: {
       onClose: function () {
-        this.$refs.body.children[0].__vue__.reset();
+        var form=this.popup.getPopupBody();
+        if(form&&form.reset){
+          form.reset();
+        }
+        //this.$refs.body.children[0].__vue__.reset();
         this.$emit("close");
       },
       onClick: function (type) {
