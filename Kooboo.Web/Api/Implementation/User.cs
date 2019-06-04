@@ -36,24 +36,24 @@ namespace Kooboo.Web.Api.Implementation
             }
         }
 
-        public MetaResponse Login(Kooboo.Model.Setting.UserModelSetting userModel, ApiCall apiCall)
+        public MetaResponse Login(string UserName, string Password, ApiCall apiCall)
         {
 
-            if (!Kooboo.Data.Service.UserLoginProtection.CanTryLogin(userModel.UserName, apiCall.Context.Request.IP))
+            if (!Kooboo.Data.Service.UserLoginProtection.CanTryLogin(UserName, apiCall.Context.Request.IP))
             {
                 throw new Exception(Data.Language.Hardcoded.GetValue("user or ip temporarily lockout", apiCall.Context));
             }
 
-            var user = Kooboo.Data.GlobalDb.Users.Validate(userModel.UserName,userModel.Password);
+            var user = Kooboo.Data.GlobalDb.Users.Validate(UserName, Password);
 
             if (user == null)
             {
-                Data.Service.UserLoginProtection.AddLoginFail(userModel.UserName, apiCall.Context.Request.IP);
+                Data.Service.UserLoginProtection.AddLoginFail(UserName, apiCall.Context.Request.IP);
             }
 
             if (user != null)
             {
-                string remember =userModel.Remember.ToString();
+                string remember = apiCall.GetValue("remember");
 
                 bool samesite = false;
                 string type = apiCall.GetValue("type");
@@ -68,7 +68,7 @@ namespace Kooboo.Web.Api.Implementation
                 }
 #endif 
 
-                string returnUrl = userModel.Returnurl;
+                string returnUrl = apiCall.GetValue("returnurl");
                 if (returnUrl != null)
                 {
                     returnUrl = System.Web.HttpUtility.UrlDecode(returnUrl);
@@ -125,22 +125,22 @@ namespace Kooboo.Web.Api.Implementation
 
         }
 
-        public virtual MetaResponse Register(Kooboo.Model.Setting.RegisterModel register, ApiCall apiCall)
+        public virtual MetaResponse Register(string UserName, string Password, string email, ApiCall apiCall)
         {
-            if (string.IsNullOrEmpty(register.UserName) || string.IsNullOrEmpty(register.Password))
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
             {
                 throw new Exception(Data.Language.Hardcoded.GetValue("Username or password not provided", apiCall.Context));
             }
-            register.UserName = Lib.Helper.StringHelper.ToValidUserNames(register.UserName);
-            var currentuser = Kooboo.Data.GlobalDb.Users.Get(register.UserName);
+            UserName = Lib.Helper.StringHelper.ToValidUserNames(UserName);
+            var currentuser = Kooboo.Data.GlobalDb.Users.Get(UserName);
             if (currentuser != null)
             {
                 throw new Exception(Data.Language.Hardcoded.GetValue("user exists", apiCall.Context));
             }
             var user = new User();
-            user.UserName = register.UserName;
-            user.Password = register.Password;
-            user.EmailAddress = register.Email;
+            user.UserName = UserName;
+            user.Password = Password;
+            user.EmailAddress = email;
             string acceptlang = apiCall.Context.Request.Headers["Accept-Language"];
             user.Language = Kooboo.Data.Language.LanguageSetting.GetByAcceptLangHeader(acceptlang);
 
