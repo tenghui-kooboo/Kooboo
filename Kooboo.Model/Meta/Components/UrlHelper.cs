@@ -29,7 +29,12 @@ namespace Kooboo.Model.Meta
 
         public static string ApiUrl<TApi>(string method)
         {
-            var apiUrl = typeof(TApi).Name + "/" + method;
+            return ApiUrl(typeof(TApi), method);
+        }
+
+        public static string ApiUrl(Type apiType, string method)
+        {
+            var apiUrl = apiType.Name + "/" + method;
             var meta = MetaProvider.ApiMetaProvider.GetMeta(apiUrl);
 
             return ApiUrl(apiUrl, meta.Parameters);

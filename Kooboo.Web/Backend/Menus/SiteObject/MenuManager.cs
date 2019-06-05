@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 using Kooboo.Model.Meta;
 using Kooboo.Model.Meta.Table;
@@ -58,23 +59,41 @@ namespace Kooboo.Web.Menus.ObjectMenu
 
     public static class TableMetaBuilderExtensions
     {
-        public static TableMetaBuilder<TModel> MergeModel<TModel, TEntity>(this TableMetaBuilder<TModel> builder)
+        private static Type ViewModelGeneric = typeof(IViewModel<>);
+
+        public static TableMetaBuilder<TModel> MergeApi<TModel, TEntity>(this TableMetaBuilder<TModel> builder)
             where TEntity : ISiteObject
         {
-            var methods = MenuManager.GetSiteMenuApiMethodByType(typeof(TEntity));
+            return MergeApi<TModel>(builder, typeof(TEntity));
+        }
+
+        public static TableMetaBuilder<TModel> MergeApi<TModel>(this TableMetaBuilder<TModel> builder)
+        {
+            var viewModelType = typeof(TModel);
+            var interfaceType = viewModelType.GetInterfaces().FirstOrDefault(o => o.IsGenericType && o.GetGenericTypeDefinition() == ViewModelGeneric);
+            if (interfaceType == null)
+                throw new InvalidOperationException("Can only guess Api for view model who implement IViewModel<T>");
+
+            var entityType = interfaceType.GetGenericArguments()[0];
+            return MergeApi(builder, entityType);
+        }
+
+        private static TableMetaBuilder<TModel> MergeApi<TModel>(TableMetaBuilder<TModel> builder, Type entityType)
+        {
+            var methods = MenuManager.GetSiteMenuApiMethodByType(entityType);
             foreach (var each in methods)
             {
                 var methodName = each.Key;
                 var attr = each.Value;
-                var url = UrlHelper.ApiUrl<TEntity>(methodName);
+                var url = UrlHelper.ApiUrl(entityType, methodName);
                 builder.Meta.Menu.Add(new ButtonMenu
                 {
                     Name = methodName,
-                    Text = attr.Text,
+                    Text = new Localizable(attr.Text),
                     Align = attr.AlignRight ? MenuAlign.Right : MenuAlign.Left,
                     Visible = attr.Multiple ? Comparison.OnMultipleSelection : Comparison.OnSingleSelection,
                     Class = attr.Class,
-                    Action = ActionMeta.Popup(url)
+                    Action = ActionMeta.Post(url)
                 });
             }
 
