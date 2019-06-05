@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta.Table
 {
-    public class ArrayCell : Cell
+    public class ArrayCell : ButtonCell
     {
     }
 }

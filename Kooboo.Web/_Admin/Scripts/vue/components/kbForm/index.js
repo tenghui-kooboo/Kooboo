@@ -4,6 +4,7 @@
   Kooboo.vue.component.kbForm = Vue.component("kb-form", {
     props: {
       metaName: String,
+      meta:Object,
       data: {
         type: Object,
         default: function() {
@@ -14,18 +15,20 @@
     },
     data() {
       return {
-        meta: {},
+        meta_d: this.meta,
         formData: {},
         fieldsValue: []
       };
     },
     computed: {
       layout() {
-        if (this.meta) {
-          switch (this.meta.layout) {
+        if (this.meta_d) {
+          switch (this.meta_d.layout) {
             case "horizontal":
+            case 0:
               return "form-horizontal";
             case "inline":
+            case 1:
               return "form-inline";
             default:
               return "";
@@ -33,29 +36,33 @@
         } else {
           return "";
         }
-      }
+      },
+      isHorizontal(){
+        return this.meta_d.layout=="horizontal"||this.meta_d.layout===0
+      },
     },
+    
     created() {
       var self = this;
       if (this.metaName) {
-        this.meta=api.getMeta(this.metaName);
-        if (this.meta.loadApi) {
-          api
-            .get(this.$parameterBinder.bind(this.meta.loadApi))
-            .then(function(res) {
-              if (res.success) {
-                Vue.set(self, "formData", res.model);
-              }
-            });
-        } else {
-          this.formData = this.data;
-        }
+        this.meta_d=api.getMeta(this.metaName);//support metaname
+      }
+      if (this.meta_d && this.meta_d.loadApi) {
+        api
+          .get(this.$parameterBinder.bind(this.meta_d.loadApi))
+          .then(function(res) {
+            if (res.success) {
+              Vue.set(self, "formData", res.model);
+            }
+          });
+      } else {
+        this.formData = this.data;
       }
     },
     watch: {
       formData(data) {
-        if (this.meta && this.meta.items && this.meta.items.length > 0) {
-          this.meta.items.forEach(function(item) {
+        if (this.meta_d && this.meta_d.items && this.meta_d.items.length > 0) {
+          this.meta_d.items.forEach(function(item) {
             Vue.set(item, "data", data[item.name]);
           });
         }
@@ -91,22 +98,20 @@
         return new Promise(function(resolve, reject) {
           api
             .post(
-              self.$parameterBinder.bind(self.meta.submitApi),
+              self.$parameterBinder.bind(self.meta_d.submitApi),
               self.getFieldsValue()
             )
             .then(function(res) {
               resolve(res);
             })
-            .catch(function(ex) {
-              reject(ex);
-            });
+            ;
         });
       },
       reset() {
         Vue.set(this, "formData", {});
         //this.formData = {};
         this.fieldsValue = [];
-        this.meta = {};
+        this.meta_d = {};
       }
     },
     components: {

@@ -178,7 +178,7 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=page", function () {
           cell: {
             type: "button",
             class: "blue",
-            innerText: "Setting",
+            text: "Setting",
             action: "redirect",
             url: "/page/details?id={id}&layoutId={layoutId}"
           }
@@ -188,7 +188,7 @@ Mock.mock("/_api/meta/get?SiteId=" + siteId + "&modelname=page", function () {
           cell: {
             type: "button",
             class: "btn-primary hidden-xs",
-            innerText: "Inline edit",
+            text: "Inline edit",
             action: "newWindow"
           }
         },

@@ -21,6 +21,8 @@ namespace Kooboo.Model.Meta.Form
 
         public string Tooltip { get; set; }
 
+        public SelectOptions Options { get; set; }
+
         private List<Validation.ValidationRule> _rules;
         public List<Validation.ValidationRule> Rules
         {

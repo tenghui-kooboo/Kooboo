@@ -20,15 +20,37 @@ export default {
     data: Object|Array,
     list: Array
   },
+  
+  computed:{
+    operator(){
+      if (!this.item.visible) {
+        return null
+      }
+      if(this.item.visible.compare){
+        return this.item.visible.compare
+      }
+      return this.item.visible.operator
+    }
+  },
 
   methods: {
     visible (item) {
       if (!item.visible) {
         return true
       }
-
-      const compare = item.visible.compare === '=' ? '===' : item.visible.compare
+      var operator=this.getOperator(item)
+      const compare = operator === '=' ? '===' : operator
       return eval(`${this.selected.length} ${compare} ${item.visible.value}`)
+    },
+    //for adapter old field
+    getOperator(item){
+      if (!item.visible) {
+        return null
+      }
+      if(item.visible.compare){
+        return item.visible.compare
+      }
+      return item.visible.operator
     }
   },
 

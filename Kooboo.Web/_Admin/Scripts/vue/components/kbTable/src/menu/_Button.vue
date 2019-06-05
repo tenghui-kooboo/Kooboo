@@ -1,15 +1,21 @@
 <template>
-  <inner-button :meta="meta" :bind-url="bindUrl" @click="onClick" :icon="icon"
+  <inner-button
+    :meta="meta"
+    :bind-url="bindUrl"
+    @click="onClick"
+    :icon="icon"
     :class="[ 
       'btn navbar-btn',
       meta.class,
-      { 'pull-right': meta.align === 'right' },
+      { 'pull-right': alignRight },
       { 'btn-default': icon }
-    ]" />
+    ]"
+  />
 </template>
 
 <script>
 import InnerButton from '../components/_Button'
+import actionMixin from '../actionMixin'
 
 export default {
   name: 'MenuInnerButton',
@@ -24,22 +30,38 @@ export default {
     }
   },
 
+  computed: {
+    alignRight() {
+      return this.meta.align === 'right' || this.meta.align == 1
+    }
+  },
+
+  mixins: [actionMixin],
+
   methods: {
-    bindUrl (url) {
+    bindUrl(url) {
       return this.$parameterBinder.bind(url)
     },
 
-    onClick () {
-      switch (this.meta.action) {
+    onClick() {
+      switch (this.actionType) {
         case 'post':
-          api.post(this.bindUrl(this.meta.url), { ids: this.selected.map(o => o.id) })
+          if(this.action.confirm){
+            var text=eval("Kooboo.text."+this.action.confirm)
+            if(confirm(text)){
+              api.post(this.bindUrl(this.action.url), { ids: this.selected.map(o => o.id) })
+            }
+          }else{
+              api.post(this.bindUrl(this.action.url), { ids: this.selected.map(o => o.id) })
+          }
+          
           break;
         case 'event':
-          this.$root[this.meta.url](this.selected)
+          this.$root[this.action.url](this.selected)
           break;
-        default:
+        case 'popup':
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder.getKeyValue(this.meta.url),
+            parameters: this.$parameterBinder.getKeyValue(this.action.url),
             context: this.list,
             selected: this.selected
           })

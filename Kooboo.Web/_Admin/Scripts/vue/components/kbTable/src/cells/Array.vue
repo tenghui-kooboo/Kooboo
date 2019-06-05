@@ -12,7 +12,7 @@
 
 <script>
 import Mixins from './mixins'
-
+import actionMixin from '../actionMixin'
 export default {
   name: 'CellArray',
 
@@ -36,9 +36,9 @@ export default {
       }
     },
     onClick(key) {
-      switch (this.meta.action) {
+      switch (this.actionType) {
         case "popup":
-          var url = this.meta.url.replace('{key}', key);
+          var url = this.action.url.replace('{key}', key);
           this.$root.$refs.popup.show({
             parameters: this.$parameterBinder.getKeyValue(url,this.row),
             context: this.list,
@@ -49,6 +49,6 @@ export default {
     }
   },
 
-  mixins: [Mixins]
+  mixins: [Mixins,actionMixin]
 }
 </script>

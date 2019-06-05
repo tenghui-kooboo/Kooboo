@@ -12,6 +12,10 @@ namespace Kooboo.Model.Meta.Form
 
         public string SubmitApi { get; set; }
 
+        public FormLayout Layout { get; set; }
+
+        public string Type => "form";
+
         private NamedMetaCollection<FormItem> _items;
         public NamedMetaCollection<FormItem> Items
         {
@@ -24,5 +28,10 @@ namespace Kooboo.Model.Meta.Form
                 return _items;
             }
         }
+    }
+    public enum FormLayout
+    {
+        Horizontal,
+        Inline
     }
 }

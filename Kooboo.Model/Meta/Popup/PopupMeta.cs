@@ -12,6 +12,19 @@ namespace Kooboo.Model.Meta.Popup
 
         public Description Description { get; set; }
 
+        public List<PopupButton> _buttons;
+        public List<PopupButton> Buttons
+        {
+            get
+            {
+                if (_buttons == null)
+                {
+                    _buttons = new List<PopupButton>();
+                }
+                return _buttons;
+            }
+        }
+
         private List<IViewMeta> _views;
         public List<IViewMeta> Views
         {
@@ -24,5 +37,20 @@ namespace Kooboo.Model.Meta.Popup
                 return _views;
             }
         }
+    }
+
+    public class PopupButton
+    {
+        public string Class { get; set; }
+
+        public string Text { get; set; }
+
+        public PageButtonAction Type { get; set; }
+    }
+    
+    public enum PageButtonAction
+    {
+        Submit=0,
+        Close=1
     }
 }

@@ -33,6 +33,14 @@ namespace Kooboo.Model.Meta.Validation
             }
         }
 
+        public override string Type
+        {
+            get
+            {
+                return "minLength";
+            }
+        }
+
         public override string GetRule()
         {
             return string.Format("{{type:\"minLength\",minLength:{1},message:\"{0}\"}}", Message, MinLength);

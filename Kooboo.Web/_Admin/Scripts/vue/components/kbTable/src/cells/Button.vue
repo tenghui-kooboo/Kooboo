@@ -2,7 +2,7 @@
   <td class="table-action">
     <inner-button :meta="meta" :row="row" :name="name" :list="list"
       :class="[ 'btn btn-sm', meta.class ]" :style="meta.style">
-      {{ meta.innerText }}
+      {{ meta.text }}
     </inner-button>
   </td>
 </template>

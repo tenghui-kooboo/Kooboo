@@ -1,7 +1,7 @@
 <div class="form" :class="layout">
-  <template v-if="meta">
+  <template v-if="meta_d">
     <kb-form-item
-      v-for="(item, idx) in meta.items"
+      v-for="(item, idx) in meta_d.items"
       :key="idx"
       :idx="idx"
       :ctx="ctx"
@@ -15,7 +15,7 @@
       :controlType="item.type"
       :externalClass="item.class"
       :placeholder="item.placeholder"
-      :horizontal="meta.layout=='horizontal'"
+      :horizontal="isHorizontal"
       @fieldValue="valueChange"
     ></kb-form-item>
   </template>

@@ -15,16 +15,26 @@ namespace Kooboo.Model.Meta
         /// <summary>
         /// Get select options from context data
         /// </summary>
-        public static SelectOptions UseContext(string dataField, string textField, string valueField = null)
+        public static SelectOptions UseContext(string dataField, string textField, string valueField = null, OptionContext defaultOption = null)
         {
             return new SelectOptions 
             {
                 Context = new OptionContext
                 {
-                    DataField = dataField,
-                    TextField = textField,
-                    ValueField = valueField
+                    Data = dataField,
+                    Text = textField,
+                    Value = valueField,
+                    Default=defaultOption
                 }
+            };
+        }
+
+        public static OptionContext UseDefaultOption(string text,string value)
+        {
+            return new OptionContext()
+            {
+                Text = "System default",
+                Value = value
             };
         }
 
@@ -38,18 +48,20 @@ namespace Kooboo.Model.Meta
 
         public class OptionContext
         {
-            public string DataField { get; set; }
+            public string Data { get; set; }
 
-            public string TextField { get; set; }
+            public string Text { get; set; }
 
-            public string ValueField { get; set; }
+            public string Value { get; set; }
+
+            public OptionContext Default { get; set; }
         }
 
         public class OptionItem
         {
             public string Text { get; set; }
 
-            public string Value { get; set; }
+            public string Data { get; set; }
         }
     }
 }

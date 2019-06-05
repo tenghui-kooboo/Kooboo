@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import actionMixin from '../actionMixin'
 export default {
   name: 'InnerButton',
 
@@ -20,6 +21,8 @@ export default {
     }
   },
 
+  mixins:[actionMixin],
+
   mounted () {
     if (this.isAction) {
       this.$refs.button.addEventListener('click', this.onClick)
@@ -27,20 +30,16 @@ export default {
   },
 
   computed: {
-    isAction () {
-      return this.meta.action === 'post' || this.meta.action === 'event' || this.meta.action === 'popup'
-    },
-
     href () {
       if (this.isAction) {
         return 'javascript:;'
       } else {
-        return this.bindUrl(this.meta.url)
+        return this.bindUrl(this.action.url)
       }
     },
 
     target () {
-      if (this.meta.action === 'newWindow') {
+      if (this.actionType === 'newWindow') {
         return '_blank'
       } else {
         return null

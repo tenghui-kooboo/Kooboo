@@ -16,6 +16,7 @@
 
 <script>
 import InnerButton from '../components/_Button'
+import actionMixin from '../actionMixin'
 
 export default {
   name: 'MenuDropDown',
@@ -32,6 +33,8 @@ export default {
       expanded: false
     }
   },
+
+  mixins:[actionMixin],
 
   computed: {
     options () {
@@ -62,16 +65,16 @@ export default {
     },
 
     onClick (option) {
-       switch (this.meta.action) {
+       switch (this.actionType) {
         case 'post':
-          api.post(this.bindUrl(this.meta.url, option), { ids: this.selected.map(o => o.id) })
+          api.post(this.bindUrl(this.action.url, option), { ids: this.selected.map(o => o.id) })
           break;
         case 'event':
-          this.$root[this.meta.url](this.selected)
+          this.$root[this.action.url](this.selected)
           break;
-        default:
+        case 'popup':
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder.getKeyValue(this.meta.url),
+            parameters: this.$parameterBinder.getKeyValue(this.action.url),
             context: this.list,
             selected: this.selected
           })

@@ -38,6 +38,15 @@ namespace Kooboo.Model.Meta.Validation
             return string.Format("{{type:\"unique\",api:\"{1}\",message:\"{0}\"}}", Message,Api);
         }
 
+        public override string Type
+        {
+            get
+            {
+                return "unique";
+            }
+        }
+
+
         public override bool IsValid(object value)
         {
             return true;

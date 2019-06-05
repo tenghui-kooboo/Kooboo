@@ -31,6 +31,14 @@ namespace Kooboo.Model.Meta.Validation
             }
         }
 
+        public override string Type
+        {
+            get
+            {
+                return "required";
+            }
+        }
+
         public override string GetRule()
         {
             return string.Format("{{ type: \"required\", message: \"{0}\" }}", Message);

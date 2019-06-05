@@ -6,6 +6,7 @@
 
 <script>
 import InnerButton from '../components/_Button'
+import actionMixin from '../actionMixin'
 
 export default {
   name: 'CellInnerButton',
@@ -20,11 +21,14 @@ export default {
       default: false
     }
   },
+
   inject: ['table'],
+  
+  mixins:[actionMixin],
+
   methods: {
     bindUrl(url) {
       url = url || this.row[this.name]
-      debugger
       var data = this.row
       if (this.table.ctx && this.table.ctx.parameters) {
         data = Vue.util.extend({}, this.row)
@@ -35,16 +39,16 @@ export default {
     },
 
     onClick() {
-      switch (this.meta.action) {
+      switch (this.actionType) {
         case 'event':
-          this.$root[this.meta.url](this.row)
+          this.$root[this.action.url](this.row)
           break;
         case 'post':
-          api.post(this.bindUrl(this.meta.url, this.row))
+          api.post(this.bindUrl(this.action.url, this.row))
           break;
-        default:
+        case "popup":
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder.getKeyValue(this.meta.url),
+            parameters: this.$parameterBinder.getKeyValue(this.action.url),
             context: this.list,
             row: this.row
           })

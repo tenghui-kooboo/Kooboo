@@ -80,11 +80,14 @@ api = {
         } else {
           // if(res.model&& res.model.redirectUrl){
           //   window.location.href=res.model.redirectUrl;
-          if (res.model) {
-            window.location.href = res.model;
-          } else {
-            window.location.href = window.location.href;
-          }
+          //todo 
+          // if (res.model) {
+          //   window.location.href = res.model;
+          // } else {
+          //   window.location.href = window.location.href;
+          // }
+
+          window.location.href = window.location.href;
         }
       });
   },
@@ -109,8 +112,38 @@ api = {
       });
   },
 
-  getMeta: function (modelName) {
-    var url = "/meta/get?modelname=" + modelName;
+  // getMeta: function (modelName) {
+  //   var url = "/meta/get?modelname=" + modelName;
+  //   var meta = {};
+  //   this.get(url).then(function (res) {
+  //     if (res.model) {
+  //       meta = res.model;
+  //     }
+  //   })
+  //   return meta;
+  // },
+  tableMeta:function(modelName){
+    var url = "/meta/table?model=" + modelName;
+    var meta = {};
+    this.get(url).then(function (res) {
+      if (res.model) {
+        meta = res.model;
+      }
+    })
+    return meta;
+  },
+  popupMeta:function(modelName){
+    var url = "/meta/popup?model=" + modelName;
+    var meta = {};
+    this.get(url).then(function (res) {
+      if (res.model) {
+        meta = res.model;
+      }
+    })
+    return meta;
+  },
+  formMeta:function(modelName){
+    var url = "/meta/form?model=" + modelName;
     var meta = {};
     this.get(url).then(function (res) {
       if (res.model) {
@@ -171,7 +204,7 @@ api = {
     );
   },
   getList: function (modelName) {
-    var meta = this.getMeta(modelName);
+    var meta = this.tableMeta(modelName);
 
     var data = {};
     if (meta.dataApi) {

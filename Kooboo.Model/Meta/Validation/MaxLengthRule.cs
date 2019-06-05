@@ -33,6 +33,14 @@ namespace Kooboo.Model.Meta.Validation
             }
         }
 
+        public override string Type
+        {
+            get
+            {
+                return "maxLength";
+            }
+        }
+
         public override string GetRule()
         {
             return string.Format("{{type:\"maxLength\",maxLength:{1},message:\"{0}\"}}", Message,MaxLength);

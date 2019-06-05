@@ -9,7 +9,7 @@ namespace Kooboo.Model.Meta.Table
     public class LinkColumnAttribute : ColumnAttribute
     {
         public LinkColumnAttribute(string header, ActionType linkType, string url)
-            : base(header, new LinkCell { Action = new ActionMeta { Type = linkType, Uri = url } })
+            : base(header, new LinkCell { Action = new ActionMeta { Type = linkType, Url = url } })
         {
         }
 

@@ -17,6 +17,8 @@ namespace Kooboo.Model.Meta.Validation
 
         public virtual string Message { get; set; }
 
+        public virtual string Type { get; }
+
         public virtual string GetRule()
         {
             return "{}";

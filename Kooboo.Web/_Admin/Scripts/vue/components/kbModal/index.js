@@ -23,6 +23,7 @@
       onClick: function (type) {
         switch (type) {
           case "submit":
+          case 0:
             var self = this;
             var form=this.popup.getPopupBody();
             if (form) {
@@ -43,6 +44,7 @@
 
             break;
           case "close":
+          case 1:
             this.onClose();
             break;
         }

@@ -12,6 +12,10 @@ namespace Kooboo.Model.Meta.Table
 
         public string DataApi { get; set; }
 
+        public string Type=>"table";
+
+        public bool ShowSelected { get; set; } = true;
+
         private List<MenuItem> _menu;
         public List<MenuItem> Menu
         {

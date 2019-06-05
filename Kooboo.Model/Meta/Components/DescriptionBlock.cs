@@ -13,5 +13,7 @@ namespace Kooboo.Model.Meta
         public string Content { get; set; }
 
         public bool Closable { get; set; }
+
+        public string Class { get; set; }
     }
 }

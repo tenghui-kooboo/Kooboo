@@ -12,26 +12,26 @@ namespace Kooboo.Model.Meta
 
         public string Confirm { get; set; }
 
-        public string Uri { get; set; }
+        public string Url { get; set; }
 
         public static ActionMeta Post(string url, string confirm = null)
         {
-            return new ActionMeta { Type = ActionType.Post, Uri = url, Confirm = confirm };
+            return new ActionMeta { Type = ActionType.Post, Url = url, Confirm = confirm };
         }
 
         public static ActionMeta Popup(string url)
         {
-            return new ActionMeta { Type = ActionType.Popup, Uri = url };
+            return new ActionMeta { Type = ActionType.Popup, Url = url };
         }
 
         public static ActionMeta NewWindow(string url = null)
         {
-            return new ActionMeta { Type = ActionType.NewWindow, Uri = url };
+            return new ActionMeta { Type = ActionType.NewWindow, Url = url };
         }
 
         public static ActionMeta Redirect(string url = null)
         {
-            return new ActionMeta { Type = ActionType.Redirect, Uri = url };
+            return new ActionMeta { Type = ActionType.Redirect, Url = url };
         }
     }
 
@@ -43,6 +43,8 @@ namespace Kooboo.Model.Meta
 
         Popup,
 
-        Post
+        Post,
+
+        Event
     }
 }

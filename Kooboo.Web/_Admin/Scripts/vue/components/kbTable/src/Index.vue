@@ -23,7 +23,8 @@ export default {
     meta: Object,
     data: Object,
     listName: String,
-    ctx: Object
+    ctx: Object,
+    view: Object
   },
   data() {
     return {
@@ -32,25 +33,26 @@ export default {
     }
   },
   created() {
-    if (!this.meta_d && this.metaName) {
+    if (this.metaName) {
       this.meta_d = api.getMeta(this.metaName);
-      var self = this;
-      
-      if (this.meta_d.dataApi) {
-        api
-          .get(this.$parameterBinder.bind(this.meta_d.dataApi, this.ctx.parameters))
-          .then(function (res) {
-            if (res.success) {
-              self.data_d =res.model;
-            }
-          });
-      }
+    } 
+
+    var self = this;
+    if (this.meta_d.dataApi) {
+      var parameters = (this.ctx && this.ctx.parameters) ? this.ctx.parameters : {};
+      api
+        .get(this.$parameterBinder.bind(this.meta_d.dataApi, parameters))
+        .then(function (res) {
+          if (res.success) {
+            self.data_d = res.model;
+          }
+        });
     }
   },
   computed: {
-    showSelected(){
-      if(this.meta_d.hasOwnProperty("showSelected")){
-          return this.meta_d.showSelected ? true : false;
+    showSelected() {
+      if (this.meta_d.hasOwnProperty("showSelected")) {
+        return this.meta_d.showSelected ? true : false;
       }
       //default is show
       return true;
