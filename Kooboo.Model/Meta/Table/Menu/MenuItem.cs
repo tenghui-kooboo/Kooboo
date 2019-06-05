@@ -23,15 +23,15 @@ namespace Kooboo.Model.Meta.Table
 
         public string Name { get; set; }
 
-        public string Text { get; set; }
+        public Localizable Text { get; set; }
 
         public MenuAlign Align { get; set; }
 
         public string Style { get; set; }
 
-        public ClassMeta Class { get; set; }
+        public Class Class { get; set; }
 
-        public ComparisonMeta Visible { get; set; }
+        public Comparison Visible { get; set; }
     }
 
     public enum MenuAlign

@@ -8,7 +8,7 @@ namespace Kooboo.Model.Meta
 {
     public class Format
     {
-        public string Text { get; set; }
+        public Localizable Text { get; set; }
 
         public Condition Condition { get; set; }
 
@@ -17,7 +17,7 @@ namespace Kooboo.Model.Meta
             return new Format { Condition = map };
         }
 
-        public static implicit operator Format(string text)
+        public static implicit operator Format(Localizable text)
         {
             return new Format { Text = text };
         }

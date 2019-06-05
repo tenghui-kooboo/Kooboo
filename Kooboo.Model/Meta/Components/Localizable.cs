@@ -8,16 +8,11 @@ namespace Kooboo.Model.Meta
 {
     public class Localizable
     {
-        public string Value { get; set; }
-
-        public static implicit operator string(Localizable o)
+        public Localizable(string value)
         {
-            return o.Value;
+            Value = value;
         }
 
-        public static implicit operator Localizable(string o)
-        {
-            return new Localizable { Value = o };
-        }
+        public string Value { get; }
     }
 }

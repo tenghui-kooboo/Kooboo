@@ -28,4 +28,13 @@ namespace Kooboo.Model.Meta.Table
 
         public Cell Cell { get; set; }
     }
+
+    public class Header
+    {
+        public Localizable Text { get; set; }
+
+        public Class Class { get; set; }
+
+        public string Style { get; set; }
+    }
 }

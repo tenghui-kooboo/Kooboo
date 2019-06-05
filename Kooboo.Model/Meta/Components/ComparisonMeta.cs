@@ -6,38 +6,38 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta
 {
-    public class ComparisonMeta
+    public class Comparison
     {
-        public static readonly ComparisonMeta OnMultipleSelection = ComparisonMeta.GreaterThan(1);
-        public static readonly ComparisonMeta OnSingleSelection = ComparisonMeta.Equal(1);
+        public static readonly Comparison OnMultipleSelection = Comparison.GreaterThan(1);
+        public static readonly Comparison OnSingleSelection = Comparison.Equal(1);
 
         public string Operator { get; set; }
 
         public object Value { get; set; }
 
-        public static ComparisonMeta GreaterThan(object value)
+        public static Comparison GreaterThan(object value)
         {
-            return new ComparisonMeta { Operator = ">", Value = value };
+            return new Comparison { Operator = ">", Value = value };
         }
 
-        public static ComparisonMeta EqualOrGreaterThan(object value)
+        public static Comparison EqualOrGreaterThan(object value)
         {
-            return new ComparisonMeta { Operator = ">=", Value = value };
+            return new Comparison { Operator = ">=", Value = value };
         }
 
-        public static ComparisonMeta Equal(object value)
+        public static Comparison Equal(object value)
         {
-            return new ComparisonMeta { Operator = "=", Value = value };
+            return new Comparison { Operator = "=", Value = value };
         }
 
-        public static ComparisonMeta EqualOrLessThan(object value)
+        public static Comparison EqualOrLessThan(object value)
         {
-            return new ComparisonMeta { Operator = "<=", Value = value };
+            return new Comparison { Operator = "<=", Value = value };
         }
 
-        public static ComparisonMeta LessThan(object value)
+        public static Comparison LessThan(object value)
         {
-            return new ComparisonMeta { Operator = "<", Value = value };
+            return new Comparison { Operator = "<", Value = value };
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Kooboo.Model.Meta.Table
 
         public TableMeta Meta { get; }
 
-        public TableMetaBuilder<T> Before<TCell>(string before, string name, string header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> Before<TCell>(string before, string name, Localizable header, Action<TCell> configureCell)
                 where TCell : Cell
         {
             var index = Meta.Columns.FindIndex(before);
@@ -30,13 +30,13 @@ namespace Kooboo.Model.Meta.Table
             return this;
         }
 
-        public TableMetaBuilder<T> Before<TCell>(Expression<Func<T, object>> before, Expression<Func<T, object>> name, string header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> Before<TCell>(Expression<Func<T, object>> before, Expression<Func<T, object>> name, Localizable header, Action<TCell> configureCell)
             where TCell : Cell
         {
             return Before(before.PropertyName(), name.PropertyName(), header, configureCell);
         }
 
-        public TableMetaBuilder<T> After<TCell>(string after, string name, string header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> After<TCell>(string after, string name, Localizable header, Action<TCell> configureCell)
             where TCell : Cell
         {
             var index = Meta.Columns.FindIndex(after);
@@ -54,13 +54,13 @@ namespace Kooboo.Model.Meta.Table
             return this;
         }
 
-        public TableMetaBuilder<T> After<TCell>(Expression<Func<T, object>> after, Expression<Func<T, object>> name, string header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> After<TCell>(Expression<Func<T, object>> after, Expression<Func<T, object>> name, Localizable header, Action<TCell> configureCell)
             where TCell : Cell
         {
             return After(after.PropertyName(), name.PropertyName(), header, configureCell);
         }
 
-        public TableMetaBuilder<T> Column<TCell>(string name, string header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> Column<TCell>(string name, Localizable header, Action<TCell> configureCell)
            where TCell : Cell
         {
             if (!Meta.Columns.TryAdd(name, out Column column))
@@ -70,7 +70,7 @@ namespace Kooboo.Model.Meta.Table
             return this;
         }
 
-        public TableMetaBuilder<T> Column<TCell>(Expression<Func<T, object>> getName, string header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> Column<TCell>(Expression<Func<T, object>> getName, Localizable header, Action<TCell> configureCell)
             where TCell : Cell
         {
             return Column(getName.PropertyName(), header, configureCell);
@@ -103,15 +103,15 @@ namespace Kooboo.Model.Meta.Table
                 {
                     Meta.Columns.TryAdd(Render.ParserHelper.ToJsName(property.Name), out var column);
                     column.Cell = attr.Cell;
-                    var header = attr.Header ?? property.Name;
-                    column.Header = new Header { Text = header };
+                    var headerText = attr.Header ?? property.Name;
+                    column.Header = new Header { Text = new Localizable(headerText) };
                 }
             }
 
             return this;
         }
 
-        private void ConfigureColumn<TCell>(Column column, string header, Action<TCell> configureCell)
+        private void ConfigureColumn<TCell>(Column column, Localizable header, Action<TCell> configureCell)
             where TCell : Cell
         {
             var cell = Activator.CreateInstance<TCell>();

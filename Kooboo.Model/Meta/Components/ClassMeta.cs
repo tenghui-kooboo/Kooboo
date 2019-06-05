@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 
 namespace Kooboo.Model.Meta
 {
-    public class ClassMeta : List<object>
+    public class Class : List<object>
     {
-        public ClassMeta()
+        public Class()
         {
         }
 
-        public ClassMeta(string classNames)
+        public Class(string classNames)
         {
             Add(classNames);
         }
 
-        public ClassMeta AddCondition(Condition condition)
+        public Class AddCondition(Condition condition)
         {
             Add(condition);
             return this;
         }
 
-        public static ClassMeta UseCondition(Condition condition)
+        public static Class UseCondition(Condition condition)
         {
-            return new ClassMeta().AddCondition(condition);
+            return new Class().AddCondition(condition);
         }
 
-        public static implicit operator ClassMeta(string classNames)
+        public static implicit operator Class(string classNames)
         {
-            return new ClassMeta(classNames);
+            return new Class(classNames);
         }
     }
 }

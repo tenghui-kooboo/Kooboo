@@ -59,6 +59,7 @@ namespace Kooboo.Web.Menus.ObjectMenu
     public static class TableMetaBuilderExtensions
     {
         public static TableMetaBuilder<TModel> MergeModel<TModel, TEntity>(this TableMetaBuilder<TModel> builder)
+            where TEntity : ISiteObject
         {
             var methods = MenuManager.GetSiteMenuApiMethodByType(typeof(TEntity));
             foreach (var each in methods)
@@ -71,7 +72,7 @@ namespace Kooboo.Web.Menus.ObjectMenu
                     Name = methodName,
                     Text = attr.Text,
                     Align = attr.AlignRight ? MenuAlign.Right : MenuAlign.Left,
-                    Visible = attr.Multiple ? ComparisonMeta.OnMultipleSelection : ComparisonMeta.OnSingleSelection,
+                    Visible = attr.Multiple ? Comparison.OnMultipleSelection : Comparison.OnSingleSelection,
                     Class = attr.Class,
                     Action = ActionMeta.Popup(url)
                 });

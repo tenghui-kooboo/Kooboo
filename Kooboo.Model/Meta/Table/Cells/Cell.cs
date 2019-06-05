@@ -21,7 +21,7 @@ namespace Kooboo.Model.Meta.Table
 
         public string Type { get; set; }
 
-        public ClassMeta Class { get; set; }
+        public Class Class { get; set; }
 
         public string Style { get; set; }
 
