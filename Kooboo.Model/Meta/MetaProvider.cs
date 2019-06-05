@@ -43,24 +43,30 @@ namespace Kooboo.Model.Meta
 
         public string GetMeta(string modelName, string metaName, SerializationContext context)
         {
-            var key = JsonCacheKey(context.RenderContext.Culture, modelName, metaName);
-            if (_jsonCache.TryGetValue(key, out JsonCacheEntry entry))
-                return entry.Json;
-
-            lock (_jsonCacheLock)
-            {
-                if (_jsonCache.TryGetValue(key, out entry))
-                    return entry.Json;
-
-                entry = new JsonCacheEntry(() =>
-                {
-                    var meta = GetMeta(modelName, metaName);
-                    return _serializer.Serialize(meta, context);
-                });
-                _jsonCache[key] = entry;
-                return entry.Json;
-            }
+            var meta = GetMeta(modelName, metaName);
+            return _serializer.Serialize(meta, context);
         }
+
+        //public string GetMeta(string modelName, string metaName, SerializationContext context)
+        //{
+        //    var key = JsonCacheKey(context.RenderContext.Culture, modelName, metaName);
+        //    if (_jsonCache.TryGetValue(key, out JsonCacheEntry entry))
+        //        return entry.Json;
+
+        //    lock (_jsonCacheLock)
+        //    {
+        //        if (_jsonCache.TryGetValue(key, out entry))
+        //            return entry.Json;
+
+        //        entry = new JsonCacheEntry(() =>
+        //        {
+        //            var meta = GetMeta(modelName, metaName);
+        //            return _serializer.Serialize(meta, context);
+        //        });
+        //        _jsonCache[key] = entry;
+        //        return entry.Json;
+        //    }
+        //}
 
         public IViewMeta GetMeta(string modelName, string metaName = null)
         {
@@ -130,8 +136,11 @@ namespace Kooboo.Model.Meta
             }
         }
 
-        private void AddConfigure(Type modelType, Type metaType)
+        private void AddConfigure(Configure.ConfiugreFoundCallback callback)
         {
+            var modelType = callback.ModelType;
+            var metaType = callback.MetaType;
+
             // Add short type name map
             if (!_typeNameMap.ContainsKey(modelType.Name))
             {

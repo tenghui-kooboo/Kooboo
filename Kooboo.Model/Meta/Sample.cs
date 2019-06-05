@@ -7,13 +7,17 @@ using Kooboo.Model.Meta.Table;
 
 namespace Kooboo.Model.Meta
 {
-    class Sample : IMetaCreator<Entity, Table.TableMeta>, IMetaCreator<Entity, Form.FormMeta>
+    class Sample : ITableMetaConfigure<Entity>, IFormMetaConfigure<Entity>
     {
+        bool IMetaConfigure<Entity, TableMeta>.IsCreator => false;
+
         void IMetaConfigure<Entity, TableMeta>.Configure(TableMeta meta)
         {
             meta.Builder<ListViewModel>()
                 .MergeModel();
         }
+
+        bool IMetaConfigure<Entity, FormMeta>.IsCreator => false;
 
         void IMetaConfigure<Entity, FormMeta>.Configure(FormMeta meta)
         {
@@ -21,12 +25,15 @@ namespace Kooboo.Model.Meta
                 .MergeModel();
         }
 
-
     }
 
-    class Entity
+    class Entity : Kooboo.Data.Interface.ISiteObject
     {
         public string Name { get; set; }
+        public byte ConstType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime CreationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime LastModified { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
     class ListViewModel

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Kooboo.Data.Interface;
 
 namespace Kooboo.Model.Meta.Configure
 {
     public class MetaConfigureCollector : IMetaConfigureCollector
     {
         private static Type ConfigureGeneric = typeof(IMetaConfigure<,>);
-        private static Type CreatorGeneric = typeof(IMetaCreator<,>);
         private static Type InterfaceEntryGeneric = typeof(InterfaceEntry<,>);
 
         private delegate void ConfigureDeletage<T>(T meta) where T : IViewMeta;
@@ -36,7 +35,7 @@ namespace Kooboo.Model.Meta.Configure
 
         public bool Initialized => _configures != null;
 
-        public void Initialize(Action<Type, Type> addConfigure)
+        public void Initialize(Action<ConfiugreFoundCallback> onConfigureFound)
         {
             _configures = new Dictionary<Type, InterfaceEntry>();
 
@@ -47,33 +46,34 @@ namespace Kooboo.Model.Meta.Configure
                 if (!type.IsClass || type.IsAbstract)
                     continue;
 
-                TryExtractType(type, addConfigure);
+                TryExtractType(type, onConfigureFound);
             }
         }
 
-        private void TryExtractType(Type type, Action<Type, Type> addConfigure)
+        private void TryExtractType(Type configureClass, Action<ConfiugreFoundCallback> onConfigureFound)
         {
-            var configureInterfaces = type.GetInterfaces().Where(o => o.IsGenericType && o.GetGenericTypeDefinition() == ConfigureGeneric).ToArray();
+            var configureInterfaces = configureClass.GetInterfaces().Where(o => o.IsGenericType && o.GetGenericTypeDefinition() == ConfigureGeneric).ToArray();
             if (configureInterfaces.Length == 0)
                 return;
 
-            var entry = new ConfigureEntry(type);
+            var entry = new ConfigureEntry(configureClass);
             foreach (var interfaceType in configureInterfaces)
             {
-                AddConfigure(entry, interfaceType, addConfigure);
+                AddConfigure(entry, interfaceType, onConfigureFound);
             }
         }
 
-        private void AddConfigure(ConfigureEntry configureEntry, Type interfaceType, Action<Type, Type> addConfigure)
+        private void AddConfigure(ConfigureEntry configureEntry, Type interfaceType, Action<ConfiugreFoundCallback> onConfigureFound)
         {
             var argTypes = interfaceType.GetGenericArguments();
             var modelType = argTypes[0];
             var metaType = argTypes[1];
 
-            addConfigure?.Invoke(modelType, metaType);
-
-            var creatorInterface = CreatorGeneric.MakeGenericType(modelType, metaType);
-            var isCreator = creatorInterface.IsAssignableFrom(configureEntry.Type);
+            onConfigureFound?.Invoke(new ConfiugreFoundCallback
+            {
+                ModelType = modelType,
+                MetaType = metaType
+            });
 
             // Add configure type
             if (!_configures.TryGetValue(interfaceType, out InterfaceEntry interfaceEntry))
@@ -82,30 +82,26 @@ namespace Kooboo.Model.Meta.Configure
                 _configures.Add(interfaceType, interfaceEntry);
             }
 
-            if (isCreator)
-            {
-                if (interfaceEntry.CreatorMerged)
-                    throw new InvalidOperationException($"More than one creator found for model {modelType.FullName}");
-
-                interfaceEntry.Configures.Insert(0, configureEntry);
-
-                interfaceEntry.CreatorMerged = true;
-            }
-            else
-            {
-                interfaceEntry.Configures.Add(configureEntry);
-            }
+            interfaceEntry.Configures.Add(configureEntry);
         }
 
         class InterfaceEntry<TModel, TMeta> : InterfaceEntry
+            where TModel : ISiteObject
             where TMeta : IViewMeta
         {
             public override  void Configure(object meta)
             {
                 var typedMeta = (TMeta)meta;
-                foreach (var each in Configures)
+                var configures = Configures.Select(o => o.Object as IMetaConfigure<TModel, TMeta>);
+                var creators = configures.Where(o => o.IsCreator).ToArray();
+                if (creators.Length > 1)
+                    throw new InvalidOperationException($"More than one creator found for model {typeof(TModel).FullName}");
+
+                creators.FirstOrDefault()?.Configure(typedMeta);
+
+                foreach (var each in configures.Where(o => !o.IsCreator))
                 {
-                    (each.Object as IMetaConfigure<TModel, TMeta>).Configure(typedMeta);
+                    each.Configure(typedMeta);
                 }
             }
         }

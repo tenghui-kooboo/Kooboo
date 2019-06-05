@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kooboo.Model.Meta
+namespace Kooboo.Model.Meta.Popup
 {
-    public class PageMeta : IViewMeta
+    public class PopupMeta : IViewMeta
     {
         public string Title { get; set; }
 

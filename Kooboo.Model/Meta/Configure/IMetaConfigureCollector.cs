@@ -10,8 +10,15 @@ namespace Kooboo.Model.Meta.Configure
     {
         bool Initialized { get; }
 
-        void Initialize(Action<Type, Type> addConfigure);
+        void Initialize(Action<ConfiugreFoundCallback> onConfigureFound);
 
         IViewMeta CreateMeta(Type modelType, Type metaType);
+    }
+
+    public class ConfiugreFoundCallback
+    {
+        public Type ModelType { get; set; }
+
+        public Type MetaType { get; set; }
     }
 }

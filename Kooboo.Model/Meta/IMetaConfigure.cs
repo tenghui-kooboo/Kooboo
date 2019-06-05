@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kooboo.Data.Interface;
 
 namespace Kooboo.Model.Meta
 {
     public interface IMetaConfigure<TModel, TMeta>
+        where TModel : ISiteObject
         where TMeta : IViewMeta
     {
+        bool IsCreator { get; }
+
         void Configure(TMeta meta);
     }
 }

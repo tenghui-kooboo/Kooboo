@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Kooboo.Data.Interface;
+using Kooboo.Model.Meta.Popup;
 
 namespace Kooboo.Model.Meta
 {
     public class UrlHelper
     {
-        public static string PageMetaUrl<TModel>()
+        public static string PopupMetaUrl<TModel>()
+            where TModel : ISiteObject
         {
-            return MetaUrl<TModel, PageMeta>();
+            return MetaUrl<TModel, PopupMeta>();
         }
 
         public static string MetaUrl<TModel, TMeta>()
+            where TModel : ISiteObject
             where TMeta : IViewMeta
         {
             if (!MetaProvider.Instance.IsValidPair<TModel, TMeta>())
@@ -21,7 +24,7 @@ namespace Kooboo.Model.Meta
 
             var metaName = typeof(TMeta).Name;
             metaName = metaName.Substring(metaName.Length - 4);
-            return $"/meta/get?model={typeof(TModel).Name}&meta={metaName}";
+            return $"/meta/${metaName}?model={typeof(TModel).Name}";
         }
 
         public static string ApiUrl<TApi>(string method)
