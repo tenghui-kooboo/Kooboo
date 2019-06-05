@@ -31,9 +31,13 @@ namespace Kooboo.Web.Api.Implementation
             }
         }
 
-        public object Get(string modelName)
+        public object Get(string modelName,ApiCall call)
         {
-            return Kooboo.Model.Meta.MetaProvider.Instance.GetMeta(modelName);
+            var context = new Kooboo.Model.Meta.Serialization.SerializationContext()
+            {
+                RenderContext = call.Context
+            };
+            return Kooboo.Model.Meta.MetaProvider.Instance.GetMeta(modelName,null, context);
         }
     }
 }
