@@ -44,6 +44,9 @@ namespace Kooboo.Model.Meta.Configure
             var assemblies = _assemblyProvider.GetAssemblies();
             foreach (var type in assemblies.SelectMany(o => o.GetTypes()))
             {
+                if (!type.IsClass || type.IsAbstract)
+                    continue;
+
                 TryExtractType(type, addConfigure);
             }
         }
