@@ -20,7 +20,7 @@ namespace Kooboo.Model.Meta.Serialization
         {
             if (value.Condition == null)
             {
-                writer.WriteValue(value.Text);
+                writer.WriteValue(value.Text.Value);
             }
             else
             {

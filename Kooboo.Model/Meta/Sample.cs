@@ -30,10 +30,10 @@ namespace Kooboo.Model.Meta
     class Entity : Kooboo.Data.Interface.ISiteObject
     {
         public string Name { get; set; }
-        public byte ConstType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime CreationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime LastModified { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public byte ConstType { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime LastModified { get; set; }
+        public Guid Id { get; set; }
     }
 
     class ListViewModel

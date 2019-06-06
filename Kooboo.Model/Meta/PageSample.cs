@@ -111,14 +111,14 @@ namespace Kooboo.Model.Meta
 
             meta.Builder<PageViewModel>()
                 //.MergeModel()
-                //.Column<TextCell>("Name", "Name", null)
-                //.Column<BadgeCell>("Linked", "Linked", null)
-                .Column<LabelCell>(o => o.Online, new Localizable("Online"), cell =>
+                .Column<TextCell>(p=>p.name, new Localizable("Name"), null)
+                .Column<BadgeCell>(p=>p.linked, new Localizable("Linked"), null)
+                .Column<LabelCell>(o => o.online, new Localizable("Online"), cell =>
                   {
                       cell.Class = Class.UseCondition(Condition.Boolean("green", "blue"));
                       cell.Text = Format.UseCondition(Condition.Boolean("{online.yes}", "{online.no}"));
                   })
-                .Column<ArrayCell>(o => o.Relations, new Localizable("Relations"), cell =>
+                .Column<ArrayCell>(o => o.relations, new Localizable("Relations"), cell =>
                   {
                       cell.Text = new Localizable("{0} {key}");
                       cell.Action = new ActionMeta
@@ -127,8 +127,8 @@ namespace Kooboo.Model.Meta
                           Url = "popup?modelName=relationPopup&id={id}&by={key}&type=page"
                       };
                   })
-                .Column<DateCell>(o => o.LastModified, new Localizable("Last modified"), null)
-                .Column<LinkCell>(o => o.PreviewUrl, new Localizable("Preview"), cell =>
+                .Column<DateCell>(o => o.lastModified, new Localizable("Last modified"), null)
+                .Column<LinkCell>(o => o.previewUrl, new Localizable("Preview"), cell =>
                   {
                       cell.Action = new ActionMeta
                       {
@@ -145,7 +145,7 @@ namespace Kooboo.Model.Meta
                         Url = "/_admin/page/details?id={id}"
                     };
                 })
-                 .Column<ButtonCell>(o => o.InlineUrl, new Localizable(""), cell =>
+                 .Column<ButtonCell>(o => o.inlineUrl, new Localizable(""), cell =>
                    {
                        cell.Class = "btn-primary hidden-xs";
                        cell.Text = new Localizable("Inline edit");
@@ -165,6 +165,11 @@ namespace Kooboo.Model.Meta
                     };
                 });
             #endregion
+        }
+
+        public void Configure(PopupMeta meta)
+        {
+            throw new NotImplementedException();
         }
 
 
@@ -331,44 +336,43 @@ namespace Kooboo.Model.Meta
 
     class Page : Kooboo.Data.Interface.ISiteObject
     {
-        public byte ConstType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime CreationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime LastModified { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public byte ConstType { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime LastModified { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 
     class PageViewModel
     {
         //public Guid Id { get; set; }
-        [TextColumn("Name")]
-        public string Name { get; set; }
+        public string name { get; set; }
 
         //public string Title { get; set; }
 
         //public int Warning { get; set; }
-        [BadgeColumn("Linked")]
-        public int Linked { get; set; }
+        //[BadgeColumn("Linked")]
+        public string linked { get; set; }
 
         //public int PageView { get; set; }
 
         //public Guid LayoutId { get; set; }
         //[LabelColumn("Online")]
         ////cell
-        public bool Online { get; set; }
+        public string online { get; set; }
 
         //[ArrayColumn("Relations")]
-        public Dictionary<string, int> Relations { get; set; } = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, int> relations { get; set; } = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         //[DateColumn("Last modified")]
-        public DateTime LastModified { get; set; }
+        public string lastModified { get; set; }
 
         //public string Path { get; set; }
         //how to specify url from data
         //[LinkColumn("Preview",ActionType.NewWindow,null)]
-        public string PreviewUrl { get; set; }
+        public string previewUrl { get; set; }
 
-        public string InlineUrl { get; set; }
+        public string inlineUrl { get; set; }
 
         //public bool StartPage { get; set; }
     

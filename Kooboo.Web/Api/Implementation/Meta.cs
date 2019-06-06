@@ -34,29 +34,30 @@ namespace Kooboo.Web.Api.Implementation
             }
         }
 
-        public string Table(string model, ApiCall call)
+        public object Table(string model, ApiCall call)
         {
             return Get(model, "Table", call);
         }
 
-        public string Form(string model, ApiCall call)
+        public object Form(string model, ApiCall call)
         {
             return Get(model, "Form", call);
         }
 
-        public string Popup(string model, ApiCall call)
+        public object Popup(string model, ApiCall call)
         {
             return Get(model, "Popup", call);
         }
 
-        private string Get(string modelName, string metaName, ApiCall call)
+        private object Get(string modelName, string metaName, ApiCall call)
         {
             var context = new SerializationContext
             {
                 RenderContext = call.Context
             };
 
-            return MetaProvider.Instance.GetMeta(modelName, metaName, context);
+            var str= MetaProvider.Instance.GetMeta(modelName, metaName, context);
+            return Kooboo.Lib.Helper.JsonHelper.Deserialize<object>(str);
         }
     }
 }
