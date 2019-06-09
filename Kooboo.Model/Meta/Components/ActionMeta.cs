@@ -14,9 +14,16 @@ namespace Kooboo.Model.Meta
 
         public string Url { get; set; }
 
+        public object Meta { get; set; }
+
         public static ActionMeta Post(string url, string confirm = null)
         {
             return new ActionMeta { Type = ActionType.Post, Url = url, Confirm = confirm };
+        }
+
+        public static ActionMeta EmbeddedPopup(object meta)
+        {
+            return new ActionMeta { Type = ActionType.Popup, Meta = meta };
         }
 
         public static ActionMeta Popup(string url)

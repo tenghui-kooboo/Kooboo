@@ -14,7 +14,15 @@ namespace Kooboo.Model.Meta
         void IMetaConfigure<Entity, TableMeta>.Configure(TableMeta meta)
         {
             meta.Builder<ListViewModel>()
-                .MergeModel();
+                .Column<LinkCell>(o => o.Name, new Localizable("Name"), o =>
+                {
+                    o.Action = ActionMeta.EmbeddedPopup(CreateCopyPopupMeta());
+                });
+        }
+
+        private Popup.PopupMeta CreateCopyPopupMeta()
+        {
+            throw new NotImplementedException();
         }
 
         bool IMetaConfigure<Entity, FormMeta>.IsCreator => false;
