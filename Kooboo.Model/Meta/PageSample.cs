@@ -65,6 +65,7 @@ namespace Kooboo.Model.Meta
                 Action = new ActionMeta()
                 {
                     Type = ActionType.Popup,
+
                     Url = "popup?modelName=importPopup"
                 }
             });
