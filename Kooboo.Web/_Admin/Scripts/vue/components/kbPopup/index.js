@@ -34,6 +34,8 @@
         if(modelName){
           //can't set value to prop directly
           this.metadata= api.getMeta(modelName);
+        }else if(this.ctx.meta){//get meta form context
+          this.metadata=this.ctx.meta
         }
 
         this.showModal = true;

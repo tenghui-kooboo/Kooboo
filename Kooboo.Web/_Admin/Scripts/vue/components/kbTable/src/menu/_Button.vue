@@ -46,15 +46,15 @@ export default {
     onClick() {
       switch (this.actionType) {
         case 'post':
-          if(this.action.confirm){
-            var text=eval("Kooboo.text."+this.action.confirm)
-            if(confirm(text)){
+          if (this.action.confirm) {
+            var text = eval("Kooboo.text." + this.action.confirm)
+            if (confirm(text)) {
               api.post(this.bindUrl(this.action.url), { ids: this.selected.map(o => o.id) })
             }
-          }else{
-              api.post(this.bindUrl(this.action.url), { ids: this.selected.map(o => o.id) })
+          } else {
+            api.post(this.bindUrl(this.action.url), { ids: this.selected.map(o => o.id) })
           }
-          
+
           break;
         case 'event':
           this.$root[this.action.url](this.selected)
@@ -63,7 +63,8 @@ export default {
           this.$root.$refs.popup.show({
             parameters: this.$parameterBinder.getKeyValue(this.action.url),
             context: this.list,
-            selected: this.selected
+            selected: this.selected,
+            meta: this.actionMeta
           })
           break;
       }
