@@ -5,7 +5,6 @@
       :key="idx"
       :idx="idx"
       :ctx="ctx"
-      :item="item"
       :data="item.data"
       :name="item.name"
       :rules="item.rules"
@@ -16,7 +15,6 @@
       :externalClass="item.class"
       :placeholder="item.placeholder"
       :horizontal="isHorizontal"
-      @fieldValue="valueChange"
     ></kb-form-item>
   </template>
 </div>

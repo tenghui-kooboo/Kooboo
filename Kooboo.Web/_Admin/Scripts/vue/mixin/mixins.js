@@ -1,9 +1,46 @@
-window.formItem = {
-  created(){
-    this.fieldValue = this.fieldData();
+window.fieldValidateMixin = Object.assign(window.vuelidate.validationMixin, {
+  validations() {
+    return {
+      fieldValue: {
+        rules: window.validators.rules(this.rules)
+      }
+    };
+  }
+});
+
+window.formItemMixin = {
+  data(){
+    return {
+      needFormat:true,
+      fieldValue:this.data
+    }
   },
+  // computed:{
+  //   fieldValue:{
+  //     get(){
+  //       return this.data
+  //     }
+  //   }
+  // },
+  created(){
+    if(this.needFormat){
+      var value=this.formatFieldValue();
+      if(value){
+        this.fieldValue =value;
+      }
+    }
+    
+  },
+  inject: ["kbitem"],
   methods: {
-    fieldData() {
+    getValue(){
+      return {
+        invalid: this.$v.fieldValue.$invalid,
+        value: this.fieldValue,
+        name:this.name
+      }
+    },
+    formatFieldValue() {
       if (this.options && this.options.data && this.options.text) {
         var data = this.ctx[this.options.data];
         if (data instanceof Array && data.length > 0) {
@@ -15,10 +52,12 @@ window.formItem = {
             return value
           }
         }
-      } else if (this.data) {
-        return this.data
-      }
-    }
-  }
+      } 
+      return null;
+    },
+  },
+  mounted() {
+    this.kbitem.control = this;
+  },
 
 }

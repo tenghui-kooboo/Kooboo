@@ -176,7 +176,7 @@ namespace Kooboo.Model.Meta
 
             meta.Builder<CopyForm>()
                 .MergeModel()
-                .Item((i) => i.name, (FormItem item) =>
+                .Item(i => i.name, item =>
                 {
                     item.Type = "textBox";
                     item.Label = "name";
@@ -188,14 +188,14 @@ namespace Kooboo.Model.Meta
                     item.Rules.Add(new MaxLengthRule(64));
                     item.Rules.Add(new UniqueRule("/page/isUniqueName?name={name}", "taken"));
                 })
-                .Item((i) => i.id, (FormItem item) =>
+                .Item(i => i.id, item =>
                 {
                     item.Type = "hidden";
                     item.Label = "id";
                     item.Name = "id";
                     item.Options = SelectOptions.UseContext("selected", "{id}");
                 })
-                .Item((i) => i.url, (FormItem item) =>
+                .Item(i => i.url, item =>
                 {
                     item.Type = "textBox";
                     item.Label = "url";
@@ -205,7 +205,62 @@ namespace Kooboo.Model.Meta
                     item.Rules.Add(new RequiredRule("required"));
                     //item.Rules.Add(new RegexRule(".+", "invalid"));
                 })
-                ;
+                .Item(i => i.textarea, item =>
+                   {
+                       item.Type = "textarea";
+                       item.Label = "textarea";
+                       item.Name = "textarea";
+                       item.Class = "col-md-9";
+                       item.Rules.Add(new RequiredRule("required"));
+                   })
+                   .Item(i => i.radiobox, item =>
+                   {
+                       item.Type = "radiobox";
+                       item.Label = "radiobox";
+                       item.Name = "radiobox";
+                       item.Class = "col-md-9";
+                       item.Options = SelectOptions.UseList(new SelectOptions.OptionItem
+                       {
+                           Text = "url"
+                         ,
+                           Data = "url"
+                       }, new SelectOptions.OptionItem { Text = "File", Data = "File" }
+                     , new SelectOptions.OptionItem { Text = "Others", Data = "Others" });
+
+                       item.Rules.Add(new RequiredRule("required"));
+                   })
+                .Item(i => i.number, item =>
+                 {
+                     item.Type = "number";
+                     item.Label = "number";
+                     item.Name = "number";
+                     item.Class = "col-md-9";
+                     
+                     item.Rules.Add(new RequiredRule("required"));
+                 })
+                .Item(i => i.datetime, item =>
+                 {
+                     item.Type = "datetime";
+                     item.Label = "datetime";
+                     item.Name = "datetime";
+                     item.Class = "col-md-9";
+                     item.Rules.Add(new RequiredRule("required"));
+                 })
+                 .Item(i => i.checkbox, item =>
+                 {
+                     item.Type = "checkbox";
+                     item.Label = "checkbox";
+                     item.Name = "checkbox";
+                     item.Class = "col-md-9";
+                     item.Options = SelectOptions.UseList(new SelectOptions.OptionItem
+                     {
+                         Text = "url"
+                         ,
+                         Data = "url"
+                     }, new SelectOptions.OptionItem { Text = "File", Data = "File" });
+                     item.Rules.Add(new RequiredRule("required"));
+                 })
+            ;
             popupMeta.Views.Add(meta);
 
             return popupMeta;
@@ -371,7 +426,16 @@ namespace Kooboo.Model.Meta
 
         public string url { get; set; }
 
-        
+        public string textarea { get; set; }
+
+        public string radiobox { get; set; }
+
+        public string number { get; set; }
+
+        public string datetime { get; set; }
+
+        public string checkbox { get; set; }
+
     }
     class RelationTable { }
 

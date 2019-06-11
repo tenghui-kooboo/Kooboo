@@ -17,8 +17,13 @@
       return {
         meta_d: this.meta,
         formData: {},
-        fieldsValue: []
+        fields:[],
       };
+    },
+    provide(){
+      return {
+        kbform:this
+      }
     },
     computed: {
       layout() {
@@ -47,48 +52,45 @@
       if (this.metaName) {
         this.meta_d=api.getMeta(this.metaName);//support metaname
       }
+
       if (this.meta_d && this.meta_d.loadApi) {
         api
           .get(this.$parameterBinder.bind(this.meta_d.loadApi))
           .then(function(res) {
             if (res.success) {
-              Vue.set(self, "formData", res.model);
+              self.setFormData(res.model)
             }
           });
       } else {
-        this.formData = this.data;
-      }
-    },
-    watch: {
-      formData(data) {
-        if (this.meta_d && this.meta_d.items && this.meta_d.items.length > 0) {
-          this.meta_d.items.forEach(function(item) {
-            Vue.set(item, "data", data[item.name]);
-          });
-        }
+        self.setFormData(this.data)
       }
     },
     methods: {
-      valueChange(obj) {
-        let idx = this.fieldsValue.findIndex(function(field) {
-          return field.name == obj.name;
-        });
-        if (idx > -1) {
-          this.fieldsValue.splice(idx, 1, obj);
-        } else {
-          this.fieldsValue.push(obj);
+      setFormData(data){
+        if (this.meta_d && this.meta_d.items && this.meta_d.items.length > 0) {
+          this.meta_d.items.forEach(function(item) {
+            if(data){
+              item.data=data[item.name]
+            }
+          });
         }
       },
       getFieldsValue() {
         let res = {};
-        this.fieldsValue.forEach(function(field) {
-          res[field.name] = field.value;
+        this.fields.forEach(function(field) {
+          var fieldValue=field.getValue();
+          if(fieldValue){
+            res[fieldValue.name] = fieldValue.value;
+          }
+          
         });
         return res;
       },
       validate(cb) {
-        let hasError = this.fieldsValue.filter(function(field) {
-          return field.invalid;
+        debugger
+        let hasError = this.fields.filter(function(field) {
+          var fieldValue=field.getValue();
+          return fieldValue && fieldValue.invalid;
         });
 
         cb && cb(hasError.length > 0);
@@ -108,9 +110,7 @@
         });
       },
       reset() {
-        Vue.set(this, "formData", {});
-        //this.formData = {};
-        this.fieldsValue = [];
+        this.formData = {};
         this.meta_d = {};
       }
     },

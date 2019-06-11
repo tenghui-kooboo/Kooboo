@@ -14,16 +14,6 @@
   <script src="/_Admin/Scripts/vue/mixin/mixins.js"></script>
   <script src="/_Admin/Scripts/vue/components/kbTable.js"></script>
   <script>
-    window.fieldValidateMixin = Object.assign(window.vuelidate.validationMixin, {
-    validations() {
-      return {
-        fieldValue: {
-          rules: validators.rules(this.rules)
-        }
-      };
-    }
-  });
-
   Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbPopup/index.js"]);
   var data=api.getList("page");
  

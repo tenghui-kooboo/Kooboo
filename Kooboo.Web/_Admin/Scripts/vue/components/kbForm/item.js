@@ -16,22 +16,32 @@
       ctx: Object,
       label: String,
       tooltip: String,
-      options: Object,
+      options: Object|Array,
       externalClass: String,
       placeholder: String,
       controlType: String,
       horizontal: Boolean,
       data: String,
       rules: Array,
-      name: String
+      name: String,
     },
     data() {
       return {
-        rendered: false
+        rendered: false,
+        control:null,
       };
     },
+    provide() {
+      return {
+        kbitem: this
+      }
+    },
+    inject: ['kbform'],
     computed: {
       _ct() {
+        if(!this.controlType){
+          debugger
+        }
         return this.controlType.toLowerCase();
       },
       isFieldInvalid() {
@@ -50,14 +60,16 @@
         }
       }
     },
-    methods: {
-      valueChange(obj) {
-        this.$emit("fieldValue", Object.assign(obj, {
-          name: this.name
-        }));
-      },
+    methods:{
+      getValue(){
+        if(this.control && this.control.getValue){
+          return this.control.getValue();
+        }
+        return null;
+      }
     },
     mounted() {
+      this.kbform.fields.push(this)
       this.rendered = true;
     },
     components: {
