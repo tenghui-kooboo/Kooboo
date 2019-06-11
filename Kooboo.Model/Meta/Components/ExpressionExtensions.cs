@@ -9,7 +9,16 @@ namespace Kooboo.Model.Meta
     {
         public static string PropertyName<T>(this Expression<Func<T, object>> exp)
         {
-            return ((MemberExpression)exp.Body).Member.Name;
+            MemberExpression body = exp.Body as MemberExpression;
+
+            if (body == null)
+            {
+                UnaryExpression ubody = (UnaryExpression)exp.Body;
+                body = ubody.Operand as MemberExpression;
+            }
+
+            return body.Member.Name;
+            //return ((MemberExpression)exp.Body).Member.Name;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Kooboo.Model.Meta
 
         public static string ApiUrl(Type apiType, string method)
         {
-            var apiUrl = apiType.Name + "/" + method;
+            var apiUrl = MetaProvider.ApiMetaProvider.GetModelName(apiType) + "/" + method;
             var meta = MetaProvider.ApiMetaProvider.GetMeta(apiUrl);
 
             return ApiUrl(apiUrl, meta.Parameters);
@@ -56,5 +56,8 @@ namespace Kooboo.Model.Meta
 
             return Char.ToLower(name[0]) + name.Substring(1);
         }
+
+
+
     }
 }

@@ -38,7 +38,7 @@ namespace Kooboo.Web
 
             Sites.DataSources.DataSourceHelper.InitIDataSource();
 
-            Kooboo.Model.Render.ViewParseOptions.Instance.ApiMetaProvider = new ApiMetaProvider();
+            Kooboo.Model.Render.ViewParseOptions.Instance.ApiMetaProvider=Kooboo.Model.Meta.MetaProvider.ApiMetaProvider = new ApiMetaProvider();
 
             Kooboo.Data.Events.EventBus.Raise(new Data.Events.Global.ApplicationStartUp());
 

@@ -39,10 +39,11 @@ export default {
       switch (this.actionType) {
         case "popup":
           var url = this.action.url.replace('{key}', key);
+          
           this.$root.$refs.popup.show({
             parameters: this.$parameterBinder.getKeyValue(url,this.row),
             context: this.list,
-            selected: this.selected,
+            selected: this.selected|this.row,
             meta:this.actionMeta
           })
           break;

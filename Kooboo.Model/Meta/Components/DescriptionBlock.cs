@@ -8,9 +8,9 @@ namespace Kooboo.Model.Meta
 {
     public class Description
     {
-        public string Title { get; set; }
+        public Localizable Title { get; set; }
 
-        public string Content { get; set; }
+        public Localizable Content { get; set; }
 
         public bool Closable { get; set; }
 

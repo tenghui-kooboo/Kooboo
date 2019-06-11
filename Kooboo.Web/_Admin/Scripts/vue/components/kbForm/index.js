@@ -87,7 +87,6 @@
         return res;
       },
       validate(cb) {
-        debugger
         let hasError = this.fields.filter(function(field) {
           var fieldValue=field.getValue();
           return fieldValue && fieldValue.invalid;

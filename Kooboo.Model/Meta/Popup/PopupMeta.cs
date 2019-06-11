@@ -8,7 +8,7 @@ namespace Kooboo.Model.Meta.Popup
 {
     public class PopupMeta : IViewMeta
     {
-        public string Title { get; set; }
+        public Localizable Title { get; set; }
 
         public Description Description { get; set; }
 
@@ -43,7 +43,7 @@ namespace Kooboo.Model.Meta.Popup
     {
         public string Class { get; set; }
 
-        public string Text { get; set; }
+        public Localizable Text { get; set; }
 
         public PageButtonAction Type { get; set; }
     }

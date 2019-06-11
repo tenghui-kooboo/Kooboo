@@ -9,5 +9,7 @@ namespace Kooboo.Model.Meta.Api
     public interface IApiMetaProvider
     {
         ApiInfo GetMeta(string url);
+
+        string GetModelName(Type type);
     }
 }

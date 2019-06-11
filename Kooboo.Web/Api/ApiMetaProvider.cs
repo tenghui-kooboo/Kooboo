@@ -53,6 +53,21 @@ namespace Kooboo.Web.Api
             return info;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type">Class inherit from iapi</param>
+        /// <returns></returns>
+        public string GetModelName(Type type)
+        {
+            var instance = Activator.CreateInstance(type) as IApi;
+            if (instance != null)
+            {
+                return instance.ModelName;
+            }
+            return string.Empty;
+
+        }
         private ModelInfo GetModelInfo(Type type)
         {
             return new ModelInfo()

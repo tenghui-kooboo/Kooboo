@@ -43,8 +43,8 @@ namespace Kooboo.Model.Meta.Form
                 .AddAttributeMap<UIHintAttribute>((attr, item) => item.Type = attr.UIHint)
                 .AddAttributeMap<DisplayAttribute>((attr, item) =>
                 {
-                    item.Label = attr.Name;
-                    item.Tooltip = attr.Description;
+                    item.Label = new Localizable(attr.Name);
+                    item.Tooltip = new Localizable(attr.Description);
                 });
         }
     }

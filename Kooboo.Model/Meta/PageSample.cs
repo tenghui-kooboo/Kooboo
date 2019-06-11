@@ -10,7 +10,7 @@ using Kooboo.Model.Meta.Popup;
 namespace Kooboo.Model.Meta
 {
 
-    public class PageSample : ITableMetaConfigure<Page>
+    public class PageSample : ITableMetaConfigure<PageTest>
     {
         public bool IsCreator =>true;
 
@@ -155,17 +155,17 @@ namespace Kooboo.Model.Meta
         private PopupMeta CreateCopyPopupMeta()
         {
             PopupMeta popupMeta = new PopupMeta();
-            popupMeta.Title = "Copy";
+            popupMeta.Title = new Localizable("Copy");
             popupMeta.Buttons.Add(new PopupButton()
             {
                 Class = "green",
-                Text = "start",
+                Text = new Localizable("start"),
                 Type = PageButtonAction.Submit
             });
             popupMeta.Buttons.Add(new PopupButton()
             {
                 Class = "gray",
-                Text = "cancel",
+                Text = new Localizable("cancel"),
                 Type = PageButtonAction.Close
             });
 
@@ -179,7 +179,7 @@ namespace Kooboo.Model.Meta
                 .Item(i => i.name, item =>
                 {
                     item.Type = "textBox";
-                    item.Label = "name";
+                    item.Label = new Localizable("name");
                     item.Class = "col-md-9";
                     item.Options = SelectOptions.UseContext("selected", "{name}_copy");
 
@@ -191,75 +191,75 @@ namespace Kooboo.Model.Meta
                 .Item(i => i.id, item =>
                 {
                     item.Type = "hidden";
-                    item.Label = "id";
+                    item.Label = new Localizable("id");
                     item.Name = "id";
                     item.Options = SelectOptions.UseContext("selected", "{id}");
                 })
                 .Item(i => i.url, item =>
                 {
                     item.Type = "textBox";
-                    item.Label = "url";
+                    item.Label = new Localizable("url");
                     item.Name = "url";
                     item.Class = "col-md-9";
                     item.Options = SelectOptions.UseContext("selected", "/{name}_copy");
                     item.Rules.Add(new RequiredRule("required"));
                     //item.Rules.Add(new RegexRule(".+", "invalid"));
                 })
-                .Item(i => i.textarea, item =>
-                   {
-                       item.Type = "textarea";
-                       item.Label = "textarea";
-                       item.Name = "textarea";
-                       item.Class = "col-md-9";
-                       item.Rules.Add(new RequiredRule("required"));
-                   })
-                   .Item(i => i.radiobox, item =>
-                   {
-                       item.Type = "radiobox";
-                       item.Label = "radiobox";
-                       item.Name = "radiobox";
-                       item.Class = "col-md-9";
-                       item.Options = SelectOptions.UseList(new SelectOptions.OptionItem
-                       {
-                           Text = "url"
-                         ,
-                           Data = "url"
-                       }, new SelectOptions.OptionItem { Text = "File", Data = "File" }
-                     , new SelectOptions.OptionItem { Text = "Others", Data = "Others" });
+                //.Item(i => i.textarea, item =>
+                //   {
+                //       item.Type = "textarea";
+                //       item.Label = "textarea";
+                //       item.Name = "textarea";
+                //       item.Class = "col-md-9";
+                //       item.Rules.Add(new RequiredRule("required"));
+                //   })
+                //   .Item(i => i.radiobox, item =>
+                //   {
+                //       item.Type = "radiobox";
+                //       item.Label = "radiobox";
+                //       item.Name = "radiobox";
+                //       item.Class = "col-md-9";
+                //       item.Options = SelectOptions.UseList(new SelectOptions.OptionItem
+                //       {
+                //           Text = "url"
+                //         ,
+                //           Data = "url"
+                //       }, new SelectOptions.OptionItem { Text = "File", Data = "File" }
+                //     , new SelectOptions.OptionItem { Text = "Others", Data = "Others" });
 
-                       item.Rules.Add(new RequiredRule("required"));
-                   })
-                .Item(i => i.number, item =>
-                 {
-                     item.Type = "number";
-                     item.Label = "number";
-                     item.Name = "number";
-                     item.Class = "col-md-9";
+                //       item.Rules.Add(new RequiredRule("required"));
+                //   })
+                //.Item(i => i.number, item =>
+                // {
+                //     item.Type = "number";
+                //     item.Label = "number";
+                //     item.Name = "number";
+                //     item.Class = "col-md-9";
                      
-                     item.Rules.Add(new RequiredRule("required"));
-                 })
-                .Item(i => i.datetime, item =>
-                 {
-                     item.Type = "datetime";
-                     item.Label = "datetime";
-                     item.Name = "datetime";
-                     item.Class = "col-md-9";
-                     item.Rules.Add(new RequiredRule("required"));
-                 })
-                 .Item(i => i.checkbox, item =>
-                 {
-                     item.Type = "checkbox";
-                     item.Label = "checkbox";
-                     item.Name = "checkbox";
-                     item.Class = "col-md-9";
-                     item.Options = SelectOptions.UseList(new SelectOptions.OptionItem
-                     {
-                         Text = "url"
-                         ,
-                         Data = "url"
-                     }, new SelectOptions.OptionItem { Text = "File", Data = "File" });
-                     item.Rules.Add(new RequiredRule("required"));
-                 })
+                //     item.Rules.Add(new RequiredRule("required"));
+                // })
+                //.Item(i => i.datetime, item =>
+                // {
+                //     item.Type = "datetime";
+                //     item.Label = "datetime";
+                //     item.Name = "datetime";
+                //     item.Class = "col-md-9";
+                //     item.Rules.Add(new RequiredRule("required"));
+                // })
+                // .Item(i => i.checkbox, item =>
+                // {
+                //     item.Type = "checkbox";
+                //     item.Label = "checkbox";
+                //     item.Name = "checkbox";
+                //     item.Class = "col-md-9";
+                //     item.Options = SelectOptions.UseList(new SelectOptions.OptionItem
+                //     {
+                //         Text = "url"
+                //         ,
+                //         Data = "url"
+                //     }, new SelectOptions.OptionItem { Text = "File", Data = "File" });
+                //     item.Rules.Add(new RequiredRule("required"));
+                // })
             ;
             popupMeta.Views.Add(meta);
 
@@ -270,11 +270,11 @@ namespace Kooboo.Model.Meta
         private PopupMeta CreateRelationPopupMeta()
         {
             PopupMeta popupMeta = new PopupMeta();
-            popupMeta.Title = "Relation";
+            popupMeta.Title =new Localizable("Relation");
             popupMeta.Buttons.Add(new PopupButton()
             {
                 Class = "green",
-                Text = "OK",
+                Text = new Localizable("OK"),
                 Type = PageButtonAction.Close
             });
 
@@ -306,24 +306,24 @@ namespace Kooboo.Model.Meta
         private PopupMeta CreateRoutePopupMeta()
         {
             PopupMeta popupMeta = new PopupMeta();
-            popupMeta.Title = "Route setting";
+            popupMeta.Title =new Localizable("Route setting");
             popupMeta.Description = new Description()
             {
-                Title = "Redirect routes",
-                Content = "Set the redirect pages for default home page, 404 and error pages",
+                Title = new Localizable("Redirect routes"),
+                Content = new Localizable("Set the redirect pages for default home page, 404 and error pages"),
                 Closable = true,
                 Class = "alert alert-info alert-dismissable"
             };
             popupMeta.Buttons.Add(new PopupButton()
             {
                 Class = "green",
-                Text = "save",
+                Text = new Localizable("save"),
                 Type = PageButtonAction.Submit
             });
             popupMeta.Buttons.Add(new PopupButton()
             {
                 Class = "gray",
-                Text = "cancel",
+                Text = new Localizable("cancel"),
                 Type = PageButtonAction.Close
             });
 
@@ -337,7 +337,7 @@ namespace Kooboo.Model.Meta
                 .Item((i) => i.startPage, (FormItem item) =>
                 {
                     item.Type = "selection";
-                    item.Label = "Home page";
+                    item.Label = new Localizable("Home page");
                     item.Name = "startPage";
                     item.Options = SelectOptions.UseContext("context", "{name}", "{id}");
 
@@ -346,7 +346,7 @@ namespace Kooboo.Model.Meta
                 .Item((i) => i.notFound, (FormItem item) =>
                 {
                     item.Type = "selection";
-                    item.Label = "404 page";
+                    item.Label = new Localizable("404 page");
                     item.Name = "notFound";
                     item.Options = SelectOptions.UseContext("context", "{name}", "{id}",
                         SelectOptions.UseDefaultOption("System default", Guid.Empty.ToString()));
@@ -354,7 +354,7 @@ namespace Kooboo.Model.Meta
                 .Item((i) => i.error, item =>
                 {
                     item.Type = "selection";
-                    item.Label = "Error page";
+                    item.Label = new Localizable("Error page");
                     item.Name = "error";
                     item.Options = SelectOptions.UseContext("context", "{name}", "{id}",
                        SelectOptions.UseDefaultOption("System default", Guid.Empty.ToString()));
@@ -368,7 +368,7 @@ namespace Kooboo.Model.Meta
         #endregion
     }
 
-    class Page : Kooboo.Data.Interface.ISiteObject
+    class PageTest : Kooboo.Data.Interface.ISiteObject
     {
         public byte ConstType { get; set; }
         public DateTime CreationDate { get; set; }
@@ -426,15 +426,15 @@ namespace Kooboo.Model.Meta
 
         public string url { get; set; }
 
-        public string textarea { get; set; }
+        //public string textarea { get; set; }
 
-        public string radiobox { get; set; }
+        //public string radiobox { get; set; }
 
-        public string number { get; set; }
+        //public string number { get; set; }
 
-        public string datetime { get; set; }
+        //public string datetime { get; set; }
 
-        public string checkbox { get; set; }
+        //public string checkbox { get; set; }
 
     }
     class RelationTable { }
