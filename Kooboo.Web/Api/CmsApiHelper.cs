@@ -33,9 +33,11 @@ namespace Kooboo.Web.Api
 
                 if (apimethod != null)
                 {
-                    apimethod.Parameters.RemoveAll(o => o.ClrType == typeof(ApiCall));
+                    var newmethod = apimethod.Clone();
+                    newmethod.Parameters = newmethod.Parameters.FindAll(p => p.ClrType != typeof(ApiCall));
+                    return newmethod;
                 }
-                return apimethod;
+
             }
             return null;
         }
@@ -133,5 +135,30 @@ namespace Kooboo.Web.Api
             return null;
         }
 
+    }
+
+    public static class ApiMethodExtension
+    {
+        /// <summary>
+        /// shadow clone
+        /// </summary>
+        /// <param name="apimethod"></param>
+        /// <returns></returns>
+        public static ApiMethod Clone(this ApiMethod apimethod)
+        {
+            var newmethod = new ApiMethod();
+            newmethod.Func = apimethod.Func;
+            newmethod.RequireModelType = apimethod.RequireModelType;
+            newmethod.AliasOf = apimethod.AliasOf;
+            newmethod.SetCall = apimethod.SetCall;
+            newmethod.MethodName = apimethod.MethodName;
+            newmethod.ClassInstance = apimethod.ClassInstance;
+            newmethod.ReturnType = apimethod.ReturnType;
+            newmethod.DeclareType = apimethod.GetType();
+            newmethod.IsVoid = apimethod.ReturnType == typeof(void);
+            newmethod.Parameters = apimethod.Parameters;
+
+            return newmethod;
+        }
     }
 }

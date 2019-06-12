@@ -53,7 +53,7 @@ namespace Kooboo.Model.Meta
                 return false;
 
             item = Activator.CreateInstance<T>();
-            item.Name = name;
+            item.Name = UrlHelper.ToJsName(name);
             _map[item.Name] = item;
 
             return true;

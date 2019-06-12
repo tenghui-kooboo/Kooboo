@@ -38,12 +38,12 @@ namespace Kooboo.Web.Api.Implementation
         }
 
         [Kooboo.Attributes.RequireParameters("id", "by", "type")]
-        public List<UsedByRelation> ShowBy(ApiCall call)
+        public List<UsedByRelation> ShowBy(string id,string by,string type,ApiCall call)
         { 
             var sitedb = call.WebSite.SiteDb();
 
-            string type = call.GetValue("type");
-            string by = call.GetValue("by");
+            //string type = call.GetValue("type");
+            //string by = call.GetValue("by");
 
             if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(by))
             {
