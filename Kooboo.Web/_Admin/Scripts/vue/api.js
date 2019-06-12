@@ -37,25 +37,6 @@ api = {
         }
       });
   },
-  // getAsync:function(url,useSnyc,hideLoading){
-  //   var apiObj = this.getApi(url);
-  //   if (!apiObj) return null;
-  //   var self = this;
-  //   self.startLoading(hideLoading);
-
-  //   return DataCache.getData(apiObj.obj, apiObj.method, apiObj.data, useSnyc)
-  //     .fail(function (fail) {
-  //       self.handleRequestError(fail);
-  //     })
-  //     .always(function () {
-  //       self.stopLoading(hideLoading);
-  //     })
-  //     .done(function (res) {
-  //       if (!res.success) {
-  //         Kooboo.handleFailMessages(res.messages);
-  //       }
-  //     });
-  // },
   post: function (url, model,hideLoading) {
     var apiObj = this.getApi(url);
     if (!apiObj) return null;
@@ -86,7 +67,7 @@ api = {
           // } else {
           //   window.location.href = window.location.href;
           // }
-
+          //todo modify
           window.location.href = window.location.href;
         }
       });
@@ -111,17 +92,6 @@ api = {
         }
       });
   },
-
-  // getMeta: function (modelName) {
-  //   var url = "/meta/get?modelname=" + modelName;
-  //   var meta = {};
-  //   this.get(url).then(function (res) {
-  //     if (res.model) {
-  //       meta = res.model;
-  //     }
-  //   })
-  //   return meta;
-  // },
   tableMeta:function(modelName){
     var url = "/meta/table?model=" + modelName;
     var meta = {};
