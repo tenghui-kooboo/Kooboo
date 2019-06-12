@@ -138,16 +138,17 @@ namespace Kooboo.Web.Meta
                          Type = ActionType.NewWindow
                      };
                  })
-                .Column<IconCell>("qrCode", new Localizable("qrCode"), cell =>
-                {
-                    cell.Class = "btn-xs";
-                    cell.IconClass = "qrcode";
-                    cell.Action = new ActionMeta
-                    {
-                        Type = ActionType.Event,
-                        Url = "showQrcode"
-                    };
-                });
+                //.Column<IconCell>("qrCode", new Localizable("qrCode"), cell =>
+                //{
+                //    cell.Class = "btn-xs";
+                //    cell.IconClass = "qrcode";
+                //    cell.Action = new ActionMeta
+                //    {
+                //        Type = ActionType.Event,
+                //        Url = "showQrcode"
+                //    };
+                //})
+                ;
             #endregion
         }
 

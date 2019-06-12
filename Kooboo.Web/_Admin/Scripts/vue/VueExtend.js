@@ -71,33 +71,6 @@ Vue.kExecute = function () {
 
 }
 
-Vue.showMeta = function (vm, context) {
-    if (context) {
-        var modelName = context.parameters["modelname"];
-        if (modelName) {
-            var metaApi = "/meta/get?modelName=" + modelName;
-            api.get(metaApi).then(function (d) {
-                vm.meta = d.model;
-            });
-
-            var meta = vm.meta.form || vm.meta.table
-            var loadapi = meta.loadApi;
-            if (loadapi) {
-                api.get(loadapi).then(function (d) {
-                    vm.data = d.model;
-                });
-            }
-            // vm.data = {
-            //     name: context.selected[0].name + '_Copy',
-            //     url: context.selected[0].path + '_Copy'
-            // }
-
-            vm.extra = context.context;
-        }
-    }
-
-}
-
 Object.defineProperty(Vue.prototype, "$parameterBinder", {
     get() {
         var self = this;

@@ -3,7 +3,7 @@ var helpers = validators.helpers;
 
 Vue.resetValid = function(vueData) {
   if (vueData.validations && Object.keys(vueData.validations).length > 0) {
-    vueData.validations = window.validators.Extend.extendValidations(
+    vueData.validations = window.validators.Extend.getValidations(
       vueData.validations
     );
   }
@@ -53,7 +53,7 @@ validators.Extend = {
     if (rule.type == "sameAs") {
       var field = rule["field"];
       function equalTo(vm) {
-        return vm.$parameterBinder.getValuebyModel(vm.$data, field);
+        return vm.$parameterBinder.getValueFromModel(field,{});
       }
       return [equalTo];
     }
@@ -77,24 +77,22 @@ validators.Extend = {
     });
     return params;
   },
-  extendValidations: function(validations) {
-    function getValidation(validation) {
-      var keys = Object.keys(validation);
-      keys.forEach(function(key) {
-        var value = validation[key];
-        if (value instanceof Array) {
-          var rules = value;
-          validation[key] = {
-            rules: validators.rules(rules)
-          };
-        } else if (value instanceof Object) {
-          validation[key] = getValidation(value);
-        }
-      });
-      return validation;
-    }
-    return getValidation(validations);
-  }
+  getValidations:function(validation) {
+    var keys = Object.keys(validation);
+    keys.forEach(function(key) {
+      var value = validation[key];
+      if (value instanceof Array) {
+        var rules = value;
+        validation[key] = {
+          rules: validators.rules(rules)
+        };
+      } else if (value instanceof Object) {
+        validation[key] = validators.Extend.getValidations(value);
+      }
+    });
+    return validation;
+  },
+
 };
 
 validators.rules = function(rules) {

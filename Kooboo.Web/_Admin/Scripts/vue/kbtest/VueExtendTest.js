@@ -75,19 +75,20 @@ function parameterBind_getKeyValue(){
   var vue=new Vue();
   var url="aa?id={idx}&data={datax}"
   
-  var keyvalue= vue.$parameterBinder().getUrlKeyValue(url);
+  var keyvalue= vue.$parameterBinder.getKeyValue(url);
 
-  expect(Object.keys(keyvalue).length).to.be(3);
-  expect(keyvalue["id"]).to.be("{idx}");
-  expect(keyvalue["data"]).to.be("{datax}");
-  expect(keyvalue["siteId"]).to.be("{siteId}");
+  expect(Object.keys(keyvalue).length).to.be(2);
+  expect(keyvalue["id"]).to.be("");
+  expect(keyvalue["data"]).to.be("");
+  //expect(keyvalue["siteId"]).to.be("{siteId}");
 
   var url="aa?id=1&data={datax}";
-  keyvalue= vue.$parameterBinder().getUrlKeyValue(url);
-  expect(Object.keys(keyvalue).length).to.be(3);
+  keyvalue= vue.$parameterBinder.getKeyValue(url);
+  expect(Object.keys(keyvalue).length).to.be(2);
   expect(keyvalue["id"]).to.be("1");
-  expect(keyvalue["data"]).to.be("{datax}");
-  expect(keyvalue["siteId"]).to.be("{siteId}");
+  expect(keyvalue["data"]).to.be("");
+  //expect(keyvalue["data"]).to.be("{datax}");
+  //expect(keyvalue["siteId"]).to.be("{siteId}");
 }
 
 function parameterBind_bind(){
@@ -98,8 +99,8 @@ function parameterBind_bind(){
     }
   });
   var url="aa?id={idx}&data={datax}"
-  var url=vue.$parameterBinder().bind(url);
-  expect(url).to.be("aa?siteId=&id=1&data=aa");
+  var url=vue.$parameterBinder.bind(url);
+  expect(url).to.be("aa?id=1&data=aa");
 
   vue=new Vue({
     data:{
@@ -108,8 +109,8 @@ function parameterBind_bind(){
     }
   });
   url="aa?id=id&data={datax}"
-  var url=vue.$parameterBinder().bind(url);
-  expect(url).to.be("aa?siteId=&id=id&data=aa");
+  var url=vue.$parameterBinder.bind(url);
+  expect(url).to.be("aa?id=id&data=aa");
 
   vue=new Vue({
     data:{
@@ -122,14 +123,14 @@ function parameterBind_bind(){
   }
 
   url="aa?id=id&data={datax}"
-  var url=vue.$parameterBinder().bind(url,model);
-  expect(url).to.be("aa?siteId=&id=id&data=aa");
+  var url=vue.$parameterBinder.bind(url,model);
+  expect(url).to.be("aa?id=id&data=aa");
 
   var model={
     idx:"2",
     datax:"aa"
   }
   url="aa?id={idx}&data={datax}"
-  var url=vue.$parameterBinder().bind(url,model);
-  expect(url).to.be("aa?siteId=&id=2&data=aa");
+  var url=vue.$parameterBinder.bind(url,model);
+  expect(url).to.be("aa?id=2&data=aa");
 }

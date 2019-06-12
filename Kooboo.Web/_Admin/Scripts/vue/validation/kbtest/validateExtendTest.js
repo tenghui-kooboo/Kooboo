@@ -28,7 +28,12 @@ function getValidatorParams(){
     expect(params.length).to.be(1);
     expect(params[0] instanceof Function).to.be(true);
     var getCompareValue=params[0];
-    var compareValue=getCompareValue({$data:{password:'pass',username:'user'}})
+    var vm=new Vue({
+      data:{
+        password:'pass',username:'user'
+      }
+    });
+    var compareValue=getCompareValue(vm)
     expect(compareValue).to.be("pass");
 
     var rule={type:'required'}
@@ -41,18 +46,26 @@ function getValidatorParams(){
     //expect(params.length).to.be(1);
 }
 function getCompareValue(){
-  var data={
-    $data:{
+  var rule={type:'sameAs',field:"password"}
+  params=validators.Extend.getValidatorParams(rule);
+  var getCompareValue=params[0];
+  var vm=new Vue({
+    data:{
       username:'user',
       user:{
         password:"pass"
       }
     }
-  };
-  var value=validators.Extend.getCompareValue(data,"username");
-  expect(value).to.be("user");
-  value=validators.Extend.getCompareValue(data,"password");
+  });
+
+  var value=getCompareValue(vm);
   expect(value).to.be("pass");
+
+  rule={type:'sameAs',field:"username"}
+  params=validators.Extend.getValidatorParams(rule);
+  var getCompareValue=params[0];
+  value=getCompareValue(vm);
+  expect(value).to.be("user");
 }
 function validateRule(){
   //required
@@ -174,12 +187,12 @@ function validateRule(){
 
 }
 
-function extendValidations(){
+function getValidations_test(){
   var rules=[{type:'required',message:"error"}];
   var validations={
     name:rules
   }
-  var newValue=validators.Extend.extendValidations(validations);
+  var newValue=validators.Extend.getValidations(validations);
   
   expect(newValue["name"]).not.to.be(undefined);
   var rules=newValue["name"]["rules"];
@@ -191,7 +204,7 @@ function extendValidations(){
       username:[{type:'required',message:"error"}]
     }
   }
-  newValue=validators.Extend.extendValidations(validations);
+  newValue=validators.Extend.getValidations(validations);
   expect(newValue["user"]).not.to.be(undefined);
   var userName=newValue["user"]["username"];
   expect(userName).not.to.be(undefined);

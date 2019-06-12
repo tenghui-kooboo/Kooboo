@@ -9,19 +9,19 @@ function parameterBindTest(){
   }
   var url="admin/site";
   
-  url=vue.$parameterBindernew.bind(url,model);
+  url=vue.$parameterBinder.bind(url,model);
   expect(url).to.be("admin/site");
 
   url="admin/site?id=1"
-  url=vue.$parameterBindernew.bind(url,model);
+  url=vue.$parameterBinder.bind(url,model);
   expect(url).to.be("admin/site?id=1");
 
   url="admin/site?id={id}"
-  url=vue.$parameterBindernew.bind(url,model);
+  url=vue.$parameterBinder.bind(url,model);
   expect(url).to.be("admin/site?id=1");
 
   url="Development/{type}?id={id}"
-  url=vue.$parameterBindernew.bind(url,model);
+  url=vue.$parameterBinder.bind(url,model);
   expect(url).to.be("Development/view?id=1");
 }
 
@@ -36,11 +36,11 @@ function getKeyvalueTest(){
   }
 
   url="Development/{type}?id={id}"
-  var keyvalue=vue.$parameterBindernew.getKeyValue(url,model);
+  var keyvalue=vue.$parameterBinder.getKeyValue(url,model);
   expect(keyvalue["id"]).to.be("1");
 
   url="Development/{type}?id={id}&type={type}"
-  var keyvalue=vue.$parameterBindernew.getKeyValue(url,model);
+  var keyvalue=vue.$parameterBinder.getKeyValue(url,model);
   expect(keyvalue["id"]).to.be("1");
   
   expect(keyvalue["type"]).to.be("view");
@@ -56,19 +56,19 @@ function formatText(){
       type:"view",
   }
   var text="name";
-  text=vue.$parameterBindernew.formatText(text);
+  text=vue.$parameterBinder.formatText(text);
   expect(text).to.be("name");
 
   text="{name}";
-  text=vue.$parameterBindernew.formatText(text);
+  text=vue.$parameterBinder.formatText(text);
   expect(text).to.be("1");
 
   text="{name}_copy";
-  text=vue.$parameterBindernew.formatText(text);
+  text=vue.$parameterBinder.formatText(text);
   expect(text).to.be("1_copy");
 
   text="{type}_copy";
-  text=vue.$parameterBindernew.formatText(text,model);
+  text=vue.$parameterBinder.formatText(text,model);
   expect(text).to.be("view_copy");
 }
 
@@ -81,8 +81,7 @@ function getValueFromModel_test()
       }
     }
   })
-  debugger;
-  var text=vue.$parameterBindernew.getValueFromModel("name");
+  var text=vue.$parameterBinder.getValueFromModel("name");
   expect(text).to.be("1");
 
 }
