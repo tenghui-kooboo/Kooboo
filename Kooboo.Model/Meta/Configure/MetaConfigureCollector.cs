@@ -27,7 +27,8 @@ namespace Kooboo.Model.Meta.Configure
             if (!_configures.TryGetValue(configureInterface, out InterfaceEntry entry))
                 throw new KeyNotFoundException($"No configure found for model {modelType.FullName} and meta {metaType.FullName}");
 
-            var meta = Activator.CreateInstance(metaType);
+            var meta = Activator.CreateInstance(metaType) as IViewMeta;
+            meta.ModelType = modelType.Name;
             entry.Configure(meta);
 
             return meta as IViewMeta;

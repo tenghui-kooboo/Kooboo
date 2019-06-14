@@ -8,5 +8,6 @@ namespace Kooboo.Model.Meta
 {
     public interface IViewMeta
     {
+        string ModelType { get; set; }
     }
 }
