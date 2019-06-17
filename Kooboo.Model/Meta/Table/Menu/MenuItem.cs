@@ -19,6 +19,8 @@ namespace Kooboo.Model.Meta.Table
             Type = type;
         }
 
+        public MenuOrder Order { get; set; } = MenuOrder.Right;
+
         public string Type { get; set; }
 
         public string Name { get; set; }
@@ -37,6 +39,15 @@ namespace Kooboo.Model.Meta.Table
     public enum MenuAlign
     {
         Left,
+
+        Right
+    }
+
+    public enum MenuOrder
+    {
+        Left,
+
+        Center,
 
         Right
     }

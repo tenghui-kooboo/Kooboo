@@ -15,11 +15,13 @@ namespace Kooboo.Model.Meta.Form
 
         public Localizable Label { get; set; }
 
-        public string Placeholder { get; set; }
+        public Localizable Placeholder { get; set; }
 
         public string Class { get; set; }
 
         public Localizable Tooltip { get; set; }
+
+        public ValueContext DefaultValue { get; set; }
 
         public SelectOptions Options { get; set; }
 

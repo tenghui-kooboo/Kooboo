@@ -9,8 +9,6 @@ namespace Kooboo.Model.Meta
 {
     class Sample : ITableMetaConfigure<Entity>, IFormMetaConfigure<Entity>
     {
-        bool IMetaConfigure<Entity, TableMeta>.IsCreator => false;
-
         void IMetaConfigure<Entity, TableMeta>.Configure(TableMeta meta)
         {
             meta.Builder<ListViewModel>()
@@ -24,8 +22,6 @@ namespace Kooboo.Model.Meta
         {
             throw new NotImplementedException();
         }
-
-        bool IMetaConfigure<Entity, FormMeta>.IsCreator => false;
 
         void IMetaConfigure<Entity, FormMeta>.Configure(FormMeta meta)
         {

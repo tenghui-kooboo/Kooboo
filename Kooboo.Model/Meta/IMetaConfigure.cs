@@ -6,8 +6,6 @@ namespace Kooboo.Model.Meta
         where TModel : ISiteObject
         where TMeta : IViewMeta
     {
-        bool IsCreator { get; }
-
         void Configure(TMeta meta);
     }
 }

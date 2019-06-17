@@ -26,9 +26,15 @@ namespace Kooboo.Model.Meta.Serialization
 
         public override void WriteJson(JsonWriter writer, Localizable value, JsonSerializer serializer)
         {
-            var localized = Hardcoded.GetValue(value.Value, Context.RenderContext);
-
-            writer.WriteValue(localized);
+            if (value.Enabled)
+            {
+                var localized = Hardcoded.GetValue(value.Value, Context.RenderContext);
+                writer.WriteValue(localized);
+            }
+            else
+            {
+                writer.WriteValue(value.Value);
+            }
         }
     }
 }

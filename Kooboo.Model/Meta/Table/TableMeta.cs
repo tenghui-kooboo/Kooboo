@@ -16,14 +16,14 @@ namespace Kooboo.Model.Meta.Table
 
         public bool ShowSelected { get; set; } = true;
 
-        private List<MenuItem> _menu;
-        public List<MenuItem> Menu
+        private MenuItemCollection _menu;
+        public MenuItemCollection Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new List<Table.MenuItem>();
+                    _menu = new MenuItemCollection();
                 }
                 return _menu;
             }

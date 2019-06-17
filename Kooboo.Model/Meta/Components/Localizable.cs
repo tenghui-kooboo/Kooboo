@@ -14,5 +14,12 @@ namespace Kooboo.Model.Meta
         }
 
         public string Value { get; }
+
+        public bool Enabled { get; set; } = true;
+
+        public static Localizable Raw(string text)
+        {
+            return new Localizable(text) { Enabled = false };
+        }
     }
 }

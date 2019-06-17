@@ -94,13 +94,7 @@ namespace Kooboo.Model.Meta.Configure
             {
                 var typedMeta = (TMeta)meta;
                 var configures = Configures.Select(o => o.Object as IMetaConfigure<TModel, TMeta>);
-                var creators = configures.Where(o => o.IsCreator).ToArray();
-                if (creators.Length > 1)
-                    throw new InvalidOperationException($"More than one creator found for model {typeof(TModel).FullName}");
-
-                creators.FirstOrDefault()?.Configure(typedMeta);
-
-                foreach (var each in configures.Where(o => !o.IsCreator))
+                foreach (var each in configures)
                 {
                     each.Configure(typedMeta);
                 }
