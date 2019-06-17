@@ -367,6 +367,16 @@ namespace Kooboo.IndexedDB.Dynamic
                     {
                         throw new Exception("only value type column are allowed to use on search condition");
                     }
+                    if (col.ClrType == typeof(Guid))
+                    {
+                        Guid value;
+                        if(Guid.TryParse(item.Value,out value))
+                        {
+                            filter.Value = col.ToBytes(value);
+                            result.Add(filter);
+                            continue;
+                        }
+                    }
                     var rightvalue = Convert.ChangeType(item.Value, col.ClrType);
 
                     // For datetime col, need to have something different. 

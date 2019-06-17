@@ -154,6 +154,8 @@ namespace Kooboo.IndexedDB.Dynamic
 
         public void RebuildTable(Setting newSetting)
         {
+            ResetColumnPosition(newSetting);
+
             string newname = "_koobootemp_" + System.Guid.NewGuid().ToString() + this.Name;
             var newtable = this.OwnerDatabase.GetOrCreateTable(newname, newSetting);
             var primaryindex = this.Indexs.Find(o => o.IsSystem);
@@ -196,6 +198,24 @@ namespace Kooboo.IndexedDB.Dynamic
             }
 
             this.OwnerDatabase.openTableList.Remove(newname);
+        }
+
+        private void ResetColumnPosition(Setting newSetting)
+        {
+            var length = newSetting.Columns.Count();
+            var list = newSetting.Columns.Select((value, index) => value).ToList();
+            for(var i = 0; i < length; i++)
+            {
+                if (i == 0) continue;
+
+                var column = list[i];
+
+                var preColumn = list[i - 1];
+
+                column.relativePosition = preColumn.relativePosition + preColumn.Length + 8;
+
+            }
+           
         }
 
         public void UpdateSetting(Setting newsetting)
