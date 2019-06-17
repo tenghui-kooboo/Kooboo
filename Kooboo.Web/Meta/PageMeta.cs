@@ -71,8 +71,9 @@ namespace Kooboo.Web.Meta
             {
                 Text = new Localizable("Copy"),
                 Class = "green",
-                Action = ActionMeta.EmbeddedPopup(MetaHelper.CreateCopyPopupMeta()),
-                Visible = Comparison.Equal(1)
+                Action = ActionMeta.Popup(UrlHelper.PopupMetaUrl<CopyPopup>()),
+                //Action = ActionMeta.EmbeddedPopup(MetaHelper.CreateCopyPopupMeta()),
+                Visible = Comparison.OnSingleSelection
             });
 
             meta.Menu.Add(new ButtonMenu
@@ -109,7 +110,7 @@ namespace Kooboo.Web.Meta
                 .Column<ArrayCell>(o => o.Relations, new Localizable("Relations"), cell =>
                 {
                     cell.Text = new Localizable("{0} {key}");//todo confirm
-                    cell.Action = ActionMeta.EmbeddedPopup(MetaHelper.CreateRelationPopupMeta(), "?id={id}&by={key}&type=page");//todo confirm
+                    cell.Action = ActionMeta.Popup(UrlHelper.PopupMetaUrl<RelationPopup>());
                 })
                 .Column<DateCell>(o => o.LastModified, new Localizable("Last modified"), null)
                 .Column<LinkCell>(o => o.PreviewUrl, new Localizable("Preview"), cell =>

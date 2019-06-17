@@ -28,6 +28,8 @@ namespace Kooboo.Model.Meta.Form
                 return _items;
             }
         }
+
+        public string ModelType { get; set; }
     }
     public enum FormLayout
     {

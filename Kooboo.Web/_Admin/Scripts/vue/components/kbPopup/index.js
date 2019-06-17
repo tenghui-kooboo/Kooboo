@@ -33,7 +33,7 @@
         var modelName=this.getModelName(ctx.parameters);
         if(modelName){
           //can't set value to prop directly
-          this.metadata= api.getMeta(modelName);
+          this.metadata= api.popupMeta(modelName);
         }else if(this.ctx.meta){//get meta form context
           this.metadata=this.ctx.meta
         }

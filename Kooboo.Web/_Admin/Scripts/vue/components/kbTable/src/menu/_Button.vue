@@ -37,6 +37,8 @@ export default {
   },
 
   mixins: [actionMixin],
+  
+  inject:['tablemenu'],
 
   methods: {
     bindUrl(url) {
@@ -60,8 +62,13 @@ export default {
           this.$root[this.action.url](this.selected)
           break;
         case 'popup':
+          var parameters=this.$parameterBinder.getKeyValue(this.action.url);
+         
+          if(this.tablemenu && this.tablemenu.modeltype ){
+            parameters["modelType"]=this.tablemenu.modeltype
+          }
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder.getKeyValue(this.action.url),
+            parameters: parameters,
             context: this.list,
             selected: this.selected,
             meta: this.actionMeta

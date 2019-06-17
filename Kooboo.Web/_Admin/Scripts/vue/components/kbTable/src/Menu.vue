@@ -16,11 +16,18 @@ export default {
 
   props: {
     meta: Array,
+    modeltype:String,
     selected: Array,
     data: Object|Array,
     list: Array
   },
   
+  provide(){
+    return {
+      tablemenu:this
+    }
+  },
+
   computed:{
     operator(){
       if (!this.item.visible) {

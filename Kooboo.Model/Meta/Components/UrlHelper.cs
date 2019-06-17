@@ -24,7 +24,7 @@ namespace Kooboo.Model.Meta
 
             var metaName = typeof(TMeta).Name;
             metaName = metaName.Substring(metaName.Length - 4);
-            return $"/meta/${metaName}?model={typeof(TModel).Name}";
+            return $"/meta/${metaName}?modelName={typeof(TModel).Name}";
         }
 
         public static string ApiUrl<TApi>(string method)

@@ -41,5 +41,7 @@ namespace Kooboo.Model.Meta.Table
                 return _columns;
             }
         }
+
+        public string ModelType { get; set; }
     }
 }

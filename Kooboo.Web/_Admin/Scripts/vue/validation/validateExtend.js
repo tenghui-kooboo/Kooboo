@@ -126,8 +126,12 @@ validators.regex = function(regex) {
 validators.unique = function(apiurl) {
   return function(value, vm) {
     if (!value) return true;
-
-    var url = vm.$parameterBinder.bind(apiurl);
+    
+    var parameters={}
+    if(vm.ctx && vm.ctx.parameters){
+      parameters=vm.ctx.parameters
+    }
+    var url = vm.$parameterBinder.bind(apiurl,parameters);
     var result = false;
     api.get(url, true, true).then(function(res) {
       result = res.success;

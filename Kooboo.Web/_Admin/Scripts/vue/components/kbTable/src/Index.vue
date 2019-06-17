@@ -2,6 +2,7 @@
   <div>
     <inner-menu
       v-if="meta_d"
+      :modeltype="meta_d.modelType"
       :meta="meta_d.menu"
       :data="typeof data_d === 'object' ? data_d : null"
       :list="list"
@@ -34,9 +35,9 @@ export default {
   },
   created() {
     if (this.metaName) {
-      this.meta_d = api.getMeta(this.metaName);
+      this.meta_d = api.tableMeta(this.metaName);
     } 
-
+    
     var self = this;
     if (this.meta_d.dataApi) {
       var parameters = (this.ctx && this.ctx.parameters) ? this.ctx.parameters : {};

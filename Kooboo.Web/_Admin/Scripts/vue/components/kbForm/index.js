@@ -50,7 +50,7 @@
     created() {
       var self = this;
       if (this.metaName) {
-        this.meta_d=api.getMeta(this.metaName);//support metaname
+        this.meta_d=api.formMeta(this.metaName);//support metaname
       }
 
       if (this.meta_d && this.meta_d.loadApi) {
@@ -99,7 +99,7 @@
         return new Promise(function(resolve, reject) {
           api
             .post(
-              self.$parameterBinder.bind(self.meta_d.submitApi),
+              self.$parameterBinder.bind(self.meta_d.submitApi,self.ctx.parameters),
               self.getFieldsValue()
             )
             .then(function(res) {

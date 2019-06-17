@@ -37,6 +37,8 @@ namespace Kooboo.Model.Meta.Popup
                 return _views;
             }
         }
+
+        public string ModelType { get; set; }
     }
 
     public class PopupButton

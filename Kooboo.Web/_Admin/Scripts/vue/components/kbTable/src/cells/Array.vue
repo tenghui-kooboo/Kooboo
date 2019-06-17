@@ -13,6 +13,7 @@
 <script>
 import Mixins from './mixins'
 import actionMixin from '../actionMixin'
+
 export default {
   name: 'CellArray',
 
@@ -21,6 +22,8 @@ export default {
     meta: Object,
     row: Object
   },
+
+  inject:['table'],
 
   methods: {
     colorClass(key) {
@@ -38,19 +41,28 @@ export default {
     onClick(key) {
       switch (this.actionType) {
         case "popup":
-          var url = this.action.url.replace('{key}', key);
-          
+          var parameters = this.getParameters(key, this.table.meta.modelType);
+
           this.$root.$refs.popup.show({
-            parameters: this.$parameterBinder.getKeyValue(url,this.row),
+            parameters: parameters,
             context: this.list,
-            selected: this.selected|this.row,
-            meta:this.actionMeta
+            selected: this.selected,
+            meta: this.actionMeta
           })
           break;
       }
+    },
+    getParameters(key, type) {
+      var parameters = {};
+      if (this.action.url) {
+        parameters = this.$parameterBinder.getKeyValue(this.action.url, this.row)
+      }
+      parameters = Vue.util.extend(parameters, this.row)
+      parameters = Vue.util.extend(parameters, { by: key, type: type })
+      return parameters
     }
   },
 
-  mixins: [Mixins,actionMixin]
+  mixins: [Mixins, actionMixin]
 }
 </script>
