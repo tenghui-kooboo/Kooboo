@@ -13,8 +13,6 @@ namespace Kooboo.Web.Meta
 {
     public class CopyPopupMeta : IPopupMetaConfigure<CopyPopup>
     {
-        public bool IsCreator => true;
-
         public void Configure(PopupMeta popupMeta)
         {
             popupMeta.Title = new Localizable("Copy");
@@ -44,7 +42,7 @@ namespace Kooboo.Web.Meta
                     item.Type = "textBox";
                     item.Label = new Localizable("name");
                     item.Class = "col-md-9";
-                    item.Options = SelectOptions.UseContext("selected", "{name}_copy");
+                    item.DefaultValue = ValueContext.FromSelected("{name}_copy");
 
                     item.Rules.Add(new RequiredRule("required"));
                     item.Rules.Add(new MinLengthRule(1));
@@ -57,7 +55,7 @@ namespace Kooboo.Web.Meta
                     item.Type = "hidden";
                     item.Label = new Localizable("id");
                     item.Name = "id";
-                    item.Options = SelectOptions.UseContext("selected", "{id}");
+                    item.DefaultValue = ValueContext.FromSelected("{id}");
                 })
                 .Item(i => i.url, item =>
                 {
@@ -65,7 +63,7 @@ namespace Kooboo.Web.Meta
                     item.Label = new Localizable("url");
                     item.Name = "url";
                     item.Class = "col-md-9";
-                    item.Options = SelectOptions.UseContext("selected", "/{name}_copy");
+                    item.DefaultValue = ValueContext.FromSelected("/{name}_copy");
                     item.Rules.Add(new RequiredRule("required"));
                     //item.Rules.Add(new RegexRule(".+", "invalid"));
                 });

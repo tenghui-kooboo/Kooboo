@@ -14,8 +14,7 @@ namespace Kooboo.Web.Meta
 {
     public class PageMeta : ITableMetaConfigure<Page>
     {
-        public bool IsCreator => true;
-
+       
         public void Configure(TableMeta meta)
         {
             meta.DataApi = UrlHelper.ApiUrl<PageApi>(nameof(PageApi.All));
@@ -109,7 +108,7 @@ namespace Kooboo.Web.Meta
                 })
                 .Column<ArrayCell>(o => o.Relations, new Localizable("Relations"), cell =>
                 {
-                    cell.Text = new Localizable("{0} {key}");//todo confirm
+                    cell.Text =Localizable.Raw("{0} {key}");
                     cell.Action = ActionMeta.Popup(UrlHelper.PopupMetaUrl<RelationPopup>());
                 })
                 .Column<DateCell>(o => o.LastModified, new Localizable("Last modified"), null)
@@ -191,7 +190,7 @@ namespace Kooboo.Web.Meta
                     item.Type = "selection";
                     item.Label = new Localizable("Home page");
                     item.Name = "startPage";
-                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}");
+                    item.Options = SelectOptions.UseContext("{name}", "{id}");
 
 
                 })
@@ -200,7 +199,7 @@ namespace Kooboo.Web.Meta
                     item.Type = "selection";
                     item.Label = new Localizable("404 page");
                     item.Name = "notFound";
-                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}");
+                    item.Options = SelectOptions.UseContext("{name}", "{id}");
                     item.Placeholder = new Localizable("System default");
                     item.DefaultValue = ValueContext.DirectValue(Guid.Empty.ToString());
                 })
@@ -209,7 +208,7 @@ namespace Kooboo.Web.Meta
                     item.Type = "selection";
                     item.Label = new Localizable("Error page");
                     item.Name = "error";
-                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}");
+                    item.Options = SelectOptions.UseContext("{name}", "{id}");
                     item.Placeholder = new Localizable("System default");
                     item.DefaultValue = ValueContext.DirectValue(Guid.Empty.ToString());
                 })

@@ -19,6 +19,7 @@
       options: Object|Array,
       externalClass: String,
       placeholder: String,
+      defaultValue:String|Object,
       controlType: String,
       horizontal: Boolean,
       data: String,

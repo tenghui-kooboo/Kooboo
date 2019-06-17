@@ -11,8 +11,7 @@ namespace Kooboo.Web.Meta
 {
     public class RelationPopupMeta : IPopupMetaConfigure<RelationPopup>
     {
-        public bool IsCreator =>true;
-
+   
         public void Configure(PopupMeta popupMeta)
         {
             popupMeta.Title = new Localizable("Relation");

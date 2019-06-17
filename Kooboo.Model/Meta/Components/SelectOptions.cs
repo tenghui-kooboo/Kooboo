@@ -28,6 +28,22 @@ namespace Kooboo.Model.Meta
             };
         }
 
+        /// <summary>
+        /// Get select options from context data
+        /// </summary>
+        public static SelectOptions UseContext(string textField, string valueField = null)
+        {
+            return new SelectOptions
+            {
+                Context = new OptionContext
+                {
+                    Data = "context",
+                    Text = textField,
+                    Value = valueField,
+                }
+            };
+        }
+
         public static OptionContext UseDefaultOption(string text,string value)
         {
             return new OptionContext()

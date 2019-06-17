@@ -9,50 +9,46 @@ window.fieldValidateMixin = Object.assign(window.vuelidate.validationMixin, {
 });
 
 window.formItemMixin = {
-  data(){
+  data() {
     return {
-      needFormat:true,
-      fieldValue:this.data
+      needFormat: true,
+      fieldValue: this.data
     }
   },
-  // computed:{
-  //   fieldValue:{
-  //     get(){
-  //       return this.data
-  //     }
-  //   }
-  // },
-  created(){
-    if(this.needFormat){
-      var value=this.formatFieldValue();
-      if(value){
-        this.fieldValue =value;
+  created() {
+    if(!this.fieldValue){
+      var value = this.formatFieldValue();
+      if (value) {
+        this.fieldValue = value;
       }
     }
-    
+
   },
   inject: ["kbitem"],
   methods: {
-    getValue(){
+    getValue() {
       return {
         invalid: this.$v.fieldValue.$invalid,
         value: this.fieldValue,
-        name:this.name
+        name: this.name
       }
     },
     formatFieldValue() {
-      if (this.options && this.options.data && this.options.text) {
-        var data = this.ctx[this.options.data];
+      if (this.kbitem.defaultValue && this.kbitem.defaultValue instanceof Object) {
+        
+        var defaultValue = this.kbitem.defaultValue
+        var data = this.ctx[defaultValue.dataField]
         if (data instanceof Array && data.length > 0) {
           data = data[0]
         }
         if (data instanceof Object) {
-          var value = this.$parameterBinder.formatText(this.options.text, data);
+          var value = this.$parameterBinder.formatText(defaultValue.value, data);
           if (value) {
             return value
           }
         }
-      } 
+      }
+
       return null;
     },
   },

@@ -12,7 +12,6 @@
 
       data() {
         return {
-          needFormat:false,
           fieldValue: this.data
         };
       },
@@ -22,10 +21,11 @@
       computed: {
         finalOptions() {
           var finalOptions=[];
-          if (this.options.default) {
+          
+          if (this.kbitem.placeholder && this.kbitem.defaultValue && this.kbitem.defaultValue.value) {
             finalOptions.push({
-              displayName: this.options.default.text,
-              value: this.options.default.value
+              displayName: this.kbitem.placeholder,
+              value: this.kbitem.defaultValue.value
             });
           }
 
