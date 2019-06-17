@@ -39,7 +39,7 @@ namespace Kooboo.Model.Meta.Form
         public static FormMetaOptions Default()
         {
             return new FormMetaOptions()
-                .AddAttributeMap<DisplayFormatAttribute>((attr, item) => item.Placeholder = attr.NullDisplayText)
+                .AddAttributeMap<DisplayFormatAttribute>((attr, item) => item.Placeholder = new Localizable(attr.NullDisplayText))
                 .AddAttributeMap<UIHintAttribute>((attr, item) => item.Type = attr.UIHint)
                 .AddAttributeMap<DisplayAttribute>((attr, item) =>
                 {

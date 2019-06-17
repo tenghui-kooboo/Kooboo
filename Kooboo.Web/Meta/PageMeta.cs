@@ -200,16 +200,18 @@ namespace Kooboo.Web.Meta
                     item.Type = "selection";
                     item.Label = new Localizable("404 page");
                     item.Name = "notFound";
-                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}",
-                        SelectOptions.UseDefaultOption("System default", Guid.Empty.ToString()));
+                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}");
+                    item.Placeholder = new Localizable("System default");
+                    item.DefaultValue = ValueContext.DirectValue(Guid.Empty.ToString());
                 })
                 .Item(i => i.error, item =>
                 {
                     item.Type = "selection";
                     item.Label = new Localizable("Error page");
                     item.Name = "error";
-                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}",
-                       SelectOptions.UseDefaultOption("System default", Guid.Empty.ToString()));
+                    item.Options = SelectOptions.UseContext("context", "{name}", "{id}");
+                    item.Placeholder = new Localizable("System default");
+                    item.DefaultValue = ValueContext.DirectValue(Guid.Empty.ToString());
                 })
                 ;
             popupMeta.Views.Add(meta);
