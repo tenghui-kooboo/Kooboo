@@ -34,7 +34,8 @@ export default {
       if (this.isAction) {
         return 'javascript:;'
       } else {
-        return this.bindUrl(this.action.url)
+
+        return this.bindUrl(this.action.conditionUrl || this.action.url)
       }
     },
 

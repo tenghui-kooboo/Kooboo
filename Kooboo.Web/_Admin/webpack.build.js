@@ -2,7 +2,7 @@ const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   context: path.resolve(__dirname, 'Scripts/vue/components'),
   entry: {
     kbTable: './kbTable/index.js'

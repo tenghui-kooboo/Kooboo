@@ -23,12 +23,31 @@ export default {
   },
 
   inject: ['table'],
-  
-  mixins:[actionMixin],
+
+  mixins: [actionMixin],
 
   methods: {
     bindUrl(url) {
-      url = url || this.row[this.name]
+      var self = this;
+
+      //condition url
+      if (url instanceof Object && url.conditions) {
+        debugger
+        for (var i = 0; i < url.conditions.length; i++) {
+          var item = url.conditions[i]
+          var condition = self.$parameterBinder.formatText(item.condition, self.row);
+          var conditionUrl = item.url;
+          
+          if (!condition || eval(condition)) {
+            url = conditionUrl;
+            break;
+          }
+        }
+
+      } else {
+        url = url || this.row[this.name]
+      }
+
       var data = this.row
       if (this.table.ctx && this.table.ctx.parameters) {
         data = Vue.util.extend({}, this.row)
@@ -36,6 +55,7 @@ export default {
       }
       url = this.$parameterBinder.bind(url, data)
       return url
+
     },
 
     onClick() {

@@ -123,10 +123,17 @@ namespace Kooboo.Web.Meta
                 {
                     cell.Class = "btn-primary hidden-xs";
                     cell.Text = new Localizable("Setting");
+
                     cell.Action = new ActionMeta
                     {
                         Type = ActionType.Redirect,
-                        Url = "/_admin/page/details?id={id}"
+                        ConditionUrl= ConditionUrl
+                                    .Build<PageViewModel>()
+                                    .If(o => o.LayoutId != Guid.Empty, "/_admin/Page/EditLayout?id={id}&layoutId={layoutId}")
+                                    .ElseIf(o => o.Type.ToString() == PageType.Normal.ToString(), "/_admin/Page/EditPage?id={id}")
+                                    .Else("/_admin/Page/EditRichText?id={id}").ConditionUrl,
+                        Url = "/_admin/Page/EditPage?id={id}",
+
                     };
                 })
                  .Column<ButtonCell>(o => o.InlineUrl, new Localizable(""), cell =>
