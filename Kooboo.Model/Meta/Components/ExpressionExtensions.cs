@@ -107,6 +107,12 @@ namespace Kooboo.Model.Meta
                 ConstantExpression value = expression as ConstantExpression;
                 name = value.Value;
             }
+            else if (expression.NodeType == ExpressionType.Call)
+            {
+                MethodCallExpression call = expression as MethodCallExpression;
+                MemberExpression member = call.Object as MemberExpression;
+                name = UrlHelper.ToJsName(member.Member.Name);
+            }
             return name;
         }
 
@@ -129,6 +135,12 @@ namespace Kooboo.Model.Meta
             {
                 ConstantExpression value = expression as ConstantExpression;
                 constatvalue = value.Value;
+            }
+            else if (expression.NodeType == ExpressionType.Call)
+            {
+                MethodCallExpression call = expression as MethodCallExpression;
+
+                constatvalue = Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object))).Compile().Invoke();
             }
 
             return constatvalue;

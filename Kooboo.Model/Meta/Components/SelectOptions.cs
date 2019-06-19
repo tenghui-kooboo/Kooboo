@@ -15,7 +15,7 @@ namespace Kooboo.Model.Meta
         /// <summary>
         /// Get select options from context data
         /// </summary>
-        public static SelectOptions UseContext(string dataField, string textField, string valueField = null)
+        public static SelectOptions UseContext(string dataField, string textField, string valueField)
         {
             return new SelectOptions 
             {
@@ -31,7 +31,7 @@ namespace Kooboo.Model.Meta
         /// <summary>
         /// Get select options from context data
         /// </summary>
-        public static SelectOptions UseContext(string textField, string valueField = null)
+        public static SelectOptions UseContext(string textField, string valueField)
         {
             return new SelectOptions
             {

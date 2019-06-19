@@ -52,7 +52,7 @@ namespace Kooboo.Web.Meta
                     Type = ActionType.Redirect,
                     Url = "/_Admin/Page/EditLayout?layoutId={id}"
                 },
-                Options = SelectOptions.UseContext("layouts", "{name}")
+                Options = SelectOptions.UseContext("layouts", "{name}",null)
             });
 
             meta.Menu.Add(new ButtonMenu

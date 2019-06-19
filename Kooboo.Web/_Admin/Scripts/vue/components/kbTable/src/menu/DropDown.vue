@@ -39,6 +39,7 @@ export default {
   computed: {
     options () {
       const options = this.meta.options
+      
       if(options instanceof Array){
         return options.map(o => ({ text: o.text, value: o }))
       }else if(options instanceof Object){
