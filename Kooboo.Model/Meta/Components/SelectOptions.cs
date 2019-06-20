@@ -44,15 +44,6 @@ namespace Kooboo.Model.Meta
             };
         }
 
-        public static OptionContext UseDefaultOption(string text,string value)
-        {
-            return new OptionContext()
-            {
-                Text = "System default",
-                Value = value
-            };
-        }
-
         public static SelectOptions UseList(params OptionItem[] items)
         {
             return new SelectOptions
