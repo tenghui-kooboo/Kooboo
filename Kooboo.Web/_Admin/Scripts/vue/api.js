@@ -122,6 +122,16 @@ api = {
     })
     return meta;
   },
+  tabMeta:function(modelName){
+    var url = "/meta/tab?model=" + modelName;
+    var meta = {};
+    this.get(url).then(function (res) {
+      if (res.model) {
+        meta = res.model;
+      }
+    })
+    return meta;
+  },
   getApi: function (url) {
     var slashParts = url.split("/");
 

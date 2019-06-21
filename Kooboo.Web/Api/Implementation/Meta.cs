@@ -49,6 +49,11 @@ namespace Kooboo.Web.Api.Implementation
             return Get(model, "Popup", call);
         }
 
+        public object Tab(string model,ApiCall call)
+        {
+            return Get(model, "Tab", call);
+        }
+
         private object Get(string modelName, string metaName, ApiCall call)
         {
             var context = new SerializationContext
