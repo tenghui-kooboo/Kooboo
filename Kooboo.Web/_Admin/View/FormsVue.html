@@ -3,7 +3,8 @@
   <h1 class="title">Forms</h1>
 </div>
 <div id="app">
-  <kb-tab ref="tab" :tabs="tabs"></kb-tab>
+  <kb-tab ref="tab" :meta="meta"></kb-tab>
+  <kb-popup ref="popup" :meta="{}"></kb-popup>
 </div>
 
 <script src="/_Admin/Scripts/vue/api.js"></script>
@@ -15,10 +16,12 @@
 <script src="/_Admin/Scripts/vue/components/kbTab.js"></script>
 <script>
   Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbPopup/index.js"]);
-  var data = api.tabMeta("form");
+  var meta = api.tabMeta("form");
   new Vue({
     el: "#app",
-    data: data,
+    data: {
+      meta:meta
+    },
     components: {
       "kb-popup": Kooboo.vue.component.kbPopup
     },

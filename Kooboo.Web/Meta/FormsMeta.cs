@@ -8,6 +8,7 @@ using Kooboo.Sites.Models;
 using Kooboo.Web.Api.Implementation;
 using Kooboo.Model.Meta.Table;
 using Kooboo.Web.ViewModel;
+using Kooboo.Model.Meta.Popup;
 
 namespace Kooboo.Web.Meta
 {
@@ -77,9 +78,36 @@ namespace Kooboo.Web.Meta
                     cell.Text = Localizable.Raw("{0} {key}");
                     cell.Action = ActionMeta.Popup(UrlHelper.PopupMetaUrl<RelationPopup>());
                 })
-                .Column<DateCell>(o => o.LastModified, new Localizable("Last modified"), null);
+                .Column<DateCell>(o => o.LastModified, new Localizable("Last modified"), null)
+                .Column<ButtonCell>("edit", Localizable.Raw(""), cell =>
+                {
+                    cell.Class = "btn-primary hidden-xs";
+                    cell.Text = new Localizable("edit");
+                    cell.Action = new ActionMeta
+                    {
+                        Type = ActionType.Redirect,
+                        Url = "_Admin/Development/Form?id={id}"
+                    };
+                })
+                .Column<ButtonCell>("settting", Localizable.Raw(""), cell =>
+                {
+                    cell.Class = "btn-primary hidden-xs";
+                    cell.Text = new Localizable("settting");
+                    cell.Action = new ActionMeta
+                    {
+                        Type = ActionType.Popup,
+                        Meta= ActionMeta.EmbeddedPopup(CreateSettingPopup())
+                    };
+                })
+                ;
 
             return tableMeta;
+        }
+
+        private PopupMeta CreateSettingPopup()
+        {
+            PopupMeta popupMeta = new PopupMeta();
+            return popupMeta;
         }
     }
 

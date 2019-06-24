@@ -22,7 +22,7 @@ export default {
   methods: {
     onClick(tab) {
       this.index = this.tabs.indexOf(tab)
-      this.ktab.meta = tab
+      this.ktab.selectTab = tab
     }
   }
 }

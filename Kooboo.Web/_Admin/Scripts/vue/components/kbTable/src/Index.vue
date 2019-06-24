@@ -34,20 +34,13 @@ export default {
     }
   },
   created() {
-    if (this.metaName) {
-      this.meta_d = api.tableMeta(this.metaName);
-    } 
-    
-    var self = this;
-    if (this.meta_d.dataApi) {
-      var parameters = (this.ctx && this.ctx.parameters) ? this.ctx.parameters : {};
-      api
-        .get(this.$parameterBinder.bind(this.meta_d.dataApi, parameters))
-        .then(function (res) {
-          if (res.success) {
-            self.data_d = res.model;
-          }
-        });
+    this.meta_d = this.getmeta()
+    this.data_d = this.getdata()
+  },
+  watch: {
+    meta() {
+      this.meta_d = this.getmeta()
+      this.data_d=this.getdata()
     }
   },
   computed: {
@@ -68,6 +61,32 @@ export default {
       } else {
         return this.listName ? this.data_d[this.listName] : this.data_d
       }
+    }
+  },
+
+  methods: {
+    getmeta() {
+      var meta = this.meta
+      if (this.metaName) {
+        meta = api.tableMeta(this.metaName);
+      }
+      return meta
+    },
+    getdata() {
+      var self = this;
+      var data = this.data
+      if (this.meta_d.dataApi) {
+        var parameters = (this.ctx && this.ctx.parameters) ? this.ctx.parameters : {};
+        api
+          .get(this.$parameterBinder.bind(this.meta_d.dataApi, parameters))
+          .then(function (res) {
+            if (res.success) {
+              data = res.model;
+            }
+          });
+
+      }
+      return data
     }
   },
 

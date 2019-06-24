@@ -1,30 +1,19 @@
 <template>
   <div>
-    <tab :tabs="tabs"></tab>
-    <kb-table :meta="meta"></kb-table>
+    <tab :tabs="meta.tabs"></tab>
+    <kb-table :meta="innermeta"></kb-table>
   </div>
 </template>
 <script>
 import Tab from './Tab.vue'
 export default {
   props: {
-    tabs: Array
+    meta: Object
   },
 
-  // computed:{
-  //   selectView:{
-  //     get(){
-  //       return this.view
-  //     },
-  //     set(meta){
-  //       this.$emit("update:view",meta)
-  //       //this.view=meta
-  //     }
-  //   }
-  // },
   data() {
     return {
-      meta_d: null
+      innermeta: this.getmeta(this.meta.tabs[0])
     }
   },
   provide() {
@@ -32,28 +21,28 @@ export default {
       ktab: this
     }
   },
+
   computed: {
-    meta: {
+    selectTab: {
       get() {
-        debugger
-        if (!this.meta_d) {
-          this.meta_d=this.getmeta(this.tabs[0])
-        }
-        return this.meta_d
+        return this.meta.tabs[0]
       },
       set(tab) {
-        this.meta_d=this.getmeta(tab)
+        this.innermeta = this.getmeta(tab)
       }
     }
   },
   methods: {
     getmeta(tab) {
-      var meta= tab.view;
+      var meta = tab.view;
 
       if (!meta.dataApi) {
         meta.dataApi = tab.dataApi
       }
-      
+      if (!meta.modelType) {
+        meta.modelType = this.meta.modelType
+      }
+
       return meta
     }
   },
