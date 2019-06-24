@@ -86,7 +86,7 @@ namespace Kooboo.Web.Meta
                     cell.Action = new ActionMeta
                     {
                         Type = ActionType.Redirect,
-                        Url = "_Admin/Development/Form?id={id}"
+                        Url = "/_Admin/Development/Form?id={id}"
                     };
                 })
                 .Column<ButtonCell>("settting", Localizable.Raw(""), cell =>
