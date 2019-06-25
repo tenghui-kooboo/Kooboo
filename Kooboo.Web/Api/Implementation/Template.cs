@@ -284,6 +284,11 @@ namespace Kooboo.Web.Api.Implementation
                 data.Name = formResult.FormData["sitename"];
             }
 
+            if (formResult.FormData.ContainsKey("title"))
+            {
+                data.Name = formResult.FormData["title"];
+            }
+
             if (formResult.FormData.ContainsKey("link"))
             {
                 data.Link = formResult.FormData["link"];
@@ -322,10 +327,14 @@ namespace Kooboo.Web.Api.Implementation
 
             foreach (var item in formResult.Files)
             {
-                TemplateUserImages image = new TemplateUserImages();
-                image.FileName = item.FileName;
-                image.Base64 = Convert.ToBase64String(item.Bytes);
-                data.Images.Add(image);
+                if (UrlHelper.IsImage(item.FileName))
+                {
+                    TemplateUserImages image = new TemplateUserImages();
+                    image.FileName = item.FileName;
+                    image.Base64 = Convert.ToBase64String(item.Bytes);
+                    data.Images.Add(image);
+                }
+                
             }
 
             if (data.Images.Count() > 0)
