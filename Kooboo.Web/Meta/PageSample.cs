@@ -8,6 +8,7 @@ using Kooboo.Model.Meta.Popup;
 using Kooboo.Sites.Models;
 using Kooboo.Web.Api.Implementation;
 using Kooboo.Web.ViewModel;
+using Kooboo.Api;
 
 namespace Kooboo.Web.Meta
 {
@@ -91,6 +92,37 @@ namespace Kooboo.Web.Meta
         }
     }
 
+    #region extension menu
+    public class PageSampeExtension : ITableMetaConfigure<PageSample>
+    {
+        public void Configure(TableMeta meta)
+        {
+            meta.Menu.Add(new ButtonMenu
+            {
+                Text = new Localizable("extesion"),
+                Class = "green",
+                //click button,then it will invoke the PageSample/Test api 
+                Action = ActionMeta.Post(UrlHelper.ApiUrl<PageSampleApi>(nameof(PageSampleApi.Test))),
+                Visible=Comparison.OnSingleSelection
+            });
+        }
+    }
+
+    public class PageSampleApi : IApi
+    {
+        public string ModelName => "PageSample";
+
+        public bool RequireSite => false;
+
+        public bool RequireUser => false;
+
+        public string Test(List<string> ids)
+        {
+            var msg = "this is an extension";
+            return msg;
+        }
+    }
+    #endregion
 
     public class PageSample : Page
     {
