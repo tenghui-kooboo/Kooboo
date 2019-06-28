@@ -37,7 +37,12 @@ export default {
       var meta = tab.view;
 
       if (!meta.dataApi) {
-        meta.dataApi = tab.dataApi
+        var model = {}
+        if (tab.key) {
+          model[tab.key] = tab.value
+        }
+
+        meta.dataApi = this.$parameterBinder.bind(tab.dataApi, model)
       }
       if (!meta.modelType) {
         meta.modelType = this.meta.modelType

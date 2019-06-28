@@ -28,6 +28,10 @@ namespace Kooboo.Model.Meta.Tab
     {
         public Localizable Text { get; set; }
 
+        public string Key { get; set; }
+
+        public string Value { get; set; }
+
         public string DataApi { get; set; }
 
         public IViewMeta View { get; set; }
