@@ -55,23 +55,22 @@ namespace Kooboo.Web.Meta
                 Options = SelectOptions.UseContext("layouts", "{name}",null)
             });
 
-            meta.Menu.Add(new ButtonMenu
-            {
-                Text = new Localizable("Import"),
-                Class = "green",
-                Action = new ActionMeta
-                {
-                    Type = ActionType.Popup,
+            //meta.Menu.Add(new ButtonMenu
+            //{
+            //    Text = new Localizable("Import"),
+            //    Class = "green",
+            //    Action = new ActionMeta
+            //    {
+            //        Type = ActionType.Popup,
 
-                }
-            });
+            //    }
+            //});
 
             meta.Menu.Add(new ButtonMenu
             {
                 Text = new Localizable("Copy"),
                 Class = "green",
                 Action = ActionMeta.Popup(UrlHelper.PopupMetaUrl<CopyPopup>()),
-                //Action = ActionMeta.EmbeddedPopup(MetaHelper.CreateCopyPopupMeta()),
                 Visible = Comparison.OnSingleSelection
             });
 

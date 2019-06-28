@@ -10,6 +10,7 @@ namespace Kooboo.Model.Meta
     {
         public static readonly Comparison OnMultipleSelection = Comparison.GreaterThan(1);
         public static readonly Comparison OnSingleSelection = Comparison.Equal(1);
+        public static readonly Comparison OnSeletion = Comparison.EqualOrGreaterThan(1);
 
         public string Operator { get; set; }
 

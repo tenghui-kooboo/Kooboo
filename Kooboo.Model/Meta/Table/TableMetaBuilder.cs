@@ -70,7 +70,7 @@ namespace Kooboo.Model.Meta.Table
             return this;
         }
 
-        public TableMetaBuilder<T> Column<TCell>(Expression<Func<T,object>> getName, Localizable header, Action<TCell> configureCell)
+        public TableMetaBuilder<T> Column<TCell>(Expression<Func<T,object>> getName, Localizable header, Action<TCell> configureCell=null)
             where TCell : Cell
         {
             return Column(getName.PropertyName(), header, configureCell);
