@@ -26,7 +26,14 @@ namespace Kooboo.Sites.Scripting.Global.Db
         List<T> ExecuteList<T>(string sql, IDictionary<string, object> parameters);
 
         T ExecuteSingle<T>(string sql, IDictionary<string, object> parameters);
+
+        void ExecuteSP(string procName, IDictionary<string, object> parameters);
+        
+        List<T> QueryBySP<T>(string procName, IDictionary<string, object> parameters);
+
+        T QueryFirstBySP<T>(string procName, IDictionary<string, object> parameters);
     }
+
     public class MySQLDatabaseConnect: IDatabaseConnect
     {
         private MySqlConnection sqlConnection = null;
@@ -255,6 +262,29 @@ namespace Kooboo.Sites.Scripting.Global.Db
             return param;
         }
 
+        public List<object> ExecuteProc(string procName, IDictionary<string, object> parameters)
+        {
+            var param = GetParam(parameters);
+            return Connection.Query<object>(procName, param, null, false, null, CommandType.StoredProcedure).AsList();
+        }
+
+        public void ExecuteSP(string procName, IDictionary<string, object> parameters)
+        {
+            var param = GetParam(parameters);
+            Connection.Query(procName, param, null, false, null, CommandType.StoredProcedure);
+        }
+
+        public List<T> QueryBySP<T>(string procName, IDictionary<string, object> parameters)
+        {
+            var param = GetParam(parameters);
+            return Connection.Query<T>(procName, param, null, false, null, CommandType.StoredProcedure).AsList();
+        }
+
+        public T QueryFirstBySP<T>(string procName, IDictionary<string, object> parameters)
+        {
+            var param = GetParam(parameters);
+            return Connection.QueryFirst<T>(procName, param, null, 3000,CommandType.StoredProcedure);
+        }
     }
 
 

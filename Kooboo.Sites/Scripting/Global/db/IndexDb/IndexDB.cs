@@ -20,5 +20,35 @@ namespace Kooboo.Sites.Scripting.Global.Db
             var tb = db.GetOrCreateTable(Name);
             return new KTable(tb, this.context);
         }
+
+        public override void ExecuteSP(string procName, IDictionary<string, object> parameters)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DynamicTableObject[] QueryBySP(string proceName, IDictionary<string, object> parameters)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DynamicTableObject QueryFirstBySP(string proceName, IDictionary<string, object> parameters)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DynamicTableObject QueryFirst(string sql, IDictionary<string, object> parameters)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DynamicTableObject[] Query(string sql, IDictionary<string, object> parameters)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void ExecuteNoQuery(string sql, IDictionary<string, object> parameters)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

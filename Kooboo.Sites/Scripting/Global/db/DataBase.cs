@@ -4,6 +4,7 @@ using System.Text;
 using Kooboo.Data.Context;
 using Kooboo.Data.Interface;
 using Kooboo.Sites.Extensions;
+using Kooboo.Sites.Scripting.Global;
 
 namespace Kooboo.Sites.Scripting.Global.Db
 {
@@ -42,5 +43,18 @@ namespace Kooboo.Sites.Scripting.Global.Db
             }
         }
 
+        public abstract void ExecuteSP(string procName, IDictionary<string, object> parameters);
+
+        public abstract DynamicTableObject[] QueryBySP(string proceName, IDictionary<string, object> parameters);
+
+        public abstract DynamicTableObject QueryFirstBySP(string proceName, IDictionary<string, object> parameters);
+
+        public abstract DynamicTableObject QueryFirst(string sql, IDictionary<string, object> parameters);
+
+        public abstract DynamicTableObject[] Query(string sql, IDictionary<string, object> parameters);
+
+        public abstract void ExecuteNoQuery(string sql, IDictionary<string, object> parameters);
+
     }
+
 }

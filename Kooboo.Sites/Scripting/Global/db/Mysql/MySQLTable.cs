@@ -85,15 +85,19 @@ namespace Kooboo.Sites.Scripting.Global.Db
         {
             var connection = DataBus.GetDataBase(TableContext.ConnectionString);
 
+            IDictionary<string, object> dic = null;
             if (newvalue is IDictionary<string, object>)
             {
-                var dic = newvalue as IDictionary<string, object>;
-                if (dic.Count > 0)
-                {
-                    string sql = SQLHelper.GetUpdateSql(TableContext.TableName, dic, id.ToString());
-                    connection.ExecuteNoQuery(sql, dic);
-                }
-
+                dic = newvalue as IDictionary<string, object>;
+            }
+            else if(newvalue is DynamicTableObject)
+            {
+                dic = (newvalue as DynamicTableObject).Values as IDictionary<string, object>;
+            }
+            if (dic!=null && dic.Count > 0)
+            {
+                string sql = SQLHelper.GetUpdateSql(TableContext.TableName, dic, id.ToString());
+                connection.ExecuteNoQuery(sql, dic);
             }
         }
 
