@@ -35,7 +35,7 @@ namespace Kooboo.Sites.Scripting.Global
                 var db = GetDatabase(key);
                 if (db!=null)
                 {
-                    return GetDatabase(key);
+                    return db;
                 }
 
                 return GetTable(key);

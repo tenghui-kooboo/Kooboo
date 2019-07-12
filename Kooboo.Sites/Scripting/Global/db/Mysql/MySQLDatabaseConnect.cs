@@ -32,6 +32,8 @@ namespace Kooboo.Sites.Scripting.Global.Db
         List<T> QueryBySP<T>(string procName, IDictionary<string, object> parameters);
 
         T QueryFirstBySP<T>(string procName, IDictionary<string, object> parameters);
+
+        List<T> GetScheme<T>(string tableName); 
     }
 
     public class MySQLDatabaseConnect: IDatabaseConnect
@@ -262,28 +264,30 @@ namespace Kooboo.Sites.Scripting.Global.Db
             return param;
         }
 
-        public List<object> ExecuteProc(string procName, IDictionary<string, object> parameters)
-        {
-            var param = GetParam(parameters);
-            return Connection.Query<object>(procName, param, null, false, null, CommandType.StoredProcedure).AsList();
-        }
-
         public void ExecuteSP(string procName, IDictionary<string, object> parameters)
         {
             var param = GetParam(parameters);
             Connection.Query(procName, param, null, false, null, CommandType.StoredProcedure);
         }
 
+        //ExceProcReturnList
         public List<T> QueryBySP<T>(string procName, IDictionary<string, object> parameters)
         {
             var param = GetParam(parameters);
             return Connection.Query<T>(procName, param, null, false, null, CommandType.StoredProcedure).AsList();
         }
 
+        //ExecProcReturnSingle
         public T QueryFirstBySP<T>(string procName, IDictionary<string, object> parameters)
         {
             var param = GetParam(parameters);
             return Connection.QueryFirst<T>(procName, param, null, 3000,CommandType.StoredProcedure);
+        }
+
+        public List<T> GetScheme<T>(string tableName)
+        {
+            var sql = "describe " + tableName;
+            return Connection.Query<T>(sql, null, transaction).AsList();
         }
     }
 

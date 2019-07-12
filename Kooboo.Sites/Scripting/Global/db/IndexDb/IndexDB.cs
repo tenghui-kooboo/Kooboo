@@ -17,7 +17,7 @@ namespace Kooboo.Sites.Scripting.Global.Db
         public override IkTable GetTable(string name)
         {
             var db = Kooboo.Data.DB.GetKDatabase(this.context.WebSite);
-            var tb = db.GetOrCreateTable(Name);
+            var tb = db.GetOrCreateTable(name);
             return new KTable(tb, this.context);
         }
 
