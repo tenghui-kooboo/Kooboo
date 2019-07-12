@@ -27,9 +27,10 @@ namespace Kooboo.Sites.Scripting.Global.Db
 
                     string sql = SQLHelper.GetInsertSql(TableContext.TableName, dic);
 
-                    if (dic.TryGetValue(SchemaHelper.DefaultIdFieldName, out var primaryIdObj) 
-                        && Guid.TryParse(primaryIdObj as string,out var primaryId)
-                        && primaryId!=Guid.Empty)
+                    if (dic.TryGetValue(SchemaHelper.DefaultIdFieldName, out var primaryIdObj)
+                        && primaryIdObj != null
+                        && Guid.TryParse(primaryIdObj.ToString(), out var primaryId)
+                        && primaryId != Guid.Empty)
                     {
                         connection.ExecuteNoQuery(sql, dic);
                         return primaryId;

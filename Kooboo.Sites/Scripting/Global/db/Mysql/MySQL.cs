@@ -15,11 +15,11 @@ namespace Kooboo.Sites.Scripting.Global.Db
         public string ConnectionString { get; set; }
     }
 
-    public class KMySQL : Database
+    public class MysqlDB : Database
     {
         public override string Name => "mysql";
 
-        public KMySQL(RenderContext context) : base(context)
+        public MysqlDB(RenderContext context) : base(context)
         {
             var setting = GetSetting<MySQLSetting>(context);
             if (setting != null)
