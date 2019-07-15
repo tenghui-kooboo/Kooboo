@@ -11,17 +11,14 @@
   <script src="/_Admin/Scripts/vue/validation/vuelidate.min.js"></script>
   <script src="/_Admin/Scripts/vue/validation/validators.min.js"></script>
   <script src="/_Admin/Scripts/vue/validation/validateExtend.js"></script>
-  <script src="/_Admin/Scripts/vue/mixin/mixins.js"></script>
   <script src="/_Admin/Scripts/vue/components/kbTable.js"></script>
+  <script src="/_Admin/Scripts/vue/components/kbPopup.js"></script>
+  <script src="/_Admin/Scripts/vue/components/kbForm.js"></script>
   <script>
-  Kooboo.loadJS(["/_Admin/Scripts/vue/components/kbPopup/index.js"]);
   var data=api.getList("page");
  
   new Vue({
     el:"#app",
-    data:data,
-    components: {
-      "kb-popup": Kooboo.vue.component.kbPopup
-    }
+    data:data
   })
   </script>

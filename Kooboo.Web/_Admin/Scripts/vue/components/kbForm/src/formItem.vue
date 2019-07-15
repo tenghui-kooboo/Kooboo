@@ -64,7 +64,6 @@ export default {
       return this.controlType.toLowerCase();
     },
     isFieldInvalid() {
-      debugger
       if (this.rendered) {
         return this.$refs[`field_item_${this.idx}`].$v.fieldValue.$invalid;
       } else {
