@@ -41,7 +41,6 @@
     computed: {
       _ct() {
         if(!this.controlType){
-          debugger
         }
         return this.controlType.toLowerCase();
       },

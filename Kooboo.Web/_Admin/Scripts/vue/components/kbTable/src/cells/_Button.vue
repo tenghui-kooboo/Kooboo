@@ -32,7 +32,6 @@ export default {
 
       //condition url
       if (url instanceof Object && url.conditions) {
-        debugger
         for (var i = 0; i < url.conditions.length; i++) {
           var item = url.conditions[i]
           var condition = self.$parameterBinder.formatText(item.condition, self.row);

@@ -17,7 +17,7 @@
 </template>
 <script>
 import kbModal from './modal'
-import kbForm  from '../kbForm/index'
+import kbForm  from '../../kbForm/src/Index.vue'
 export default {
   props: {
       visible: Boolean,

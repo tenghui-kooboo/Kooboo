@@ -2,15 +2,15 @@
 <div class="page-header">
   <h1 class="title">Pages</h1>
 </div>
-<div id="app" kv-el>
-  <kb-table kv-meta="Page" list-name="pages"></kb-table>
-  <popup kv-ref="popup"></popup>
+<div id="app">
+  <kb-table :meta="meta" list-name="pages" :data="data"></kb-table>
+  <kb-popup ref="popup" :meta="popup"></kb-popup>
 </div>
 <script>
-    Kooboo.vue = {
-      component: {}
-    };
-  </script>
+  Kooboo.vue = {
+    component: {}
+  };
+</script>
 <script src="/_Admin/Scripts/vue/vue.js"></script>
 <script src="/_Admin/Scripts/vue/VueExtend.js"></script>
 <script src="/_Admin/Scripts/vue/api.js"></script>
@@ -18,6 +18,14 @@
 <script src="/_Admin/Scripts/vue/validation/validators.min.js"></script>
 <script src="/_Admin/Scripts/vue/validation/validateExtend.js"></script>
 <script src="/_Admin/Scripts/vue/components/kbTable.js"></script>
-<script src="/_Admin/Scripts/vue/components/kbModal/index.js"></script>
-<script src="/_Admin/Scripts/vue/components/kbForm/index.js"></script>
+<script src="/_Admin/Scripts/vue/components/kbPopup.js"></script>
+<script src="/_Admin/Scripts/vue/components/kbForm.js"></script>
 
+<script>
+  var data = api.getList("page");
+
+  new Vue({
+    el: "#app",
+    data: data
+  })
+</script>

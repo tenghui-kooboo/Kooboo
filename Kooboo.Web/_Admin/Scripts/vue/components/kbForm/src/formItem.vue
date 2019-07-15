@@ -14,7 +14,7 @@
         :rules="rules"
         :class="externalClass"
         :ref="`field_item_${idx}`"
-        :is="`kb-form-item-${_ct}`"
+        :is="`kb-${_ct}`"
         :placeholder="placeholder"
         :options="options"
       ></component>
@@ -60,11 +60,11 @@ export default {
   computed: {
     _ct() {
       if (!this.controlType) {
-        debugger
       }
       return this.controlType.toLowerCase();
     },
     isFieldInvalid() {
+      debugger
       if (this.rendered) {
         return this.$refs[`field_item_${this.idx}`].$v.fieldValue.$invalid;
       } else {

@@ -6,6 +6,8 @@ module.exports = {
   context: path.resolve(__dirname, 'Scripts/vue/components'),
   entry: {
     kbTab:'./kbTab/index.js',
+    kbForm:'./kbForm/index.js',
+    kbPopup:'./kbPopup/index.js',
     kbTable: './kbTable/index.js'
   },
   plugins: [
