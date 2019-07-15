@@ -173,17 +173,20 @@ namespace Kooboo.Sites.Scripting.Global.Db
 
         public void delete(object id)
         {
-            delete(SchemaHelper.DefaultIdFieldName, id);
+            var primaryKey = SchemaHelper.GetPrimaryKey(TableContext.TableName, TableContext.ConnectionString);
+            delete(primaryKey, id);
         }
 
         public DynamicTableObject get(object id)
         {
-            return get(SchemaHelper.DefaultIdFieldName, id);
+            var primaryKey = SchemaHelper.GetPrimaryKey(TableContext.TableName, TableContext.ConnectionString);
+            return get(primaryKey, id);
         }
 
         public void update(object newvalue)
         {
-            update(SchemaHelper.DefaultIdFieldName, newvalue);
+            var primaryKey = SchemaHelper.GetPrimaryKey(TableContext.TableName,TableContext.ConnectionString);
+            update(primaryKey, newvalue);
         }
 
         #endregion
@@ -233,7 +236,6 @@ namespace Kooboo.Sites.Scripting.Global.Db
 
             return data;
         }
-
 
         #endregion
 

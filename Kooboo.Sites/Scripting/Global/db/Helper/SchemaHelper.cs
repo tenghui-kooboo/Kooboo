@@ -58,6 +58,13 @@ namespace Kooboo.Sites.Scripting.Global.Db
             }
         }
 
+        public static string GetPrimaryKey(string tableName, string connectionString)
+        {
+            var schema = SchemaHelper.GetSchemaFromDb(tableName, connectionString);
+            var column = schema.Find(c => c.IsPrimary);
+
+            return column.Name;
+        }
         private static void CreateTableSchema(TableContext tableContext, List<TableColumn> columns)
         {
             var sql = GetCreateTableSql(tableContext.TableName, columns);
