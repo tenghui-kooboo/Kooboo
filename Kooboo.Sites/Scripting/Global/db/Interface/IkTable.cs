@@ -21,6 +21,8 @@ namespace Kooboo.Sites.Scripting.Global.Db
         
         void delete(object id);
 
+        void delete(string key, object id);
+
         DynamicTableObject find(string searchCondition);
         
         DynamicTableObject find(string field, object value);
@@ -30,6 +32,8 @@ namespace Kooboo.Sites.Scripting.Global.Db
         DynamicTableObject[] findAll(string condition);
         
         DynamicTableObject get(object id);
+
+        DynamicTableObject get(string key, object id);
 
         TableQuery Query();
 

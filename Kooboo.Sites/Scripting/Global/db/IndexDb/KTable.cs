@@ -117,6 +117,11 @@ namespace Kooboo.Sites.Scripting.Global
             return DynamicTableObject.Create(obj, this.table, this.context);
         }
 
+        public DynamicTableObject get(string key, object id)
+        {
+            return this.find(key, id);
+        }
+
         public TableQuery Query()
         {
             return new TableQuery(this);
@@ -141,5 +146,9 @@ namespace Kooboo.Sites.Scripting.Global
             return DynamicTableObject.CreateList(all.ToArray(), this.table, this.context);
         }
 
+        public void delete(string key, object id)
+        {
+            throw new NotSupportedException();
+        }
     }
 }
