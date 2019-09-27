@@ -1,0 +1,26 @@
+{
+  "name": "kooboo-meta-render",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --env.NODE_ENV=development",
+    "build": "webpack --env.NODE_ENV=production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/webpack": "^4.39.1",
+    "ts-loader": "^6.1.2",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "vue": "^2.6.10"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "name_1",
+  "text": "按钮",
+  "class": "green",
+  "style": "",
+  "hooks": [
+    {
+      "name": "name_1_click",
+      "action": "alert('aa')"
+    }
+  ]
+}
