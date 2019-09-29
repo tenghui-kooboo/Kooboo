@@ -9,17 +9,19 @@ namespace Kooboo.Web.Meta
 {
     class PagesMetaConfiguration : IMetaConfiguration
     {
-        public void Configure(IMeta meta)
+        public void Configure(Kooboo.Meta.Views.Meta meta)
         {
-            var btn = meta.AddView(new KbButton
+            meta.AddKbNavbar(navbar =>
             {
-                Text = "按钮"
-            });
-
-            btn.Hooks.Add(new Hook
-            {
-                Name=$"click_{btn.Id}",
-                Action=$"k.self.style.color='red'"
+                navbar.AddButton(newPageBtn =>
+                {
+                    newPageBtn.Text = "新建页面";
+                    newPageBtn.AddHook(hook =>
+                    {
+                        hook.Name = $"click_{newPageBtn.Id}";
+                        hook.Action = $"k.self.style.color='red'";
+                    });
+                });
             });
         }
     }

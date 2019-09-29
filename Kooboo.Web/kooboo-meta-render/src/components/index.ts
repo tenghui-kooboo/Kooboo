@@ -1,3 +1,5 @@
 import Vue from "vue";
-import Button from "@/components/KbButton.vue";
-Vue.component("KbButton", Button);
+import KbButton from "@/components/KbButton.vue";
+import KbNavbar from "@/components/KbNavbar.vue";
+Vue.component("KbButton", KbButton);
+Vue.component("KbNavbar", KbNavbar);

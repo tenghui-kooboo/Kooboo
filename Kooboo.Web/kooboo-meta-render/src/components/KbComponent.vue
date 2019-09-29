@@ -9,7 +9,7 @@ export default Vue.extend({
     providers[this.meta.id] = this.$data;
   },
   destroyed() {
-    console.log("destroyed")
+    console.log("destroyed");
     delete providers[this.meta.id];
   },
   created() {

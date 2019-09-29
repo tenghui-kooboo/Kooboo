@@ -5,11 +5,8 @@ using System.Text;
 
 namespace Kooboo.Meta
 {
-    public interface IMeta
+    public static class MetaExtensions
     {
-        string SetRoute(string name);
-
-        View AddView(View view);
-
+        
     }
 }

@@ -6,7 +6,6 @@ namespace Kooboo.Meta
 {
     public interface IMetaConfiguration
     {
-
-        void Configure(IMeta meta);
+        void Configure(Views.Meta meta);
     }
 }

@@ -6,7 +6,6 @@
 import Vue from "./KbComponent.vue";
 import { context } from "@/common/global";
 export default Vue.extend({
-  name: "kb-button",
   props: {
     meta: Object
   },

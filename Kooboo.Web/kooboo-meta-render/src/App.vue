@@ -10,7 +10,6 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import data from "../_mock/page.json";
 export default Vue.extend({
   data() {
     return {
