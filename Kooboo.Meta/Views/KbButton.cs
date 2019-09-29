@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Kooboo.Meta.Views
 {
-    public class KbButton : IView
+    public class KbButton : View
     {
-        public string Name => nameof(KbButton);
+        public override string Name => nameof(KbButton);
 
         public string Text { get; set; }
+
     }
 }

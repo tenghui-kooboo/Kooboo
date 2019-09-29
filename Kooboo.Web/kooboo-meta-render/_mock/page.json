@@ -1,0 +1,17 @@
+{
+  "model": {
+    "views": [
+      {
+        "name": "KbButton",
+        "text": "按钮",
+        "id": "156673dc-2765-4842-9635-0b0d79d91fcd"
+      }
+    ],
+    "name": "pages",
+    "id": "4e31e3b0-15e4-47d2-a82d-2100d8338fbc"
+  },
+  "dataChange": false,
+  "success": true,
+  "messages": [],
+  "fieldErrors": []
+}

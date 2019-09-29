@@ -1,12 +1,13 @@
 {
-  "name": "name_1",
+  "type": "kbbutton",
+  "id": "my_btn",
   "text": "按钮",
   "class": "green",
   "style": "",
   "hooks": [
     {
-      "name": "name_1_click",
-      "action": "alert('aa')"
+      "name": "click_my_btn",
+      "action": "console.log(k.provider['my_btn'].msg)"
     }
   ]
 }

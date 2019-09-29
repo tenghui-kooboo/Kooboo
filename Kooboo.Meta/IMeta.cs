@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kooboo.Meta.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace Kooboo.Meta
     {
         string SetRoute(string name);
 
-        IView AddView(IView view);
+        View AddView(View view);
+
     }
 }

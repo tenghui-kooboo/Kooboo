@@ -3,23 +3,24 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from "./KbComponent.vue";
 import { context } from "@/common/global";
 export default Vue.extend({
   name: "kb-button",
   props: {
     meta: Object
   },
-  created() {
-    if (this.meta.hooks && this.meta.hooks instanceof Array) {
-      for (const i of this.meta.hooks) {
-        context.$on(i.name, () => eval(i.action));
-      }
-    }
+  data() {
+    return {
+      msg: "btn"
+    };
   },
   methods: {
-    onClick() {
-      context.$emit(`${this.meta.name}_click`);
+    onClick(e: any) {
+      context.$emit(`click_${this.meta.id}`, {
+        self: this.$el,
+        e: e
+      });
     }
   }
 });

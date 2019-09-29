@@ -13,8 +13,9 @@ export default function(env: any): Configuration {
     },
     mode: env.NODE_ENV,
     watch: env.NODE_ENV == "development",
+    devtool: env.NODE_ENV == "development" ? "inline-source-map" : undefined,
     resolve: {
-      extensions: [".ts"],
+      extensions: [".ts",".js"],
       alias: {
         "@": path.resolve(__dirname, "src")
       }

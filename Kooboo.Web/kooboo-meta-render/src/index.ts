@@ -1,6 +1,25 @@
 import Vue from "vue";
 import "./components";
 import App from "./App.vue";
-new Vue({
-  render: r => r(App)
-}).$mount("#app");
+import { getMeta } from "@/common/api";
+
+(async function() {
+  const root = document.getElementById("app");
+  if (!root) return console.log("Not element id is app");
+  const modelName = root.getAttribute("model-name");
+  if (!modelName) return console.log("app element not attribute model-name");
+  const meta = await getMeta(modelName);
+
+  new Vue({
+    render: r =>
+      r(
+        App.extend({
+          data() {
+            return {
+              meta: meta
+            };
+          }
+        })
+      )
+  }).$mount("#app");
+})();

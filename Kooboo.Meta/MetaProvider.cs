@@ -12,7 +12,7 @@ namespace Kooboo.Meta
         readonly Type[] _types = new Type[0];
         readonly object[] _objects = new object[0];
         readonly Type _metaConfigurationType = typeof(IMetaConfiguration);
-        readonly Lazy<IEnumerable<Internal.Meta>> _metas;
+        readonly Lazy<IEnumerable<Views.Internal.Meta>> _metas;
 
         public static MetaProvider Instance { get; private set; }
 
@@ -23,13 +23,13 @@ namespace Kooboo.Meta
 
         public MetaProvider(IEnumerable<Assembly> assemblies)
         {
-            _metas = new Lazy<IEnumerable<Internal.Meta>>(() =>
+            _metas = new Lazy<IEnumerable<Views.Internal.Meta>>(() =>
             {
                 var types = assemblies.SelectMany(s => s.GetTypes().Where(w => w.GetInterfaces().Any(a => a == _metaConfigurationType))).Distinct();
                 return types.Select(s =>
                 {
-                    var meta = new Internal.Meta();
-                    meta.Name = DefaultRouteName(s.Name);
+                    var meta = new Views.Internal.Meta();
+                    meta.SetRoute(DefaultRouteName(s.Name));
                     var configuration = s.GetConstructor(_types).Invoke(_objects);
                     s.GetMethod("Configure").Invoke(configuration, new[] { meta });
                     return meta;
