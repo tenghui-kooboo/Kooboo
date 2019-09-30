@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Kooboo.Meta.Views
 {
-    public abstract class View
+    public abstract class KbView
     {
         public abstract string Name { get; }
 
         public string Id { get; } = Guid.NewGuid().ToString();
 
-        public List<Hook> Hooks { get; set; } = new List<Hook>();
+        public List<KbHook> Hooks { get; set; } = new List<KbHook>();
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kooboo.Meta.Views
 {
-    public class Meta : Container
+    public class KbMeta : KbContainer
     {
         string _name = null;
 

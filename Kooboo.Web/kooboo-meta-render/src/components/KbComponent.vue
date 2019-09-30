@@ -9,7 +9,6 @@ export default Vue.extend({
     providers[this.meta.id] = this.$data;
   },
   destroyed() {
-    console.log("destroyed");
     delete providers[this.meta.id];
   },
   created() {
@@ -18,9 +17,15 @@ export default Vue.extend({
         context.$on(i.name, (k: any) => {
           k.target = this.$el;
           k.provider = providers;
-          eval(i.action);
+          eval(i.execute);
         });
       }
+    }
+  },
+  methods: {
+    $dispath: function(hookType: string, k: any = {}) {
+      k.self = this.$el;
+      context.$emit(`${hookType}_${this.meta.id}`, k);
     }
   }
 });

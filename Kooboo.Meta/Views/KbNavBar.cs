@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kooboo.Meta.Views
 {
-    public class KbNavbar : Container
+    public class KbNavbar : KbContainer
     {
         public override string Name => nameof(KbNavbar);
     }

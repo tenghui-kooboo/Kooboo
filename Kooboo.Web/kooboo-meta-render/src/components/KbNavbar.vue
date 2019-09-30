@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="navbar navbar-default"
-    v-if="meta && meta.views && meta.views.length > 0"
-  >
+  <div class="navbar navbar-default">
     <div class="container-fluid">
       <component
         v-for="(item, index) in meta.views"

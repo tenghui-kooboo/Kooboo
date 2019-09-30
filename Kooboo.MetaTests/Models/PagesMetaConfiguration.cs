@@ -7,7 +7,7 @@ namespace Kooboo.Meta.Tests.Infrastructure
 {
     class PagesMetaConfiguration : IMetaConfiguration
     {
-        public void Configure(Views.Meta meta)
+        public void Configure(Views.KbMeta meta)
         {
             meta.AddView(new KbButton
             {

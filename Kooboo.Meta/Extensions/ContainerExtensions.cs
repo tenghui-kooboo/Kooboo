@@ -7,7 +7,7 @@ namespace Kooboo.Meta
 {
     public static class ContainerExtensions
     {
-        public static KbButton AddButton<T>(this T container, Action<KbButton> action) where T : Container
+        public static KbButton AddButton<T>(this T container, Action<KbButton> action) where T : KbContainer
         {
             var btn = new KbButton();
             action(btn);
@@ -15,7 +15,7 @@ namespace Kooboo.Meta
             return btn;
         }
 
-        public static KbNavbar AddKbNavbar<T>(this T container, Action<KbNavbar> action) where T : Container
+        public static KbNavbar AddKbNavbar<T>(this T container, Action<KbNavbar> action) where T : KbContainer
         {
             var bar = new KbNavbar();
             action(bar);

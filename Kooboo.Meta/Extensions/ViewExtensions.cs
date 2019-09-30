@@ -8,12 +8,24 @@ namespace Kooboo.Meta
 {
     public static class ViewExtensions
     {
-        public static Hook AddHook<T>(this T view, Action<Hook> action) where T : View
+        public static T AddHook<T>(this T view, Action<KbHook> action) where T : KbView
         {
-            var hook = new Hook();
+            var hook = new KbHook();
             action(hook);
             view.Hooks.Add(hook);
-            return hook;
+            return view;
+        }
+
+        public static T AddHook<T>(this T view, string name, string execute) where T : KbView
+        {
+
+            view.AddHook(hook =>
+            {
+                hook.Name = name;
+                hook.Execute = execute;
+            });
+
+            return view;
         }
     }
 }

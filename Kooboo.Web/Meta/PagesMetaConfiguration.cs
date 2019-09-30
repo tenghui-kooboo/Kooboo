@@ -9,17 +9,29 @@ namespace Kooboo.Web.Meta
 {
     class PagesMetaConfiguration : IMetaConfiguration
     {
-        public void Configure(Kooboo.Meta.Views.Meta meta)
+        public void Configure(KbMeta meta)
         {
             meta.AddKbNavbar(navbar =>
             {
                 navbar.AddButton(newPageBtn =>
                 {
                     newPageBtn.Text = "新建页面";
-                    newPageBtn.AddHook(hook =>
+                    newPageBtn.NewWindow("http://www.baidu.com");
+                });
+
+                navbar.AddButton(newPageBtn =>
+                {
+                    newPageBtn.Text = "新建页面(重定向)";
+                    newPageBtn.Redirect("http://www.baidu.com");
+                });
+
+                navbar.AddButton(newRichPageBtn =>
+                {
+                    newRichPageBtn.Text = "新建富文本页面";
+                    newRichPageBtn.AddHook(hook =>
                     {
-                        hook.Name = $"click_{newPageBtn.Id}";
-                        hook.Action = $"k.self.style.color='red'";
+                        hook.Name = KbButton.Hook.click.ToName(newRichPageBtn.Id);
+                        hook.Execute = $"k.self.style.color='red'";
                     });
                 });
             });

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kooboo.Meta.Models
 {
-    public class Hook
+    public class KbHook
     {
         public string Name { get; set; }
 
@@ -17,6 +17,6 @@ namespace Kooboo.Meta.Models
         /// k.self.style.color="red" //在监听到钩子触发时将自身的文字颜色设置为红色
         /// 
         /// </summary>
-        public string Action { get; set; }
+        public string Execute { get; set; }
     }
 }

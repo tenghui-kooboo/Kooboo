@@ -7,7 +7,7 @@
   "hooks": [
     {
       "name": "click_my_btn",
-      "action": "console.log(k.provider['my_btn'].msg)"
+      "execute": "console.log(k.provider['my_btn'].msg)"
     }
   ]
 }
