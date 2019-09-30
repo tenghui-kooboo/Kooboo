@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "./KbComponent.vue";
+import Vue from "@/common/kbVue";
 export default Vue.extend({
   props: {
     meta: Object

@@ -19,13 +19,12 @@ namespace Kooboo.Meta
         public static T AddHook<T>(this T view, string name, string execute) where T : KbView
         {
 
-            view.AddHook(hook =>
-            {
-                hook.Name = name;
-                hook.Execute = execute;
-            });
-
-            return view;
+            return view.AddHook(hook =>
+             {
+                 hook.Name = name;
+                 hook.Execute = execute;
+             });
         }
+
     }
 }

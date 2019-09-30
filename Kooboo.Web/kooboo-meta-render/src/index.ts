@@ -11,15 +11,6 @@ import { getMeta } from "@/common/api";
   const meta = await getMeta(modelName);
 
   new Vue({
-    render: r =>
-      r(
-        App.extend({
-          data() {
-            return {
-              meta: meta
-            };
-          }
-        })
-      )
+    render: r => r(App, { props: { meta: meta } })
   }).$mount("#app");
 })();

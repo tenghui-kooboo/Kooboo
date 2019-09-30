@@ -1,22 +1,25 @@
-<script lang="ts">
 import Vue from "vue";
-import { context, providers } from "@/common/global";
+import { context, states } from "@/common/global";
+import { getQuery } from "@/common/utils";
+
 export default Vue.extend({
   props: {
     meta: Object
   },
-  mounted() {
-    providers[this.meta.id] = this.$data;
+  async mounted() {
+    states[this.meta.id] = this.$data;
+    this.$dispath("load");
   },
   destroyed() {
-    delete providers[this.meta.id];
+    delete states[this.meta.id];
   },
   created() {
     if (this.meta.hooks && this.meta.hooks instanceof Array) {
       for (const i of this.meta.hooks) {
         context.$on(i.name, (k: any) => {
           k.target = this.$el;
-          k.provider = providers;
+          k.state = states;
+          k.me = this;
           eval(i.execute);
         });
       }
@@ -25,8 +28,8 @@ export default Vue.extend({
   methods: {
     $dispath: function(hookType: string, k: any = {}) {
       k.self = this.$el;
+      k.query = getQuery();
       context.$emit(`${hookType}_${this.meta.id}`, k);
     }
   }
 });
-</script>

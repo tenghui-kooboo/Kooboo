@@ -18,12 +18,12 @@ namespace Kooboo.Meta.Views
 
         public KbButton NewWindow(string url)
         {
-            return this.AddHook(Hook.click.ToName(Id), $"window.open('{url}')");
+            return this.AddHook(Hook.click.ToName(Id), $"window.open(`{url}`)");
         }
 
         public KbButton Redirect(string url)
         {
-            return this.AddHook(Hook.click.ToName(Id), $"location.href='{url}'");
+            return this.AddHook(Hook.click.ToName(Id), $"location.href=`{url}`");
         }
 
         public KbButton Execute(string code)

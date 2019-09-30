@@ -11,28 +11,37 @@ namespace Kooboo.Web.Meta
     {
         public void Configure(KbMeta meta)
         {
+            meta.LoadData("/_api/Page/all?SiteId=${k.query.SiteId}");
+
             meta.AddKbNavbar(navbar =>
             {
-                navbar.AddButton(newPageBtn =>
+                //navbar.AddButton(btn =>
+                //{
+                //    btn.Text = "测试";
+                //    btn.Execute("console.log(k)");
+                //});
+
+                navbar.AddButton(btn =>
                 {
-                    newPageBtn.Text = "新建页面";
-                    newPageBtn.NewWindow("http://www.baidu.com");
+                    btn.Text = "新建页面";
+                    btn.Redirect("/_Admin/Page/EditPage?SiteId=${k.query.SiteId}");
                 });
 
-                navbar.AddButton(newPageBtn =>
+                navbar.AddButton(btn =>
                 {
-                    newPageBtn.Text = "新建页面(重定向)";
-                    newPageBtn.Redirect("http://www.baidu.com");
+                    btn.Text = "新建富文本页面";
+                    btn.Redirect("/_Admin/Page/EditRichText?SiteId=${k.query.SiteId}");
                 });
 
-                navbar.AddButton(newRichPageBtn =>
+                navbar.AddDropdown(dropdown =>
                 {
-                    newRichPageBtn.Text = "新建富文本页面";
-                    newRichPageBtn.AddHook(hook =>
+                    dropdown.Text = "使用布局新建页面";
+                    dropdown.AddItemTemplate(item =>
                     {
-                        hook.Name = KbButton.Hook.click.ToName(newRichPageBtn.Id);
-                        hook.Execute = $"k.self.style.color='red'";
+                        item.Text = "name";
+                        item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.me.data.id}");
                     });
+                    dropdown.AddHook(KbView.Hook.dataLoad.ToName(meta.Id), "k.me.dataList=k.data.layouts");
                 });
             });
         }

@@ -15,6 +15,14 @@ namespace Kooboo.Meta
             return btn;
         }
 
+        public static KbDropdown AddDropdown<T>(this T container, Action<KbDropdown> action) where T : KbContainer
+        {
+            var dropdown = new KbDropdown();
+            action(dropdown);
+            container.AddView(dropdown);
+            return dropdown;
+        }
+
         public static KbNavbar AddKbNavbar<T>(this T container, Action<KbNavbar> action) where T : KbContainer
         {
             var bar = new KbNavbar();
