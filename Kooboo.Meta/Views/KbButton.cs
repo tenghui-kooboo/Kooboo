@@ -7,9 +7,9 @@ namespace Kooboo.Meta.Views
 {
     public class KbButton : KbView
     {
-        public enum Hook
+        public new class Hook : KbView.Hook
         {
-            click
+            public static string Click(string id) => $"{nameof(Click)}_{id}";
         }
 
         public override string Name => nameof(KbButton);
@@ -18,17 +18,17 @@ namespace Kooboo.Meta.Views
 
         public KbButton NewWindow(string url)
         {
-            return this.AddHook(Hook.click.ToName(Id), $"window.open(`{url}`)");
+            return this.AddHook(Hook.Click(Id), $"window.open(`{url}`)");
         }
 
         public KbButton Redirect(string url)
         {
-            return this.AddHook(Hook.click.ToName(Id), $"location.href=`{url}`");
+            return this.AddHook(Hook.Click(Id), $"location.href=`{url}`");
         }
 
         public KbButton Execute(string code)
         {
-            return this.AddHook(Hook.click.ToName(Id), code);
+            return this.AddHook(Hook.Click(Id), code);
         }
 
     }

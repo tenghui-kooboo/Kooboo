@@ -15,11 +15,6 @@ namespace Kooboo.Web.Meta
 
             meta.AddKbNavbar(navbar =>
             {
-                //navbar.AddButton(btn =>
-                //{
-                //    btn.Text = "测试";
-                //    btn.Execute("console.log(k)");
-                //});
 
                 navbar.AddButton(btn =>
                 {
@@ -41,7 +36,18 @@ namespace Kooboo.Web.Meta
                         item.Text = "name";
                         item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.me.data.id}");
                     });
-                    dropdown.AddHook(KbView.Hook.dataLoad.ToName(meta.Id), "k.me.dataList=k.data.layouts");
+                    dropdown.AddHook(KbMeta.Hook.DataLoad(meta.Id), "k.me.dataList=k.data.layouts");
+                });
+
+                navbar.AddButton(btn =>
+                {
+                    btn.Text = "复制";
+                    btn.AddHook(KbView.Hook.Load(btn.Id),"k.self.style.display='none'");
+                });
+
+                navbar.AddButton(btn =>
+                {
+                    btn.Text = "删除";
                 });
             });
         }

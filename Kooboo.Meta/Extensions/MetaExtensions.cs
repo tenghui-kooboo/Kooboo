@@ -9,7 +9,7 @@ namespace Kooboo.Meta
     {
         public static T LoadData<T>(this T view, string url) where T : KbView
         {
-            return view.AddHook(KbView.Hook.load.ToName(view.Id), $@"k.me.loadData(`{url}`)");
+            return view.AddHook(KbView.Hook.Load(view.Id), $@"k.me.loadData(`{url}`)");
         }
     }
 }

@@ -16,7 +16,7 @@ export default Vue.extend({
   created() {
     if (this.meta.hooks && this.meta.hooks instanceof Array) {
       for (const i of this.meta.hooks) {
-        context.$on(i.name, (k: any) => {
+        context.$on(i.name.toLowerCase(), (k: any) => {
           k.target = this.$el;
           k.state = states;
           k.me = this;
@@ -29,7 +29,7 @@ export default Vue.extend({
     $dispath: function(hookType: string, k: any = {}) {
       k.self = this.$el;
       k.query = getQuery();
-      context.$emit(`${hookType}_${this.meta.id}`, k);
+      context.$emit(`${hookType.toLowerCase()}_${this.meta.id}`, k);
     }
   }
 });

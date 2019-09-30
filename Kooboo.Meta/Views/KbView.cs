@@ -7,9 +7,8 @@ namespace Kooboo.Meta.Views
 {
     public abstract class KbView
     {
-        public enum Hook { 
-            load,
-            dataLoad
+        public class Hook {
+            public static string Load(string id) => $"{nameof(Load)}_{id}";
         }
 
         public abstract string Name { get; }
