@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "@/common/kbVue";
+import Vue from "@/kbVue";
 import DropdownItem from "./item.vue";
 export default Vue.extend({
   props: {

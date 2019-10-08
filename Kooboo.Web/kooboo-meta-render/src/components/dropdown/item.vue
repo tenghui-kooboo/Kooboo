@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "@/common/kbVue";
+import Vue from "@/kbVue";
 export default Vue.extend({
   props: {
     meta: Object,

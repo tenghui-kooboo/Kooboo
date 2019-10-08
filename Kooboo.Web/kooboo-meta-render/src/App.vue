@@ -10,25 +10,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "@/common/kbVue";
-import { getData } from "@/common/api";
+import Vue from "@/kbVue";
 
 export default Vue.extend({
   props: {
     meta: Object
-  },
-  data() {
-    return {
-      $dataSource: null
-    };
-  },
-  methods: {
-    async loadData(url: string) {
-      this.$dataSource = await getData(url);
-      this.$dispath("dataLoad", {
-        data: this.$dataSource
-      });
-    }
   }
 });
 </script>

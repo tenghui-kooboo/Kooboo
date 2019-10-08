@@ -34,20 +34,23 @@ namespace Kooboo.Web.Meta
                     dropdown.AddItemTemplate(item =>
                     {
                         item.Text = "name";
-                        item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.me.data.id}");
+                        item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.self.data.id}");
                     });
-                    dropdown.AddHook(KbMeta.Hook.DataLoad(meta.Id), "k.me.dataList=k.data.layouts");
+                    dropdown.AddHook("DataLoad", meta.Id, "k.self.dataList=k.data.layouts;");
                 });
 
-                navbar.AddButton(btn =>
-                {
-                    btn.Text = "复制";
-                    btn.AddHook(KbView.Hook.Load(btn.Id),"k.self.style.display='none'");
-                });
+                var copyBtn = navbar.AddButton(btn =>
+                 {
+                     btn.Text = "复制";
+                     btn.AddHook("load", btn.Id, "k.self.visible=false");
+                     btn.AddHook("click", btn.Id, "k.self.visible=false");
+                 });
 
                 navbar.AddButton(btn =>
                 {
                     btn.Text = "删除";
+                    btn.AddHook("click", btn.Id, $"k.pool['{copyBtn.Id}'].visible=true");
+                    btn.AddHook("click", btn.Id, $"k.pool['{copyBtn.Id}'].enable=false");
                 });
             });
         }

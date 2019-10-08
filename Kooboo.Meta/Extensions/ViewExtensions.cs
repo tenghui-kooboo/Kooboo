@@ -26,5 +26,19 @@ namespace Kooboo.Meta
              });
         }
 
+        public static T AddHook<T>(this T view, string hookName, string id, string execute) where T : KbView
+        {
+
+            return view.AddHook(hook =>
+            {
+                hook.Name = $"{hookName}_{id}";
+                hook.Execute = execute;
+            });
+        }
+
+        public static T LoadData<T>(this T view, string url) where T : KbView
+        {
+            return view.AddHook("load", view.Id, $"k.self.$loadData(`{url}`)");
+        }
     }
 }
