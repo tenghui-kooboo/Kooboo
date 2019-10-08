@@ -17,7 +17,7 @@ export default Vue.extend({
         });
       }
     }
-
+    console.log("mounted",this.meta.id)
     componentPool[this.meta.id] = this;
     this.$dispath("load");
   },
@@ -28,6 +28,7 @@ export default Vue.extend({
       }
     }
 
+    console.log("destroyed",this.meta.id)
     delete componentPool[this.meta.id];
     this.$dispath("remove");
   },
@@ -39,7 +40,7 @@ export default Vue.extend({
     },
     async $loadData(url: string, name: string = "data") {
       let data = await getData(url);
-      this.$set(this.$data, name, data);
+      (this as any)[name] = data;
       this.$dispath("dataLoad", {
         data: data
       });

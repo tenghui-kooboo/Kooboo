@@ -33,6 +33,13 @@ export default function(env: any): Configuration {
           options: {
             appendTsSuffixTo: [/\.vue$/]
           }
+        },
+        {
+          test: /\.css$/,
+          use: [
+            'vue-style-loader',
+            'css-loader'
+          ]
         }
       ]
     },

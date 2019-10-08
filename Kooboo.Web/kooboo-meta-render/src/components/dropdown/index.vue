@@ -1,12 +1,16 @@
 <template>
   <div class="btn-group navbar-btn">
-    <button class="btn green" data-toggle="dropdown" aria-expanded="false">
+    <button
+      :class="['btn', 'btn-default', ...classList]"
+      data-toggle="dropdown"
+      aria-expanded="false"
+    >
       <span>{{ meta.text }}</span> <i class="fa fa-angle-down"></i>
     </button>
     <ul class="dropdown-menu">
       <template v-if="meta.itemTemplate">
         <dropdown-item
-          v-for="(item, index) in dataList"
+          v-for="(item, index) in items"
           :meta="itemMeta(index)"
           :key="index"
           :data="item"
@@ -32,7 +36,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      dataList: []
+      items: [],
+      classList: []
     };
   },
   methods: {

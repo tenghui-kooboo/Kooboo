@@ -1,7 +1,11 @@
 <template >
-  <a v-if="visible" class="btn navbar-btn green" @click="$dispath('click')">{{
-    meta.text
-  }}</a>
+  <a
+    v-if="visible"
+    :class="['btn', 'navbar-btn', 'btn-default', ...classList]"
+    @click="$dispath('click')"
+  >
+    <i v-if="icon" :class="icon" :style="iconStyle" />{{ meta.text }}</a
+  >
 </template>
 
 <script lang="ts">
@@ -12,11 +16,17 @@ export default Vue.extend({
   },
   data() {
     return {
-      visible: true
+      visible: true,
+      icon: "",
+      classList: []
     };
+  },
+  computed: {
+    iconStyle() {
+      return {
+        "margin-right": (this.meta as any).text ? "5px" : ""
+      };
+    }
   }
 });
 </script>
-
-<style>
-</style>
