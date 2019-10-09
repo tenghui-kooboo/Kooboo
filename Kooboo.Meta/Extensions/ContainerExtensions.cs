@@ -8,6 +8,12 @@ namespace Kooboo.Meta
 {
     public static class ContainerExtensions
     {
+        public static KbView AddView<T>(this T container, KbView view) where T : KbContainer
+        {
+            container.Views.Add(view);
+            return container;
+        }
+
         public static KbButton AddButton<T>(this T container, Action<KbButton> action) where T : KbContainer
         {
             var btn = new KbButton();

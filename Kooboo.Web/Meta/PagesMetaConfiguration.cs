@@ -37,10 +37,10 @@ namespace Kooboo.Web.Meta
                     dropdown.SetGreen();
                     dropdown.AddItemTemplate(item =>
                     {
-                        item.AddHook("dataChange", item.Id, "k.self.text=k.data.name");
+                        item.SetText("k.data.name");
                         item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.self.data.id}");
                     });
-                    dropdown.AddHook("DataLoad", meta.Id, $"k.self.dataList=k.data.layouts;");
+                    dropdown.AddHook("DataLoad", meta.Id, $"k.self.items=k.data.layouts;");
                 });
 
                 var copyBtn = navbar.AddButton(btn =>

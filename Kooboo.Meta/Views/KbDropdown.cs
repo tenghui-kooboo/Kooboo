@@ -17,7 +17,12 @@ namespace Kooboo.Meta.Views
         public class Template : KbClickable
         {
             public override string Name => nameof(Template);
-            public string TextPropery { get; set; }
+
+            public Template SetText(string text)
+            {
+                this.AddHook("dataChange", Id, $"k.self.text={text}");
+                return this;
+            }
         }
 
         public override string Name => nameof(KbDropdown);

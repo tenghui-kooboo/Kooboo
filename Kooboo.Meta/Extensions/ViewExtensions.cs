@@ -8,33 +8,22 @@ namespace Kooboo.Meta
     {
         public static T AddHook<T>(this T view, Action<KbHook> action) where T : KbView
         {
-            var hook = new KbHook();
-            action(hook);
-            view.Hooks.Add(hook);
+            view.Hooks.Add(new KbHook(action));
             return view;
         }
 
-        public static T AddHook<T>(this T view, string name, string execute) where T : KbView
+        public static T AddHook<T>(this T view, string name, JsCode execute) where T : KbView
         {
-
-            return view.AddHook(hook =>
-             {
-                 hook.Name = name;
-                 hook.Execute = execute;
-             });
+            view.Hooks.Add(new KbHook(name, execute));
+            return view;
         }
 
-        public static T AddHook<T>(this T view, string hookName, string id, string execute) where T : KbView
+        public static T AddHook<T>(this T view, string hookName, string id, JsCode execute) where T : KbView
         {
-
-            return view.AddHook(hook =>
-            {
-                hook.Name = $"{hookName}_{id}";
-                hook.Execute = execute;
-            });
+            return view.AddHook($"{hookName}_{id}", execute);
         }
 
-        public static T LoadData<T>(this T view, string url) where T : KbView
+        public static T LoadData<T>(this T view, JsString url) where T : KbView
         {
             return view.AddHook("load", view.Id, $"k.self.$loadData(`{url}`)");
         }

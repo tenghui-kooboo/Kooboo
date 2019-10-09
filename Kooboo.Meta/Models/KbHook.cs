@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,8 +7,21 @@ namespace Kooboo.Meta.Models
 {
     public class KbHook
     {
-        public string Name { get; set; }
+        KbHook() { }
 
-        public string Execute { get; set; }
+        public KbHook(string name, JsCode execute)
+        {
+            Name = name;
+            Execute = execute.ToString();
+        }
+
+        public KbHook(Action<KbHook> action)
+        {
+            action(this);
+        }
+
+        public string Name { get; private set; }
+
+        public string Execute { get; private set; }
     }
 }
