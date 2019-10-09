@@ -10,10 +10,16 @@ namespace Kooboo.Meta.Views
 
         public class Column : KbContainer
         {
+            public class Template : KbContainer
+            {
+                public override string Name => nameof(Template);
+            }
+
             public override string Name => nameof(Column);
 
             public string Text { get; set; }
 
+            public Template CellTemplate { get; internal set; }
         }
 
         public bool ShowCheck { get; set; }

@@ -3,7 +3,7 @@
     <component
       v-for="(item, index) in meta.views"
       :key="index"
-      :meta="item"
+      :meta="itemMeta(index)"
       :is="item.name"
     />
   </td>
@@ -13,7 +13,26 @@
 import Vue from "@/kbVue";
 export default Vue.extend({
   props: {
-    meta: Object
+    meta: Object,
+    data: Object
+  },
+  mounted() {
+    if (this.data) this.$dispath("dataChange", { data: this.data });
+  },
+  watch: {
+    data() {
+      this.$dispath("dataChange", { data: this.data });
+    }
+  },
+  methods: {
+    itemMeta(index: number) {
+      let meta = JSON.parse(JSON.stringify(this.meta.cellTemplate));
+      meta.id += `_${index}`;
+      for (const i of meta.hooks) {
+        i.name += `_${index}`;
+      }
+      return meta;
+    }
   }
 });
 </script>

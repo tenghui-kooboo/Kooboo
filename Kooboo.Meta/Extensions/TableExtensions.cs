@@ -15,4 +15,15 @@ namespace Kooboo.Meta
             return column;
         }
     }
+
+    public static class TableColumnExtensions
+    {
+        public static KbTable.Column.Template AddCellTemplate(this KbTable.Column column, Action<KbTable.Column.Template> action)
+        {
+            var template = new KbTable.Column.Template();
+            action(template);
+            column.CellTemplate = template;
+            return template;
+        }
+    }
 }

@@ -15,7 +15,7 @@ namespace Kooboo.Meta
             return dropdown;
         }
 
-        public static KbDropdown AddItemTemplate(this KbDropdown dropdown, Action<KbDropdown.Template> action)
+        public static KbDropdown SetItemTemplate(this KbDropdown dropdown, Action<KbDropdown.Template> action)
         {
             var template = new KbDropdown.Template();
             action(template);

@@ -14,12 +14,12 @@ namespace Kooboo.Web.Meta
         {
             KbButton copyBtn = null;
             KbButton deleteBtn = null;
+            KbTable pageTable = null;
 
             meta.LoadData("/_api/Page/all?SiteId=${k.query.SiteId}");
 
             meta.AddKbNavbar(navbar =>
             {
-
                 navbar.AddButton(btn =>
                 {
                     btn.Text = "新建页面";
@@ -38,7 +38,7 @@ namespace Kooboo.Web.Meta
                 {
                     dropdown.Text = "使用布局新建页面";
                     dropdown.SetGreen();
-                    dropdown.AddItemTemplate(item =>
+                    dropdown.SetItemTemplate(item =>
                     {
                         item.SetText("k.data.name");
                         item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.self.data.id}");
@@ -67,19 +67,22 @@ namespace Kooboo.Web.Meta
                 });
             });
 
-            var pageTable = meta.AddTable(table =>
-              {
-                  table.ShowCheck = true;
-                  table.AddColumn(col =>
-                  {
-                      col.Text = "名称";
-                      col.AddButton(btn =>
-                      {
-                          btn.SetBlue();
-                      });
-                  });
-                  table.AddHook("dataLoad", meta.Id, "k.self.items=k.data.pages");
-              });
+            pageTable = meta.AddTable(table =>
+            {
+                table.ShowCheck = true;
+                table.AddColumn(col =>
+                {
+                    col.Text = "名称";
+                    col.AddCellTemplate(temp =>
+                    {
+                        col.AddButton(btn =>
+                        {
+                            btn.AddHook("dataChange", col.Id, "k.self.text=k.data.name");
+                        });
+                    });
+                });
+                table.AddHook("dataLoad", meta.Id, "k.self.items=k.data.pages");
+            });
 
             copyBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
             deleteBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length>0");

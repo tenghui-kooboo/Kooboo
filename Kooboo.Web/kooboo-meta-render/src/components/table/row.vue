@@ -11,6 +11,7 @@
       v-for="(column, index) in columns"
       :key="index"
       :meta="column"
+      :data="data"
     />
   </tr>
 </template>
