@@ -37,5 +37,13 @@ namespace Kooboo.Meta
             container.AddView(bar);
             return bar;
         }
+
+        public static KbTable AddTable<T>(this T container, Action<KbTable> action) where T : KbContainer
+        {
+            var table = new KbTable();
+            action(table);
+            container.AddView(table);
+            return table;
+        }
     }
 }

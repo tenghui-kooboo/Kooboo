@@ -12,6 +12,9 @@ namespace Kooboo.Web.Meta
     {
         public void Configure(KbMeta meta)
         {
+            KbButton copyBtn = null;
+            KbButton deleteBtn = null;
+
             meta.LoadData("/_api/Page/all?SiteId=${k.query.SiteId}");
 
             meta.AddKbNavbar(navbar =>
@@ -43,20 +46,18 @@ namespace Kooboo.Web.Meta
                     dropdown.AddHook("DataLoad", meta.Id, $"k.self.items=k.data.layouts;");
                 });
 
-                var copyBtn = navbar.AddButton(btn =>
-                 {
-                     btn.Text = "复制";
-                     btn.SetGreen();
-                     btn.AddHook("load", btn.Id, "k.self.visible=false");
-                     btn.AddHook("click", btn.Id, "k.self.visible=false");
-                 });
+                copyBtn = navbar.AddButton(btn =>
+                {
+                    btn.Text = "复制";
+                    btn.SetGreen();
+                    btn.AddHook("load", btn.Id, "k.self.visible=false");
+                });
 
-                navbar.AddButton(btn =>
+                deleteBtn = navbar.AddButton(btn =>
                 {
                     btn.Text = "删除";
                     btn.SetRed();
-                    btn.AddHook("click", btn.Id, $"k.pool['{copyBtn.Id}'].visible=true");
-                    btn.AddHook("click", btn.Id, $"k.pool['{copyBtn.Id}'].enable=false");
+                    btn.AddHook("load", btn.Id, "k.self.visible=false");
                 });
 
                 navbar.AddButton(btn =>
@@ -66,7 +67,22 @@ namespace Kooboo.Web.Meta
                 });
             });
 
+            var pageTable = meta.AddTable(table =>
+              {
+                  table.ShowCheck = true;
+                  table.AddColumn(col =>
+                  {
+                      col.Text = "名称";
+                      col.AddButton(btn =>
+                      {
+                          btn.SetBlue();
+                      });
+                  });
+                  table.AddHook("dataLoad", meta.Id, "k.self.items=k.data.pages");
+              });
 
+            copyBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
+            deleteBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length>0");
         }
     }
 }
