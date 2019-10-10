@@ -1,17 +1,17 @@
 <template>
   <div class="btn-group navbar-btn">
     <button
-      :class="['btn', 'btn-default', ...classList]"
+      :class="['btn btn-default', color]"
       data-toggle="dropdown"
       aria-expanded="false"
     >
-      <span>{{ meta.text }}</span> <i class="fa fa-angle-down"></i>
+      <span>{{ text }}</span> <i class="fa fa-angle-down"></i>
     </button>
     <ul class="dropdown-menu">
       <template v-if="meta.itemTemplate">
         <dropdown-item
           v-for="(item, index) in items"
-          :meta="itemMeta(index)"
+          :meta="changeMetaId(meta.itemTemplate)"
           :key="index"
           :data="item"
         />
@@ -30,6 +30,7 @@
 <script lang="ts">
 import Vue from "@/kbVue";
 import DropdownItem from "./item.vue";
+import { changeMetaId } from "@/common/utils";
 export default Vue.extend({
   props: {
     meta: Object
@@ -37,18 +38,16 @@ export default Vue.extend({
   data() {
     return {
       items: [],
-      classList: []
+      color: "",
+      text: ""
     };
   },
   methods: {
-    itemMeta(index: number) {
-      let meta = JSON.parse(JSON.stringify(this.meta.itemTemplate));
-      meta.id += `_${index}`;
-      for (const i of meta.hooks) {
-        i.name += `_${index}`;
-      }
-      return meta;
-    }
+    changeMetaId: changeMetaId
+  },
+  mounted() {
+    if (this.meta.color != undefined) this.color = this.meta.color;
+    if (this.meta.text != undefined) this.text = this.meta.text;
   },
   components: {
     DropdownItem

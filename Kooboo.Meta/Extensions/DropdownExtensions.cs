@@ -1,4 +1,5 @@
-﻿using Kooboo.Meta.Views;
+﻿using Kooboo.Meta.Models;
+using Kooboo.Meta.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,28 +24,11 @@ namespace Kooboo.Meta
             return dropdown;
         }
 
-        public static KbDropdown AddClass(this KbDropdown kbButton, string @class)
+        public static KbDropdown SetData(this KbDropdown dropdown, string id, JsCode source)
         {
-            kbButton.AddHook("load", kbButton.Id, $"k.self.classList.push('{@class}')");
-            return kbButton;
+            dropdown.AddHook("dataLoad", id, $"k.self.items={source};");
+            return dropdown;
         }
 
-        public static KbDropdown SetBlue(this KbDropdown kbButton)
-        {
-            kbButton.AddClass("blue");
-            return kbButton;
-        }
-
-        public static KbDropdown SetRed(this KbDropdown kbButton)
-        {
-            kbButton.AddClass("red");
-            return kbButton;
-        }
-
-        public static KbDropdown SetGreen(this KbDropdown kbButton)
-        {
-            kbButton.AddClass("green");
-            return kbButton;
-        }
     }
 }

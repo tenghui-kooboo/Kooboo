@@ -11,5 +11,11 @@ namespace Kooboo.Meta.Views
         public override string Name => nameof(KbButton);
 
         public string Text { get; set; }
+
+        public string Color { get; set; }
+
+        public string Icon { get; set; }
+
+        public bool Visible { get; set; } = true;
     }
 }

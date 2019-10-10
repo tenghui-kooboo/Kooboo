@@ -2,6 +2,7 @@ import Vue from "vue";
 import { context, componentPool } from "@/kbVue/global";
 import { getQuery } from "@/common/utils";
 import { getData } from "@/common/api";
+import { kInstance } from "@/kbVue/global";
 
 export default Vue.extend({
   props: {
@@ -17,7 +18,7 @@ export default Vue.extend({
         });
       }
     }
-    console.log("mounted",this.meta.id)
+    console.log("mounted", this.meta.id);
     componentPool[this.meta.id] = this;
     this.$dispath("load");
   },
@@ -28,15 +29,18 @@ export default Vue.extend({
       }
     }
 
-    console.log("destroyed",this.meta.id)
+    console.log("destroyed", this.meta.id);
     delete componentPool[this.meta.id];
     this.$dispath("remove");
   },
   methods: {
     $dispath: function(hookType: string, k: any = {}) {
+      for (const key in kInstance) {
+        k[key] = kInstance[key];
+      }
       k.target = this;
       k.query = getQuery();
-      context.$emit(`${hookType.toLowerCase()}_${this.meta.id}`, k);
+      context.$emit(`${hookType}_${this.meta.id}`.toLowerCase(), k);
     },
     async $loadData(url: string, name: string = "data") {
       let data = await getData(url);

@@ -23,65 +23,80 @@ namespace Kooboo.Web.Meta
                 navbar.AddButton(btn =>
                 {
                     btn.Text = "新建页面";
-                    btn.SetGreen();
+                    btn.Color = "green";
                     btn.Redirect("/_Admin/Page/EditPage?SiteId=${k.query.SiteId}");
                 });
 
                 navbar.AddButton(btn =>
                 {
                     btn.Text = "新建富文本页面";
-                    btn.SetGreen();
+                    btn.Color = "green";
                     btn.Redirect("/_Admin/Page/EditRichText?SiteId=${k.query.SiteId}");
                 });
 
                 navbar.AddDropdown(dropdown =>
                 {
                     dropdown.Text = "使用布局新建页面";
-                    dropdown.SetGreen();
+                    dropdown.Color = "green";
+                    dropdown.SetData(meta.Id, "k.data.layouts");
                     dropdown.SetItemTemplate(item =>
                     {
                         item.SetText("k.data.name");
                         item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.self.data.id}");
                     });
-                    dropdown.AddHook("DataLoad", meta.Id, $"k.self.items=k.data.layouts;");
                 });
 
                 copyBtn = navbar.AddButton(btn =>
                 {
                     btn.Text = "复制";
-                    btn.SetGreen();
-                    btn.AddHook("load", btn.Id, "k.self.visible=false");
+                    btn.Color = "green";
+                    btn.Visible = false;
                 });
 
                 deleteBtn = navbar.AddButton(btn =>
                 {
                     btn.Text = "删除";
-                    btn.SetRed();
-                    btn.AddHook("load", btn.Id, "k.self.visible=false");
+                    btn.Color = "red";
+                    btn.Visible = false;
                 });
 
                 navbar.AddButton(btn =>
                 {
                     btn.PullRight();
-                    btn.SetIcon("fa fa-gear");
+                    btn.Icon = "fa fa-gear";
                 });
             });
 
             pageTable = meta.AddTable(table =>
             {
                 table.ShowCheck = true;
-                table.AddColumn(col =>
+                table.SetData(meta.Id, "k.data.pages");
+                table.SetRowTemplate(row =>
                 {
-                    col.Text = "名称";
-                    col.AddCellTemplate(temp =>
+                    row.AddCell(cell =>
                     {
-                        col.AddButton(btn =>
+                        cell.Text = "列1";
+                        cell.AddButton(btn =>
                         {
-                            btn.AddHook("dataChange", col.Id, "k.self.text=k.data.name");
+                            btn.Text = "zhansan";
+                            btn.Color = "red";
                         });
                     });
+
+                    var refCell = row.AddCell(cell =>
+                    {
+                        cell.Text = "列2";
+                        cell.AddHook("dataChange", row.Id, "k.self.items=k.toList(k.data.relations)");
+                        cell.SetItemTemplate(temp =>
+                        {
+                            var btn = new KbButton();
+                            btn.Color = "red";
+                            btn.AddHook("dataChange", temp.Id, "k.self.text=k.data.key");
+                            temp.View = btn;
+                        });
+                    });
+
                 });
-                table.AddHook("dataLoad", meta.Id, "k.self.items=k.data.pages");
             });
 
             copyBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length==1");

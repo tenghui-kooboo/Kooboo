@@ -2,6 +2,7 @@ import Vue from "vue";
 import "./components";
 import App from "./App.vue";
 import { getMeta } from "@/common/api";
+import "@/common/kExtends";
 
 (async function() {
   const root = document.getElementById("app");

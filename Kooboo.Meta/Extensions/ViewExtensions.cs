@@ -1,6 +1,7 @@
 ﻿using Kooboo.Meta.Models;
 using Kooboo.Meta.Views.Abstracts;
 using System;
+using System.Linq;
 
 namespace Kooboo.Meta
 {
@@ -26,6 +27,12 @@ namespace Kooboo.Meta
         public static T LoadData<T>(this T view, JsString url) where T : KbView
         {
             return view.AddHook("load", view.Id, $"k.self.$loadData(`{url}`)");
+        }
+
+        public static T AddClass<T>(this T view, params string[] @class) where T : KbView
+        {
+            var classList = string.Join(",", @class.Select(s => $"`{s}`"));
+            return view.AddHook("load", view.Id, $"k.self.$el.classList.add({classList})");
         }
     }
 }
