@@ -18,7 +18,7 @@ export default Vue.extend({
         });
       }
     }
-    
+
     componentPool[this.meta.id] = this;
     this.$dispath("load");
   },

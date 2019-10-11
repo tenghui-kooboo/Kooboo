@@ -151,7 +151,7 @@ namespace Kooboo.Web.Meta
 
                     row.AddCell(cell =>
                     {
-                        cell.Width = "180px";
+                        //cell.Width = "180px";
                         cell.AddButton(btn =>
                         {
                             btn.Text = "设置";

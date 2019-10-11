@@ -41,6 +41,5 @@ export function changeMetaId(meta: any) {
 
   deepReplace(meta);
   meta.id = guid;
-  console.log(meta);
   return meta;
 }
