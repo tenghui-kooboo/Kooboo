@@ -175,8 +175,8 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                 });
             });
 
-            copyBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
-            deleteBtn.AddHook("selected_rows_change", pageTable.Id, "k.self.visible=k.selectedRows.length>0");
+            copyBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
+            deleteBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length>0");
         }
     }
 }

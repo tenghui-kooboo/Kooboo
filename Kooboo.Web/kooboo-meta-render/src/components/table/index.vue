@@ -67,7 +67,7 @@ export default Vue.extend({
   },
   watch: {
     selectedRows() {
-      this.$dispath("selected_rows_change", {
+      this.$dispath("selectedRowsChange", {
         selectedRows: this.selectedRows
       });
     }
