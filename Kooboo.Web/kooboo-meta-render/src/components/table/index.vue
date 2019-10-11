@@ -9,7 +9,7 @@
             @input="onChecked($event.target.checked)"
           />
         </th>
-        <th v-for="(item, index) in meta.columns" :key="index">
+        <th v-for="(item, index) in meta.rowTemplate.cells" :key="index">
           {{ item.text }}
         </th>
       </tr>

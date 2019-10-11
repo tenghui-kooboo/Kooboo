@@ -11,11 +11,10 @@ export function newGuid() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   }
 
-  return `${S4()}${S4()}-${S4()}-${S4()}-${S4()}-${S4()}${S4()}${S4()}`;
+  return `_${S4()}${S4()}${S4()}${S4()}${S4()}${S4()}${S4()}${S4()}`;
 }
 
 export function changeMetaId(meta: any) {
-  console.log(meta);
   meta = JSON.parse(JSON.stringify(meta));
   const guid = newGuid();
 
@@ -31,6 +30,7 @@ export function changeMetaId(meta: any) {
         if (key == "hooks") {
           for (const i of prop) {
             i.name = i.name.replace(meta.id, guid);
+            i.execute = i.execute.replace(meta.id, guid);
           }
         } else {
           deepReplace(prop);

@@ -75,24 +75,89 @@ namespace Kooboo.Web.Meta
                 {
                     row.AddCell(cell =>
                     {
-                        cell.Text = "列1";
-                        cell.AddButton(btn =>
+                        cell.AddIcon(icon =>
                         {
-                            btn.Text = "zhansan";
-                            btn.Color = "red";
+                            icon.IconName = "fa fa-home fa-lg";
+                            icon.AddHook("dataChange", row.Id, "k.self.visible=k.data.startPage");
+                        });
+                    });
+
+                    row.AddCell(cell =>
+                    {
+                        cell.Text = "名称";
+                        cell.AddText(text =>
+                        {
+                            text.AddHook("dataChange", row.Id, "k.self.text=k.data.name");
+                        });
+                    });
+
+                    row.AddCell(cell =>
+                    {
+                        cell.Text = "被链接";
+                        cell.AddText(text =>
+                        {
+                            text.AddHook("dataChange", row.Id, "k.self.text=k.data.linked");
+                        });
+                    });
+
+                    row.AddCell(cell =>
+                    {
+                        cell.Text = "在线情况";
+                        cell.AddText(text =>
+                        {
+                            text.AddHook("dataChange", row.Id, "k.self.text=k.data.online");
                         });
                     });
 
                     var refCell = row.AddCell(cell =>
                     {
-                        cell.Text = "列2";
+                        cell.Text = "引用";
                         cell.AddHook("dataChange", row.Id, "k.self.items=k.toList(k.data.relations)");
                         cell.SetItemTemplate(temp =>
                         {
                             var btn = new KbButton();
-                            btn.Color = "red";
-                            btn.AddHook("dataChange", temp.Id, "k.self.text=k.data.key");
+                            btn.Color = "green btn-sm";
+                            btn.AddHook("dataChange", temp.Id, "k.self.text=`${k.data.value} ${k.data.key}`");
                             temp.View = btn;
+                        });
+                    });
+
+                    row.AddCell(cell =>
+                    {
+                        cell.Text = "修改时间";
+                        cell.AddText(text =>
+                        {
+                            text.AddHook("dataChange", row.Id, "k.self.text=k.data.lastModified");
+                        });
+                    });
+
+                    row.AddCell(cell =>
+                    {
+                        cell.Text = "预览";
+                        cell.AddButton(btn =>
+                        {
+                            btn.AddHook("dataChange", row.Id, "k.self.text=k.data.path");
+                            btn.AddHook("click", btn.Id, $"window.open(k.pool.{row.Id}.data.previewUrl)");
+                        });
+                    });
+
+                    row.AddCell(cell =>
+                    {
+                        cell.AddButton(btn=> {
+                            btn.Text = "设置";
+                            btn.Color = "blue";
+                            btn.AddHook("click", btn.Id, $@"
+var rowData=k.pool.{row.Id}.data;
+if(rowData.layoutId !='00000000-0000-0000-0000-000000000000')location.href='/_admin/Page/EditLayout?siteId='+k.query.SiteId+'&id='+rowData.id+'&layoutId='+rowData.layoutId;
+else if(rowData.type='Normal') location.href='/_admin/Page/EditPage?siteId='+k.query.SiteId+'&id='+rowData.id;
+else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+rowData.id;
+");
+                        });
+
+                        cell.AddButton(btn => {
+                            btn.Text = "在线编辑";
+                            btn.Color = "blue";
+                            btn.AddHook("click", btn.Id, $"window.open(k.pool.{row.Id}.data.inlineUrl)");
                         });
                     });
 

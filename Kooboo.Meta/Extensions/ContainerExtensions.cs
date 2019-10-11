@@ -22,6 +22,22 @@ namespace Kooboo.Meta
             return btn;
         }
 
+        public static KbText AddText<T>(this T container, Action<KbText> action) where T : KbContainer
+        {
+            var text = new KbText();
+            action(text);
+            container.AddView(text);
+            return text;
+        }
+
+        public static KbIcon AddIcon<T>(this T container, Action<KbIcon> action) where T : KbContainer
+        {
+            var icon = new KbIcon();
+            action(icon);
+            container.AddView(icon);
+            return icon;
+        }
+
         public static KbDropdown AddDropdown<T>(this T container, Action<KbDropdown> action) where T : KbContainer
         {
             var dropdown = new KbDropdown();
