@@ -1,5 +1,5 @@
 <template>
-  <td>
+  <td :style="{ width: width }">
     <template v-if="meta.itemTemplate">
       <cell-template
         v-for="(item, index) in items"
@@ -30,11 +30,15 @@ export default Vue.extend({
   },
   data() {
     return {
-      items: []
+      items: [],
+      width: ""
     };
   },
   methods: {
     changeMetaId: changeMetaId
+  },
+  mounted() {
+    if (this.meta.width != undefined) this.width = this.meta.width;
   },
   watch: {
     items() {

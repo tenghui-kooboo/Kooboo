@@ -20,6 +20,8 @@ namespace Kooboo.Meta.Views
 
             public override string Name => nameof(Cell);
 
+            public string Width { get; set; }
+
             public string Text { get; set; }
 
             public Template ItemTemplate { get; set; }

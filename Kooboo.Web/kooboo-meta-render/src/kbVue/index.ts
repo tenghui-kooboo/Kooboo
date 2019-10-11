@@ -18,7 +18,7 @@ export default Vue.extend({
         });
       }
     }
-    console.log("mounted", this.meta.id);
+    
     componentPool[this.meta.id] = this;
     this.$dispath("load");
   },
@@ -29,7 +29,6 @@ export default Vue.extend({
       }
     }
 
-    console.log("destroyed", this.meta.id);
     delete componentPool[this.meta.id];
     this.$dispath("remove");
   },

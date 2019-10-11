@@ -14,7 +14,7 @@ namespace Kooboo.Meta.Views
 
         public string Color { get; set; }
 
-        public string Icon { get; set; }
+        public KbIcon Icon { get; set; }
 
         public bool Visible { get; set; } = true;
     }

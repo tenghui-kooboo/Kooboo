@@ -1,5 +1,5 @@
 <template>
-  <i v-if="visible" :class="iconName" />
+  <i v-show="visible" :class="iconName" />
 </template>
 
 <script lang="ts">

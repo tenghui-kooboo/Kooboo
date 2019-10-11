@@ -1,10 +1,8 @@
 <template >
-  <a
-    v-if="visible"
-    :class="['btn navbar-btn btn-default', color]"
-    @click="$dispath('click')"
-  >
-    <i v-if="icon" :class="icon" :style="iconStyle" />{{ text }}</a
+  <a v-show="visible" class="btn navbar-btn" @click="$dispath('click')">
+    <kb-icon v-if="meta.icon" :meta="meta.icon" :style="iconStyle" />{{
+      text
+    }}</a
   >
 </template>
 
@@ -17,15 +15,11 @@ export default Vue.extend({
   mounted() {
     let me: any = this;
     if (me.meta.visible != undefined) me.visible = me.meta.visible;
-    if (me.meta.icon != undefined) me.icon = me.meta.icon;
-    if (me.meta.color != undefined) me.color = me.meta.color;
     if (me.meta.text != undefined) me.text = me.meta.text;
   },
   data() {
     return {
       visible: true,
-      icon: "",
-      color: "",
       text: ""
     };
   },

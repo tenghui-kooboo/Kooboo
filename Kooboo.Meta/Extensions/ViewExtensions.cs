@@ -31,7 +31,7 @@ namespace Kooboo.Meta
 
         public static T AddClass<T>(this T view, params string[] @class) where T : KbView
         {
-            var classList = string.Join(",", @class.Select(s => $"`{s}`"));
+            var classList = string.Join(",", @class.SelectMany(s=>s.Split(' ')).Select(s => $"`{s}`"));
             return view.AddHook("load", view.Id, $"k.self.$el.classList.add({classList})");
         }
     }

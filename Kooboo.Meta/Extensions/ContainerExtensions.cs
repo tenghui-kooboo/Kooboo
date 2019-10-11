@@ -30,6 +30,22 @@ namespace Kooboo.Meta
             return text;
         }
 
+        public static KbLabel AddLabel<T>(this T container, Action<KbLabel> action) where T : KbContainer
+        {
+            var label = new KbLabel();
+            action(label);
+            container.AddView(label);
+            return label;
+        }
+
+        public static KbBadge AddBadge<T>(this T container, Action<KbBadge> action) where T : KbContainer
+        {
+            var badge = new KbBadge();
+            action(badge);
+            container.AddView(badge);
+            return badge;
+        }
+
         public static KbIcon AddIcon<T>(this T container, Action<KbIcon> action) where T : KbContainer
         {
             var icon = new KbIcon();
