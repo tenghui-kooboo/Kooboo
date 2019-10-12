@@ -1,4 +1,5 @@
-﻿using Kooboo.Meta;
+﻿using Kooboo.Data.Language;
+using Kooboo.Meta;
 using Kooboo.Meta.Models;
 using Kooboo.Meta.Views;
 using Kooboo.Meta.Views.Abstracts;
@@ -22,21 +23,21 @@ namespace Kooboo.Web.Meta
             {
                 navbar.AddButton(btn =>
                 {
-                    btn.Text = "新建页面";
+                    btn.Text = LanguageProvider.GetValue("New page");
                     btn.AddClass("green");
                     btn.Redirect("/_Admin/Page/EditPage?SiteId=${k.query.SiteId}");
                 });
 
                 navbar.AddButton(btn =>
                 {
-                    btn.Text = "新建富文本页面";
+                    btn.Text = LanguageProvider.GetValue("New rich text page");
                     btn.AddClass("green");
                     btn.Redirect("/_Admin/Page/EditRichText?SiteId=${k.query.SiteId}");
                 });
 
                 navbar.AddDropdown(dropdown =>
                 {
-                    dropdown.Text = "使用布局新建页面";
+                    dropdown.Text = LanguageProvider.GetValue("New layout page");
                     dropdown.Color = "green";
                     dropdown.SetData(meta.Id, "k.data.layouts");
                     dropdown.SetItemTemplate(item =>
@@ -48,14 +49,14 @@ namespace Kooboo.Web.Meta
 
                 copyBtn = navbar.AddButton(btn =>
                 {
-                    btn.Text = "复制";
+                    btn.Text = LanguageProvider.GetValue("Copy");
                     btn.AddClass("green");
                     btn.Visible = false;
                 });
 
                 deleteBtn = navbar.AddButton(btn =>
                 {
-                    btn.Text = "删除";
+                    btn.Text = LanguageProvider.GetValue("Delete");
                     btn.AddClass("red");
                     btn.Visible = false;
                 });
@@ -89,7 +90,7 @@ namespace Kooboo.Web.Meta
 
                     row.AddCell(cell =>
                     {
-                        cell.Text = "名称";
+                        cell.Text = LanguageProvider.GetValue("Name");
                         cell.AddText(text =>
                         {
                             text.AddHook("dataChange", row.Id, "k.self.text=k.data.name");
@@ -98,7 +99,7 @@ namespace Kooboo.Web.Meta
 
                     row.AddCell(cell =>
                     {
-                        cell.Text = "被链接";
+                        cell.Text = LanguageProvider.GetValue("Linked");
                         cell.AddBadge(badge =>
                         {
                             badge.AddClass("badge-primary");
@@ -108,39 +109,39 @@ namespace Kooboo.Web.Meta
 
                     row.AddCell(cell =>
                     {
-                        cell.Text = "在线情况";
+                        cell.Text = LanguageProvider.GetValue("Online");
                         cell.AddLabel(label =>
                         {
                             label.AddClass("label-sm label-success");
-                            label.AddHook("dataChange", row.Id, "k.self.text=k.data.online");
+                            label.AddHook("dataChange", row.Id, "k.self.text=k.data.online?k.text.online.yes:k.text.online.no");
                         });
                     });
 
                     var refCell = row.AddCell(cell =>
                     {
-                        cell.Text = "引用";
+                        cell.Text = LanguageProvider.GetValue("References");
                         cell.AddHook("dataChange", row.Id, "k.self.items=k.toList(k.data.relations)");
                         cell.SetItemTemplate(temp =>
                         {
                             var label = new KbLabel();
                             label.AddClass("label-sm label-success");
-                            label.AddHook("dataChange", temp.Id, "k.self.text=`${k.data.value} ${k.data.key}`");
+                            label.AddHook("dataChange", temp.Id, "k.self.text=`${k.data.value} ${k.text.component.table[k.data.key]}`");
                             temp.View = label;
                         });
                     });
 
                     row.AddCell(cell =>
                     {
-                        cell.Text = "修改时间";
+                        cell.Text = LanguageProvider.GetValue("Last modified");
                         cell.AddText(text =>
                         {
-                            text.AddHook("dataChange", row.Id, "k.self.text=k.data.lastModified");
+                            text.AddHook("dataChange", row.Id, "k.self.text=k.datetimeFormat(k.data.lastModified)");
                         });
                     });
 
                     row.AddCell(cell =>
                     {
-                        cell.Text = "预览";
+                        cell.Text = LanguageProvider.GetValue("Preview");
                         cell.AddButton(btn =>
                         {
                             btn.AddClass("btn-link btn-sm");
@@ -151,10 +152,10 @@ namespace Kooboo.Web.Meta
 
                     row.AddCell(cell =>
                     {
-                        //cell.Width = "180px";
+                        cell.Width = "180px";
                         cell.AddButton(btn =>
                         {
-                            btn.Text = "设置";
+                            btn.Text = LanguageProvider.GetValue("Settings");
                             btn.AddClass("blue btn-sm");
                             btn.AddHook("click", btn.Id, $@"
 var rowData=k.pool.{row.Id}.data;
@@ -166,7 +167,7 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
 
                         cell.AddButton(btn =>
                         {
-                            btn.Text = "在线编辑";
+                            btn.Text = LanguageProvider.GetValue("Inline edit");
                             btn.AddClass("btn-primary btn-sm");
                             btn.AddHook("click", btn.Id, $"window.open(k.pool.{row.Id}.data.inlineUrl)");
                         });

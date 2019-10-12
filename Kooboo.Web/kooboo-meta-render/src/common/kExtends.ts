@@ -7,3 +7,9 @@ kInstance.toList = function(obj: Object) {
   }
   return arr;
 };
+
+kInstance.datetimeFormat = function(datetime: string) {
+  return new Date(datetime).toLocaleString();
+};
+
+kInstance.text = window.Kooboo.text;

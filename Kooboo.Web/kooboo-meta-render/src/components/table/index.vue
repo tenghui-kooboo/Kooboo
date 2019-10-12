@@ -20,7 +20,7 @@
         v-for="(item, index) in items"
         :key="index"
         :showCheck="meta.showCheck"
-        :meta="changeMetaId(meta.rowTemplate)"
+        :meta="changeMetaId(meta.rowTemplate, index)"
         :data="item"
         :checkedAll="checkedAll"
         @checked="rowChecked($event, item)"
@@ -32,7 +32,7 @@
 <script lang="ts">
 import Vue from "@/kbVue";
 import TableRow from "./row.vue";
-import {changeMetaId} from "@/common/utils"
+import { changeMetaId } from "@/common/utils";
 
 export default Vue.extend({
   props: {

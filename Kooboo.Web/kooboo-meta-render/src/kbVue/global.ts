@@ -1,9 +1,9 @@
 import Vue from "vue";
 
-const win = window as any;
-export const context: Vue = win.__kb_context || new Vue();
-export const componentPool: any = win.__kb_componentPool || {};
-export const kInstance: any = win.__kb_kInstance || {};
-win.__kb_context = context;
-win.__kb_componentPool = componentPool;
-win.__kb_kInstance = kInstance;
+window.__kb_context = window.__kb_context || new Vue();
+window.__kb_componentPool = window.__kb_componentPool || {};
+window.__kb_kInstance = window.__kb_kInstance || {};
+
+export const context: Vue = window.__kb_context;
+export const componentPool: any = window.__kb_componentPool;
+export const kInstance: any = window.__kb_kInstance;

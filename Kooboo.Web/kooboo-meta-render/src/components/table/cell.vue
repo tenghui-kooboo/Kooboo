@@ -4,7 +4,7 @@
       <cell-template
         v-for="(item, index) in items"
         :key="index"
-        :meta="changeMetaId(meta.itemTemplate)"
+        :meta="changeMetaId(meta.itemTemplate, index)"
         :data="item"
       />
     </template>
@@ -12,7 +12,7 @@
       <component
         v-for="(item, index) in meta.views"
         :key="index"
-        :meta="changeMetaId(item)"
+        :meta="changeMetaId(item, index)"
         :is="item.name"
       />
     </template>

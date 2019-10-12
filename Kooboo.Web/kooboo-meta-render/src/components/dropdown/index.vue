@@ -11,7 +11,7 @@
       <template v-if="meta.itemTemplate">
         <dropdown-item
           v-for="(item, index) in items"
-          :meta="changeMetaId(meta.itemTemplate)"
+          :meta="changeMetaId(meta.itemTemplate,index)"
           :key="index"
           :data="item"
         />

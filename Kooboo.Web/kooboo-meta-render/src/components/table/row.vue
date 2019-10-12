@@ -10,7 +10,7 @@
     <table-cell
       v-for="(cell, index) in meta.cells"
       :key="index"
-      :meta="changeMetaId(cell)"
+      :meta="changeMetaId(cell, index)"
     />
   </tr>
 </template>
@@ -27,7 +27,7 @@ export default Vue.extend({
     checkedAll: Boolean,
     meta: Object
   },
-  mounted(){
+  mounted() {
     this.$dispath("dataChange", { data: this.data });
   },
   data() {
