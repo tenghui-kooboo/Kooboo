@@ -13,5 +13,17 @@ namespace Kooboo.Meta
             kbButton.AddClass("pull-right");
             return kbButton;
         }
+
+        public static KbButton ShowPopup(this KbButton kbButton,string popupId)
+        {
+            kbButton.Execute($"k.pool.{popupId}.visible=true");
+            return kbButton;
+        }
+
+        public static KbButton ClosePopup(this KbButton kbButton, string popupId)
+        {
+            kbButton.Execute($"k.pool.{popupId}.visible=false");
+            return kbButton;
+        }
     }
 }

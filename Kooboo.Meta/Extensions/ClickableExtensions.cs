@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Kooboo.Meta
 {
-    public static class KbClickableExtensions
+    public static class ClickableExtensions
     {
         public static T NewWindow<T>(this T view, JsString url) where T : KbClickable
         {

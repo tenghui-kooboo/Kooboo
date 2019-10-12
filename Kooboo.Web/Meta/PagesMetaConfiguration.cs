@@ -16,6 +16,7 @@ namespace Kooboo.Web.Meta
             KbButton copyBtn = null;
             KbButton deleteBtn = null;
             KbButton routerSettingBtn = null;
+            KbButton importBtn = null;
             KbTable pageTable = null;
 
             meta.LoadData("/_api/Page/all?SiteId=${k.query.SiteId}");
@@ -47,6 +48,12 @@ namespace Kooboo.Web.Meta
                         item.Redirect("/_Admin/Page/EditLayout?SiteId=${k.query.SiteId}&layoutId=${k.self.data.id}");
                     });
                 });
+
+                importBtn = navbar.AddButton(btn =>
+                 {
+                     btn.Text = LanguageProvider.GetValue("Import");
+                     btn.AddClass("green");
+                 });
 
                 copyBtn = navbar.AddButton(btn =>
                 {
@@ -180,11 +187,34 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
             var routerSettingPopup = meta.AddPopup(popup =>
              {
                  popup.Title = "路由设置";
+                 popup.Body = new KbButton
+                 {
+                     Text = "aa"
+                 };
+                 popup.AddFooterButton(btn =>
+                 {
+                     btn.Text = "关闭";
+                     btn.AddClass("btn-default");
+                     btn.ClosePopup(popup.Id);
+                 });
+
+                 popup.AddFooterButton(btn =>
+                 {
+                     btn.Text = "开始";
+                     btn.AddClass("green");
+                     btn.ClosePopup(popup.Id);
+                 });
              });
+
+            var importPopup = meta.AddPopup(popup =>
+            {
+                popup.Title = LanguageProvider.GetValue("Import");
+            });
 
             copyBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
             deleteBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length>0");
-            routerSettingBtn.Execute($"k.pool.{routerSettingPopup.Id}.visible=true");
+            routerSettingBtn.ShowPopup(routerSettingPopup.Id);
+            importBtn.ShowPopup(importPopup.Id);
         }
     }
 }

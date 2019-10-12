@@ -13,8 +13,8 @@ namespace Kooboo.Meta.Views
 
         public string Title { get; set; }
 
-        public KbView BodyView { get; set; }
+        public KbView Body { get; set; }
 
-        public List<KbButton> FooterButtons { get; private set; } = new List<KbButton>();
+        public List<KbButton> Footer { get; private set; } = new List<KbButton>();
     }
 }

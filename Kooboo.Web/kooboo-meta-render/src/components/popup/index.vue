@@ -13,8 +13,16 @@
           </button>
           <h4 class="modal-title">{{ meta.title }}</h4>
         </div>
-        <div class="modal-body" ref="body"></div>
-        <div class="modal-footer"></div>
+        <div class="modal-body" ref="body">
+          <component v-if="meta.body" :is="meta.body.name" :meta="meta.body" />
+        </div>
+        <div class="modal-footer">
+          <kb-button
+            v-for="(item, index) in meta.footer"
+            :meta="item"
+            :key="index"
+          />
+        </div>
       </div>
     </div>
   </div>
