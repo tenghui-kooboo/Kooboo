@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jquery": "^3.3.31",
     "@types/webpack": "^4.39.1",
     "css-loader": "^3.2.0",
     "ts-loader": "^6.1.2",

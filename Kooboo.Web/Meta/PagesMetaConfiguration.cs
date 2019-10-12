@@ -15,6 +15,7 @@ namespace Kooboo.Web.Meta
         {
             KbButton copyBtn = null;
             KbButton deleteBtn = null;
+            KbButton routerSettingBtn = null;
             KbTable pageTable = null;
 
             meta.LoadData("/_api/Page/all?SiteId=${k.query.SiteId}");
@@ -61,15 +62,15 @@ namespace Kooboo.Web.Meta
                     btn.Visible = false;
                 });
 
-                navbar.AddButton(btn =>
-                {
-                    btn.PullRight();
-                    btn.AddClass("btn-default");
-                    btn.Icon = new KbIcon
-                    {
-                        IconName = "fa fa-gear"
-                    };
-                });
+                routerSettingBtn = navbar.AddButton(btn =>
+                 {
+                     btn.PullRight();
+                     btn.AddClass("btn-default");
+                     btn.Icon = new KbIcon
+                     {
+                         IconName = "fa fa-gear"
+                     };
+                 });
             });
 
             pageTable = meta.AddTable(table =>
@@ -176,8 +177,14 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                 });
             });
 
+            var routerSettingPopup = meta.AddPopup(popup =>
+             {
+                 popup.Title = "路由设置";
+             });
+
             copyBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
             deleteBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length>0");
+            routerSettingBtn.Execute($"k.pool.{routerSettingPopup.Id}.visible=true");
         }
     }
 }

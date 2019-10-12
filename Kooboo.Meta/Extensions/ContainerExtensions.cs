@@ -77,5 +77,13 @@ namespace Kooboo.Meta
             container.AddView(table);
             return table;
         }
+
+        public static KbPopup AddPopup<T>(this T container, Action<KbPopup> action) where T : KbContainer
+        {
+            var popup = new KbPopup();
+            action(popup);
+            container.AddView(popup);
+            return popup;
+        }
     }
 }
