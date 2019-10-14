@@ -250,6 +250,20 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                                 text.AddHook("dataChange", row.Id, $"k.self.text=k.data.remark||'-'");
                             });
                         });
+
+                        row.AddCell(cell =>
+                        {
+                            cell.Text = "编辑";
+                            cell.AddButton(btn =>
+                            {
+                                btn.AddClass("blue btn-xs");
+                                btn.Icon = new KbIcon
+                                {
+                                    IconName = "fa fa-pencil"
+                                };
+                                btn.NewWindow($"/_Admin/Development/View?SiteId=${{k.query.SiteId}}&Id=${{k.pool.{row.Id}.data.objectId}}");
+                            });
+                        });
                     });
 
                 });
