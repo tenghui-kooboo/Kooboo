@@ -56,6 +56,10 @@ namespace Kooboo.Web.Meta
                     btn.AddClass("green");
                     btn.Visible = false;
                     btn.AddHook("selectedRowsChange", "pages_table", "k.self.visible=k.selectedRows.length==1");
+                    btn.Execute(@"
+k.pool.pages_copy_popup.title=`${k.text.site.page.copyPage}:${k.pool.pages_table.selectedRows[0].name}`;
+k.pool.pages_copy_popup.visible=true;
+");
                 });
 
                 navbar.AddButton(btn =>
@@ -266,6 +270,36 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                         });
                     });
 
+                });
+            });
+
+            meta.AddPopup(popup =>
+            {
+                popup.Id = "pages_copy_popup";
+                popup.AddForm(form =>
+                {
+                    form.Fields.Add(new Field { 
+                        Label="名称"
+                    });
+
+                    form.Fields.Add(new Field
+                    {
+                        Label = "URL"
+                    });
+                });
+
+                popup.AddFooterButton(btn =>
+                {
+                    btn.Text = "关闭";
+                    btn.AddClass("btn-default");
+                    btn.ClosePopup(popup.Id);
+                });
+
+                popup.AddFooterButton(btn =>
+                {
+                    btn.Text = "开始";
+                    btn.AddClass("green");
+                    btn.ClosePopup(popup.Id);
                 });
             });
         }

@@ -11,7 +11,7 @@
           <button class="close" @click="visible = false">
             <i class="fa fa-close"></i>
           </button>
-          <h4 class="modal-title">{{ meta.title }}</h4>
+          <h4 class="modal-title">{{ title }}</h4>
         </div>
         <div class="modal-body" ref="body">
           <component
@@ -40,11 +40,13 @@ export default Vue.extend({
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      title: ""
     };
   },
   mounted() {
     if (this.meta.visible != undefined) this.visible = this.meta.visible;
+    if (this.meta.title != undefined) this.title = this.meta.title;
   },
   watch: {
     visible(visible: boolean) {
