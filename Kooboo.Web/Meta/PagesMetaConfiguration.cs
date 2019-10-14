@@ -13,12 +13,6 @@ namespace Kooboo.Web.Meta
     {
         public void Configure(KbMeta meta)
         {
-            KbButton copyBtn = null;
-            KbButton deleteBtn = null;
-            KbButton routerSettingBtn = null;
-            KbButton importBtn = null;
-            KbTable pageTable = null;
-
             meta.LoadData("/_api/Page/all?SiteId=${k.query.SiteId}");
 
             meta.AddKbNavbar(navbar =>
@@ -49,39 +43,44 @@ namespace Kooboo.Web.Meta
                     });
                 });
 
-                importBtn = navbar.AddButton(btn =>
+                navbar.AddButton(btn =>
                  {
                      btn.Text = LanguageProvider.GetValue("Import");
                      btn.AddClass("green");
+                     btn.ShowPopup("pages_import_popup");
                  });
 
-                copyBtn = navbar.AddButton(btn =>
+                navbar.AddButton(btn =>
                 {
                     btn.Text = LanguageProvider.GetValue("Copy");
                     btn.AddClass("green");
                     btn.Visible = false;
+                    btn.AddHook("selectedRowsChange", "pages_table", "k.self.visible=k.selectedRows.length==1");
                 });
 
-                deleteBtn = navbar.AddButton(btn =>
+                navbar.AddButton(btn =>
                 {
                     btn.Text = LanguageProvider.GetValue("Delete");
                     btn.AddClass("red");
                     btn.Visible = false;
+                    btn.AddHook("selectedRowsChange", "pages_table", "k.self.visible=k.selectedRows.length>0");
                 });
 
-                routerSettingBtn = navbar.AddButton(btn =>
-                 {
-                     btn.PullRight();
-                     btn.AddClass("btn-default");
-                     btn.Icon = new KbIcon
-                     {
-                         IconName = "fa fa-gear"
-                     };
-                 });
+                navbar.AddButton(btn =>
+                {
+                    btn.PullRight();
+                    btn.AddClass("btn-default");
+                    btn.Icon = new KbIcon
+                    {
+                        IconName = "fa fa-gear"
+                    };
+                    btn.ShowPopup("pages_router_settings_popup");
+                });
             });
 
-            pageTable = meta.AddTable(table =>
+            meta.AddTable(table =>
             {
+                table.Id = "pages_table";
                 table.ShowCheck = true;
                 table.SetData(meta.Id, "k.data.pages");
                 table.SetRowTemplate(row =>
@@ -184,8 +183,9 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                 });
             });
 
-            var routerSettingPopup = meta.AddPopup(popup =>
+            meta.AddPopup(popup =>
              {
+                 popup.Id = "pages_router_settings_popup";
                  popup.Title = "路由设置";
                  popup.Body = new KbButton
                  {
@@ -206,15 +206,11 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                  });
              });
 
-            var importPopup = meta.AddPopup(popup =>
+            meta.AddPopup(popup =>
             {
+                popup.Id = "pages_import_popup";
                 popup.Title = LanguageProvider.GetValue("Import");
             });
-
-            copyBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length==1");
-            deleteBtn.AddHook("selectedRowsChange", pageTable.Id, "k.self.visible=k.selectedRows.length>0");
-            routerSettingBtn.ShowPopup(routerSettingPopup.Id);
-            importBtn.ShowPopup(importPopup.Id);
         }
     }
 }
