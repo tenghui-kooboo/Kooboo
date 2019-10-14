@@ -85,5 +85,13 @@ namespace Kooboo.Meta
             container.AddView(popup);
             return popup;
         }
+
+        public static KbForm AddForm<T>(this T container, Action<KbForm> action) where T : KbContainer
+        {
+            var form = new KbForm();
+            action(form);
+            container.AddView(form);
+            return form;
+        }
     }
 }

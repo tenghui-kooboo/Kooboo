@@ -1,5 +1,5 @@
 <template>
-  <a class="label" :style="{ margin: '3px' }">{{ text }}</a>
+  <a class="label" :style="{ margin: '3px' }" @click="$dispath('click')">{{ text }}</a>
 </template>
 <script lang="ts">
 import Vue from "@/kbVue";

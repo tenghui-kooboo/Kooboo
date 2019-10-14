@@ -133,6 +133,11 @@ namespace Kooboo.Web.Meta
                             var label = new KbLabel();
                             label.AddClass("label-sm label-success");
                             label.AddHook("dataChange", temp.Id, "k.self.text=`${k.data.value} ${k.text.component.table[k.data.key]}`");
+                            label.AddHook("click", label.Id, $@"
+let rowData= k.pool.{row.Id}.data;
+k.pool.pages_relation_popup.$loadData(`/_api/Relation/ShowBy?SiteId=${{k.query.SiteId}}&id=${{rowData.id}}&by=${{k.pool.{temp.Id}.data.key}}&type=Page`);
+k.pool.pages_relation_popup.visible=true;
+");
                             temp.View = label;
                         });
                     });
@@ -187,10 +192,15 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
              {
                  popup.Id = "pages_router_settings_popup";
                  popup.Title = "路由设置";
-                 popup.Body = new KbButton
+
+                 popup.AddForm(form =>
                  {
-                     Text = "aa"
-                 };
+                     form.Fields.Add(new Field
+                     {
+                         Label = "name"
+                     });
+                 });
+
                  popup.AddFooterButton(btn =>
                  {
                      btn.Text = "关闭";
@@ -210,6 +220,39 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
             {
                 popup.Id = "pages_import_popup";
                 popup.Title = LanguageProvider.GetValue("Import");
+            });
+
+            meta.AddPopup(popup =>
+            {
+                popup.Id = "pages_relation_popup";
+                popup.AddTable(table =>
+                {
+                    table.Id = "pages_relation_popup_table";
+                    table.SetData("pages_relation_popup", "k.data");
+                    table.SetRowTemplate(row =>
+                    {
+                        row.AddCell(cell =>
+                        {
+                            cell.Text = "名称";
+                            cell.AddButton(btn =>
+                            {
+                                btn.AddClass("btn-link");
+                                btn.AddHook("dataChange", row.Id, $"k.self.text=k.data.name");
+                                btn.NewWindow($"${{k.pool.{row.Id}.data['url']}}");
+                            });
+                        });
+
+                        row.AddCell(cell =>
+                        {
+                            cell.Text = "备注";
+                            cell.AddText(text =>
+                            {
+                                text.AddHook("dataChange", row.Id, $"k.self.text=k.data.remark||'-'");
+                            });
+                        });
+                    });
+
+                });
             });
         }
     }
