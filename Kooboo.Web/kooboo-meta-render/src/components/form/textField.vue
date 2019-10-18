@@ -27,7 +27,7 @@ export default Vue.extend({
   },
   mounted() {
     this.visible = this.meta.visible;
-    this.visible = this.meta.defaultValue;
+    this.value = this.meta.defaultValue;
   },
   methods: {
     valueChanged(value: string) {
