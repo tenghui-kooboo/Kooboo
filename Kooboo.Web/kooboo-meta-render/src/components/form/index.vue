@@ -1,22 +1,28 @@
 <template>
   <form class="form-horizontal">
-    <form-field
+    <component
       v-for="(item, index) in meta.fields"
       :key="index"
       :meta="item"
+      :is="item.name"
     />
   </form>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import FormField from "./field.vue";
+import TextField from "./textField.vue";
+import RadioField from "./radioField.vue";
+import FileField from "./fileField.vue";
 export default Vue.extend({
   props: {
-    meta: Object
+    meta: Object,
+    data: Object
   },
   components: {
-    FormField
+    TextField,
+    RadioField,
+    FileField
   }
 });
 </script>

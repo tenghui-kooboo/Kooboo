@@ -3,6 +3,7 @@ using Kooboo.Meta;
 using Kooboo.Meta.Models;
 using Kooboo.Meta.Views;
 using Kooboo.Meta.Views.Abstracts;
+using Kooboo.Meta.Views.FormFields;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -168,7 +169,7 @@ k.pool.pages_relation_popup.visible=true;
 
                     row.AddCell(cell =>
                     {
-                        cell.Width = "180px";
+                        cell.Width = "50px";
                         cell.AddButton(btn =>
                         {
                             btn.Text = LanguageProvider.GetValue("Settings");
@@ -180,7 +181,11 @@ else if(rowData.type='Normal') location.href='/_admin/Page/EditPage?siteId='+k.q
 else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+rowData.id;
 ");
                         });
+                    });
 
+                    row.AddCell(cell =>
+                    {
+                        cell.Width = "70px";
                         cell.AddButton(btn =>
                         {
                             btn.Text = LanguageProvider.GetValue("Inline edit");
@@ -188,7 +193,6 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                             btn.AddHook("click", btn.Id, $"window.open(k.pool.{row.Id}.data.inlineUrl)");
                         });
                     });
-
                 });
             });
 
@@ -199,7 +203,7 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
 
                  popup.AddForm(form =>
                  {
-                     form.Fields.Add(new Field
+                     form.Fields.Add(new TextField
                      {
                          Label = "name"
                      });
@@ -224,11 +228,65 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
             {
                 popup.Id = "pages_import_popup";
                 popup.Title = LanguageProvider.GetValue("Import");
+                popup.AddForm(form =>
+                {
+                    form.AddRadio(radio =>
+                    {
+                        radio.Id = "pages_import_popup_radio";
+                        radio.Label = "来源";
+                        radio.DefaultValue = "url";
+                        radio.Field = "source";
+                        radio.AddItem(item =>
+                        {
+                            item.Label = "URL";
+                            item.Value = "url";
+                        });
+
+                        radio.AddItem(item =>
+                        {
+                            item.Label = "文件";
+                            item.Value = "file";
+                        });
+                    });
+
+                    form.AddText(text =>
+                    {
+                        text.Label = "页面网址";
+                        text.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='url'");
+                    });
+
+                    form.AddText(text =>
+                    {
+                        text.Label = "URL";
+                        text.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='url'");
+                    });
+
+                    form.AddFile(file => {
+                        file.Label = "文件";
+                        file.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='file'");
+                    });
+
+                    popup.AddFooterButton(btn =>
+                    {
+                        btn.Text = "关闭";
+                        btn.AddClass("btn-default");
+                        btn.ClosePopup(popup.Id);
+                    });
+
+                    popup.AddFooterButton(btn =>
+                    {
+                        btn.Text = "开始";
+                        btn.AddClass("green");
+                        btn.ClosePopup(popup.Id);
+                        btn.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='url'");
+                    });
+                });
             });
 
             meta.AddPopup(popup =>
             {
                 popup.Id = "pages_relation_popup";
+                popup.Title = LanguageProvider.GetValue("Relations");
                 popup.AddTable(table =>
                 {
                     table.Id = "pages_relation_popup_table";
@@ -237,7 +295,7 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                     {
                         row.AddCell(cell =>
                         {
-                            cell.Text = "名称";
+                            cell.Text = LanguageProvider.GetValue("Name");
                             cell.AddButton(btn =>
                             {
                                 btn.AddClass("btn-link");
@@ -248,7 +306,7 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
 
                         row.AddCell(cell =>
                         {
-                            cell.Text = "备注";
+                            cell.Text = LanguageProvider.GetValue("Remark");
                             cell.AddText(text =>
                             {
                                 text.AddHook("dataChange", row.Id, $"k.self.text=k.data.remark||'-'");
@@ -257,7 +315,7 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
 
                         row.AddCell(cell =>
                         {
-                            cell.Text = "编辑";
+                            cell.Text = LanguageProvider.GetValue("Edit");
                             cell.AddButton(btn =>
                             {
                                 btn.AddClass("blue btn-xs");
@@ -271,18 +329,26 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                     });
 
                 });
+                popup.AddFooterButton(btn =>
+                {
+                    btn.Text = LanguageProvider.GetValue("Close"); ;
+                    btn.AddClass("btn-default");
+                    btn.ClosePopup(popup.Id);
+                });
             });
 
             meta.AddPopup(popup =>
             {
                 popup.Id = "pages_copy_popup";
+                popup.Title = "aaa";
                 popup.AddForm(form =>
                 {
-                    form.Fields.Add(new Field { 
-                        Label="名称"
+                    form.Fields.Add(new TextField
+                    {
+                        Label = "名称"
                     });
 
-                    form.Fields.Add(new Field
+                    form.Fields.Add(new TextField
                     {
                         Label = "URL"
                     });
