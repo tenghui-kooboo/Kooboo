@@ -17,16 +17,17 @@
 import Vue from "@/kbVue";
 export default Vue.extend({
   props: {
-    meta: Object,
-    value: Object
+    meta: Object
   },
   data() {
     return {
-      visible: true
+      visible: true,
+      value: ""
     };
   },
   mounted() {
     this.visible = this.meta.visible;
+    this.visible = this.meta.defaultValue;
   },
   methods: {
     valueChanged(value: string) {

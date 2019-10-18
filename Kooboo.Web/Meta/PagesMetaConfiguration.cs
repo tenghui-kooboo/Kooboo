@@ -57,10 +57,7 @@ namespace Kooboo.Web.Meta
                     btn.AddClass("green");
                     btn.Visible = false;
                     btn.AddHook("selectedRowsChange", "pages_table", "k.self.visible=k.selectedRows.length==1");
-                    btn.Execute(@"
-k.pool.pages_copy_popup.title=`${k.text.site.page.copyPage}:${k.pool.pages_table.selectedRows[0].name}`;
-k.pool.pages_copy_popup.visible=true;
-");
+                    btn.ShowPopup("pages_copy_popup");
                 });
 
                 navbar.AddButton(btn =>
@@ -224,6 +221,7 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                  });
              });
 
+            //import
             meta.AddPopup(popup =>
             {
                 popup.Id = "pages_import_popup";
@@ -261,9 +259,13 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                         text.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='url'");
                     });
 
-                    form.AddFile(file => {
+                    form.AddFile(file =>
+                    {
                         file.Label = "文件";
+                        file.Description = "支持类型: HTML, PDF, Word, Excel, PPT, ZIP";
                         file.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='file'");
+
+                        //TODO 开始文件上传
                     });
 
                     popup.AddFooterButton(btn =>
@@ -279,10 +281,12 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                         btn.AddClass("green");
                         btn.ClosePopup(popup.Id);
                         btn.AddHook("valueChanged", "pages_import_popup_radio", "k.self.visible=k.value=='url'");
+                        //TODO 开始导入
                     });
                 });
             });
 
+            //relation
             meta.AddPopup(popup =>
             {
                 popup.Id = "pages_relation_popup";
@@ -337,20 +341,22 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                 });
             });
 
+            //copy
             meta.AddPopup(popup =>
             {
                 popup.Id = "pages_copy_popup";
-                popup.Title = "aaa";
                 popup.AddForm(form =>
                 {
-                    form.Fields.Add(new TextField
+                    form.AddText(text =>
                     {
-                        Label = "名称"
+                        text.Label = "名称";
+                        text.AddHook("show", popup.Id, "k.self.value=`${k.pool.pages_table.selectedRows[0].name}_Copy`");
                     });
 
-                    form.Fields.Add(new TextField
+                    form.AddText(text =>
                     {
-                        Label = "URL"
+                        text.Label = "URL";
+                        text.AddHook("show", popup.Id, "k.self.value=`/${k.pool.pages_table.selectedRows[0].name}_Copy`");
                     });
                 });
 
@@ -366,7 +372,11 @@ else location.href ='/_admin/Page/EditRichText?siteId='+k.query.SiteId+'&id='+ro
                     btn.Text = "开始";
                     btn.AddClass("green");
                     btn.ClosePopup(popup.Id);
+
+                    //TODO 提交拷贝
                 });
+
+                popup.AddHook("show", popup.Id, "k.self.title=`${k.text.site.page.copyPage}:${k.pool.pages_table.selectedRows[0].name}`");
             });
         }
     }

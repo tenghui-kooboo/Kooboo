@@ -10,7 +10,7 @@
           :value="value"
           @input="valueChanged($event.target.value)"
         /><span>选择文件</span></a
-      ><span>支持类型: HTML, PDF, Word, Excel, PPT, ZIP</span>
+      ><span>{{meta.description}}</span>
     </div>
   </div>
 </template>
