@@ -32,7 +32,7 @@ namespace Kooboo.Data.Attributes
     }
 
     /// <summary>
-    /// mark filed is extension 
+    /// mark this[string key] real type
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
     public class KValueTypeAttribute : Attribute

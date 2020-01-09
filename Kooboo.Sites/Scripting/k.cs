@@ -38,6 +38,14 @@ namespace KScript
         [KExtension]
         static KeyValuePair<string, Type>[] __ = KscriptConfigContainer.KscriptConfigTypes.ToArray();
 
+        [KExtension]
+        static KeyValuePair<string, Type[]>[] ___ = new[] {
+            new KeyValuePair<string,Type[]>("customModule",new []{
+                typeof(Mail),
+                typeof(Response)
+            })
+        };
+
         private kDataContext _data;
 
         [Description("the dataContext of kview engine, the html render engine of kooboo. You can explicitly set value into datacontext or just declare the value as JS global variable, it will be accesible from kview engine.")]
@@ -153,7 +161,7 @@ var value = k.session.key; ")]
         }
 
         private InfoModel _siteinfo;
-        
+
         [Description("Access to current request information")]
         public InfoModel Info
         {
@@ -222,7 +230,7 @@ var value = k.session.key; ")]
                 {
                     if (_setting == null)
                     {
-                        _setting = new KDictionary(); 
+                        _setting = new KDictionary();
                     }
                     return _setting;
                 }
@@ -233,7 +241,7 @@ var value = k.session.key; ")]
             public UserModel User
             {
                 get; set;
-            } 
+            }
         }
 
         private kSiteDb _sitedb;
@@ -334,18 +342,20 @@ var value = k.session.key; ")]
 
         [Description("Access to configuration of current event")]
 
-        private KDictionary _config; 
-        public KDictionary config {
-            get {
+        private KDictionary _config;
+        public KDictionary config
+        {
+            get
+            {
                 if (_config == null)
                 {
-                    _config = new KDictionary(); 
+                    _config = new KDictionary();
                 }
-                return _config; 
+                return _config;
             }
-            set { _config = value;  }
+            set { _config = value; }
         }
-         
+
         [Kooboo.Attributes.SummaryIgnore]
         public Kooboo.Sites.FrontEvent.IFrontEvent @event { get; set; }
 
@@ -504,7 +514,7 @@ var value = k.session.key; ")]
         {
             var html = new ViewHelpRender().Render(RenderContext);
             Response.write(html);
-        } 
+        }
 
         internal List<object> ReturnValues = new List<object>();
 
