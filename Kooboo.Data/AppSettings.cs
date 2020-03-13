@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Kooboo.Data.Context;
 using System.Linq;
 using Kooboo.Data.Service;
+using System.Reflection;
 
 namespace Kooboo.Data
 {
@@ -22,10 +23,12 @@ namespace Kooboo.Data
 
         public static void LoadSetting()
         {
-            Version = typeof(Kooboo.Data.Models.WebSite).Assembly.GetName().Version;
+            Version = Assembly.GetEntryAssembly().GetName().Version;
 
             RootPath = TryRootPath();
             IsOnlineServer = GetBool("IsOnlineServer");
+
+            CmsLang = ConfigurationManager.AppSettings.Get("CmsLang");
 
             string quotavalue = ConfigurationManager.AppSettings.Get("QuotaControl");
             if (string.IsNullOrEmpty(quotavalue))
@@ -34,8 +37,7 @@ namespace Kooboo.Data
             }
             else { QuotaControl = GetBool("QuotaControl"); }
 
-            Global = new GlobalInfo();
-            Global.IsOnlineServer = GetBool("IsOnlineServer");
+            Global = new GlobalInfo(); 
             Global.EnableLog = GetBool("Log");
 
             Global.LogPath = System.IO.Path.Combine(RootPath, "logs");
@@ -109,8 +111,7 @@ namespace Kooboo.Data
                 }
             }
         }
-
-
+         
         public static bool QuotaControl { get; set; }
 
 
@@ -268,11 +269,23 @@ namespace Kooboo.Data
             get; set;
         }
 
+        private static string _cmslang; 
         public static string CmsLang
         {
             get
             {
-                return ConfigurationManager.AppSettings.Get("CmsLang");
+                if(string.IsNullOrWhiteSpace(_cmslang))
+                {
+                    return "en"; 
+                }
+                else
+                {
+                    return _cmslang; 
+                }
+            }
+            set
+            {
+                _cmslang = value; 
             }
         }
 
@@ -711,8 +724,7 @@ namespace Kooboo.Data
         public static GlobalInfo Global { get; set; }
 
         public class GlobalInfo
-        {
-            public bool IsOnlineServer { get; set; }
+        { 
 
             public bool EnableLog { get; set; }
 
